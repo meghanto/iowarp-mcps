@@ -30,4 +30,4 @@ The capability is exposed through JSON-RPC 2.0 and can be accessed via:
 ```
 
 ## Implementation Details
-The implementation simulates HDF5 file operations without actually requiring real HDF5 files, making it suitable for testing and development.
+The implementation simulates HDF5 file operations without requiring real HDF5 files, making it suitable for testing and development.
