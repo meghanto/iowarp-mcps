@@ -1,0 +1,4 @@
+src/__pycache__/
+src/capabilities/__pycache__/
+.coverage
+tests/__pycache__/

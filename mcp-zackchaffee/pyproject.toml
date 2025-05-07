@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-server"
+version = "0.1.0"
+description = "An MCP server for scientific computing resources"
+requires-python = ">=3.10"
+authors = [
+    {name = "Zack Chaffee", email = "zchaffee1@hawk.iit.edu"},
+]
+dependencies = [
+    "fastapi>=0.95.0",
+    "uvicorn>=0.22.0",
+    "pydantic>=2.0.0",
+    "h5py>=3.9.0", 
+    "platform-utils>=0.3.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.3.1",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "httpx>=0.24.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+
