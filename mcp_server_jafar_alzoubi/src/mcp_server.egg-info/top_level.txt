@@ -1,0 +1,5 @@
+capabilities
+init
+mcp_handlers
+server
+setup

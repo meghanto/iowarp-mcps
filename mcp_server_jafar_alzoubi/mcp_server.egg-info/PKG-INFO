@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: mcp-server
+Version: 0.1.0
+Summary: CS550 MCP Server Project
+Author-email: Jafar Alzoubi <your@email.com>
+Requires-Python: >=3.10
+Requires-Dist: fastapi>=0.110
+Requires-Dist: uvicorn
+Requires-Dist: pytest
+Requires-Dist: pydantic
+Requires-Dist: httpx
+Requires-Dist: boto3
+Requires-Dist: pyarrow
+Requires-Dist: pandas
