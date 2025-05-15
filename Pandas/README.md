@@ -1,4 +1,4 @@
-## Suresh Gopi Chand Battula A20538580
+
 ## MCP Server
 
 A Model Context Protocol (MCP) server for scientific computing resources, enabling AI agents and Large Language Models (LLMs) to interact with scientific data and tools through a standardized interface.
