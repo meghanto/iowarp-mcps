@@ -14,5 +14,5 @@ dependencies = [
   "parquet-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=parquet",
   "plot-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Plot",
   "slurm-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Slurm",
-  "jarvis-mcp" @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Slurm
+  "jarvis-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Jarvis%20MCP"
 ]
