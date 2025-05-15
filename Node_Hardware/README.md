@@ -1,8 +1,5 @@
 # MCP Server
 
-**Author:** Shazzadul Islam  
-**Student ID:** [A20524963]
-
 ---
 
 ## Overview

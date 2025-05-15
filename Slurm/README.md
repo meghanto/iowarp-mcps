@@ -1,8 +1,4 @@
 # MCP Server Implementation
-
-**Name**: Jafar Alzoubi 
-**Student ID**: A20501723
-
 ## Implemented Capabilities
 - HDF5 (Data)
 - Slurm (Tool)
