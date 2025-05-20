@@ -16,3 +16,10 @@ dependencies = [
   "slurm-mcp @ git+https://github.com/aumsathwara/mcps.git@jarvis_mcp#subdirectory=Slurm",
   "jarvis-mcp @ git+https://github.com/aumsathwara/mcps.git@jarvis_mcp#subdirectory=Jarvis"
 ]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = []
