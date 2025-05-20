@@ -6,7 +6,7 @@
 
 Before you start, ensure that you have the following:
 
-* **Python 3.8+** installed on your system
+* **Python 3.10+** installed on your system
 * A **Git** installation to clone the repository
 * An environment to install and run Python packages (virtual environment is recommended)
 
@@ -83,26 +83,6 @@ python src/jarvis_mcp/server.py
 ```
 
 This starts the server in **stdio** mode, which requires no additional setup. The server will listen for input and allow you to interact with it through the client.
-
----
-
-## Step 6: Running the Client
-
-Now that the server is running, you can start the **Jarvis-MCP client**. The client allows you to interact with the Jarvis system using Gemini as a backend.
-
-To run the client, execute:
-
-```bash
-mcp-client
-```
-
-Alternatively, you can run the client script directly:
-
-```bash
-python src/jarvis_mcp/client.py
-```
-
-The client will connect to the server and allow you to execute commands, such as creating pipelines, modifying configurations, and running tasks.
 
 ---
 

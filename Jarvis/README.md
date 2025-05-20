@@ -1,13 +1,13 @@
 
 # Jarvis-MCP
 
-*A Gemini client + MCP server to interact with Jarvis*
+*A MCP server to interact with Jarvis*
 
 ---
 
 ## Overview
 
-**Jarvis-MCP** is a Python package that allows you to control Jarvis using a Gemini-powered client and a Model Context Protocol (MCP) server.
+**Jarvis-MCP** is a python package that allows you to control Jarvis using a Model Context Protocol (MCP) server.
 
 With **Jarvis-MCP**, you can:
 
@@ -25,28 +25,30 @@ With **Jarvis-MCP**, you can:
 To run **Jarvis-MCP** on **ARES** or any **root node**, use:
 
 ```bash
-python3 [path/to/client.py] --server-script [path/to/server.py]
+python3 [path/to/server.py]
 ```
 
 Example:
 
 ```bash
-python3 src/jarvis_mcp/client.py --server-script src/jarvis_mcp/server.py
+python3 src/jarvis_mcp/server.py
 ```
 
-This command will start the client and connect it to the MCP server.
+This command will start Jarivs MCP server.
 
 "OR" simply type
 ```bash
-mcp-client 
+mcp-server
 ```
 
-Refer to Installation and setup [guide.](GUIDE.md)
+Refer to Installation and setup [guide.](./docs/GUIDE.md)
 
 
 ---
 
-## Operations and Screenshots
+## Operations and Screenshots 
+
+To use Jarvis MCP connect it with a client. Below are the outputs of Jarvis MCP connected with a simple Gemini Client script. 
 
 ### 1. **Initialize Jarvis**
 
@@ -58,7 +60,7 @@ Query: Initialize jarvis with configur, private and shared dir as " . /jarvis—
 ```
 
 **Output Screenshot**
-![alt text](<assets/Screenshot 2025-05-15 160800.png>)
+![alt text](<./docs/assets/Screenshot 2025-05-15 160800.png>)
 
 ---
 
@@ -72,7 +74,7 @@ Query: create a pipeline called ior_test and append package ior to it
 ```
 
 **Output Screenshot**
-![alt text](<assets/Screenshot 2025-05-15 162219.png>)
+![alt text](<./docs/assets/Screenshot 2025-05-15 162219.png>)
 
 ---
 
@@ -86,14 +88,14 @@ Query: show the configuration of ior in ior_test
 ```
 
 **Output Screenshot**
-![alt text](<assets/Screenshot 2025-05-15 162322.png>)
+![alt text](<./docs/assets/Screenshot 2025-05-15 162322.png>)
 
 ```bash
 # Command to change the configuration
 Query: update the nprocs to 8 for package ior in pipeline ior_test
 ```
 
-![alt text](<assets/Screenshot 2025-05-15 162545.png>)
+![alt text](<./docs/assets/Screenshot 2025-05-15 162545.png>)
 ---
 
 ### 5. **Build Environment for `ior_test` Pipeline**
@@ -106,7 +108,8 @@ Query: Build environment for pipeline ior_test
 ```
 
 **Output Screenshot**
-![alt text](<assets/Screenshot 2025-05-15 162922.png>)
+![alt text](<./docs/assets/Screenshot 2025-05-15 162922.png>)
+
 ---
 
 ### 6. **Run the Pipeline (`ior_test`)**
@@ -119,38 +122,20 @@ Query: select the pipeline ior_test and run it
 ```
 
 **Output Screenshot**
-![alt text](<assets/Screenshot 2025-05-15 163023.png>)
+![alt text](<./docs/assets/Screenshot 2025-05-15 163023.png>)
 
 ---
 
-or **Just write below**:
+or **write below** to create pipeline, append package to it and run it:
 ```bash
 Query: create a pipeline called ior_test_2. Add package ior with nprocs set to 16. After adding, set the pipeline ior_test_2 as current and build environment for it and run it.
 ```
-![alt text](<assets/Screenshot 2025-05-15 163759.png>)
-
----
-## Directory Structure
-
-```
-Jarvis-MCP/
-├── README.md              # ← This file
-├── DEPLOYMENT.md          # Extra details (SSE, Docker, etc.)
-├── pyproject.toml         # Python package config
-├── requirements.txt       # All dependencies (incl. GitHub links)
-├── uv.lock                # Dependency lock file
-└── src/
-    └── jarvis_mcp/
-        ├── client.py      # Gemini-based interactive client
-        ├── server.py      # MCP server for Jarvis tools
-        └── capabilities/
-            └── jarvis_handler.py  # Actual functions that control Jarvis
-```
+![alt text](<./docs/assets/Screenshot 2025-05-15 163759.png>)
 
 ---
 
 ## Notes
 
-* Ensure your environment is set up with Python 3.8+
+* Ensure your environment is set up with Python 3.10+
 * You’ll need an `.env` file if you're using the Gemini API directly
 * Use `pip install -e .` in the repo to enable CLI tools like `mcp-client` or `mcp-server` (optional)
