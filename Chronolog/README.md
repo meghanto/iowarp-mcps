@@ -29,7 +29,30 @@ The MCP server isn’t limited to a single LLM or user session, multiple clients
 
 For ChronoLog Installation and Deployment, refer to [ChronoLog Setup](https://github.com/sohamvsonar/ChronoMCP/blob/main/docs/Chronolog_setup.md).
 
-## Custom MCP client Demo
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/sohamvsonar/ChronoMCP.git
+   ```
+
+2. **Install UV runner**
+   ```bash
+   pip install uv
+   ```
+3. **Running the Client**
+   ```bash
+   uv run server.py
+   ```
+
+### Usage
+
+1. Start Chronolog
+2. Have Conversation
+3. Retrieve Interaction
+4. Stop Chronolog
+
+Demo using an custom mcp client -
 
  ![](https://github.com/sohamvsonar/ChronoMCP/blob/main/assets/mcp-client.png)
 
