@@ -13,4 +13,3 @@ dependencies = [
     "uvicorn>=0.34.1",
 ]
 
-python = ">=3.10"
