@@ -29,7 +29,7 @@ The MCP server isn’t limited to a single LLM or user session, multiple clients
 
 For ChronoLog Installation and Deployment, refer to [ChronoLog Setup](https://github.com/sohamvsonar/ChronoMCP/blob/main/docs/Chronolog_setup.md).
 
-### Installation
+## Installation
 
 1. **Clone the repository**
    ```bash
