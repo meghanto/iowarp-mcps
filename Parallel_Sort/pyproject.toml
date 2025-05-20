@@ -1,5 +1,5 @@
 [project]
-name = "mcp_server"
+name = "parallel-sort-mcp"
 version = "0.1.0"
 dependencies = [
     "fastapi>=0.115.12",
