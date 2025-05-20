@@ -3,7 +3,7 @@ requires = ["setuptools>=65.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mcp-server"
+name = "slurm-mcp"
 version = "0.1.0"
 description = "Scientific MCP Server Implementation"
 requires-python = ">=3.10"
