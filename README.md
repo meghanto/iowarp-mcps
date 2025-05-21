@@ -51,7 +51,6 @@ The following nine capabilities have been implemented:
     # Install dependencies from pyproject.toml
     uv pip install --requirement pyproject.toml
     ```
-    > [!NOTE]
     > Detailed instructions about installation of individual mcp can be found in their respective sub directory. 
 #### **To Install All MCP altogther**
 - To install all mcps as package
