@@ -20,27 +20,20 @@ The MCP server isn’t limited to a single LLM or user session, multiple clients
 
 - Python 3.11
 - [py_chronolog_client](https://github.com/grc-iit/ChronoLog) Python package
-- [mcp-server](https://github.com/sohamvsonar/chronoMCP) package
 - `python-dotenv` for environment variable management
 - Command-line runner `uv` (install with `pip install uv`)
-- .env file in the src folder for the client.
 
 ## ChronoLog Deployment
 
-For ChronoLog Installation and Deployment, refer to [ChronoLog Setup](https://github.com/sohamvsonar/ChronoMCP/blob/main/docs/Chronolog_setup.md).
+For ChronoLog Installation and Deployment, refer to [ChronoLog Setup](https://github.com/iowarp/scientific-mcps/blob/main/Chronolog/docs/Chronolog_setup.md).
 
 ## Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/sohamvsonar/ChronoMCP.git
-   ```
-
-2. **Install UV runner**
+1. **Install UV runner**
    ```bash
    pip install uv
    ```
-3. **Running the Client**
+2. **Running the Server**
    ```bash
    uv run server.py
    ```
@@ -54,7 +47,7 @@ For ChronoLog Installation and Deployment, refer to [ChronoLog Setup](https://gi
 
 Demo using an custom mcp client -
 
- ![](https://github.com/sohamvsonar/ChronoMCP/blob/main/assets/mcp-client.png)
+ ![](https://github.com/iowarp/scientific-mcps/blob/main/Chronolog/assets/mcp-client.png)
 
 ## Open Source MCP Client
 
@@ -81,9 +74,9 @@ Add the following to your `settings.json` file on Claude or any other client:
 
 Some Samples from Visual Studio Copilot:
 
- ![](https://github.com/sohamvsonar/ChronoMCP/blob/main/assets/mcp-retievecopilot.png)
+ ![](https://github.com/iowarp/scientific-mcps/blob/main/Chronolog/assets/mcp-retievecopilot.png)
 
- ![](https://github.com/sohamvsonar/ChronoMCP/blob/main/assets/mcp-retrieve-diseasepred.png)
+ ![](https://github.com/iowarp/scientific-mcps/blob/main/Chronolog/assets/mcp-retrieve-diseasepred.png)
 
 ## Usage
 

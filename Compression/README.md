@@ -86,19 +86,20 @@ MCP-Server/
 ├── src/
 │   ├── capabilities/
 │   │   ├── __init__.py
-│   │   ├── compression_handler.py
+│   │   ├── compression_handler.py      # Compression capabilities (Compress File)
 │   ├── __init__.py
 │   ├── mcp_handlers.py
-|   └── server.py
+|   └── server.py                       # Compression MCP Server
 ├── tests/
 │   ├── __init__.py
-│   ├── test_compression_handler.py
+│   ├── test_compression_handler.py     # Compression test
 │ 
 ├── data/
-├── images/
-├── README.md
-├── pyproject.toml
-└── pytest.ini
+├── images/             #images
+├── README.md           # ← This file
+├── pyproject.toml      # Python package config
+├── pytest.ini          # Pytest config file
+└── uv.lock             # Dependency lock file
 ```
 
 ## JSON-RPC Requests and Responses

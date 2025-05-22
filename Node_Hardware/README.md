@@ -14,19 +14,19 @@ The server adheres to JSON-RPC 2.0, built on **FastAPI**. Unit tests using **pyt
 ## Project Structure
 ```text
 mcp-server-project/
-├── pyproject.toml           # Project metadata & dependencies
-├── README.md                # This file
+├── pyproject.toml                  # Project metadata & dependencies
+├── README.md                       # This file
 ├── src/
 │   └── mcp_server/
-│       ├── __init__.py      # Package init
-│       ├── server.py        # FastAPI app
-│       ├── mcp_handlers.py  # MCP method dispatch
+│       ├── __init__.py             # Package init
+│       ├── server.py               # FastAPI app
+│       ├── mcp_handlers.py         # MCP method dispatch
 │       └── capabilities/
-│           ├── __init__.py  # Subpackage init
-│           └── node_hardware.py   # CPU core reporting
+│           ├── __init__.py         # Subpackage init
+│           └── node_hardware.py    # CPU core reporting
 └── tests/
-    ├── test_mcp_handlers.py# Tests for MCP handlers
-    └── test_server.py      # Tests for HTTP endpoints
+    ├── test_mcp_handlers.py        # Tests for MCP handlers
+    └── test_server.py              # Tests for HTTP endpoints
 ```
 
 ---
@@ -40,8 +40,8 @@ mcp-server-project/
 ## Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/SIslamMun/MCP-Programming-assignment.git
-   cd MCP-Programming-assignment
+   git clone https://github.com/iowarp/scientific-mcps
+   cd Node_Hardware
    ```
 2. Create and activate an `uv` virtual environment:
    ```bash
