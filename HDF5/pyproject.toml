@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "hdf5-mcp"
 version = "0.1.0"
 description = "MCP server with Pandas data querying and HDF5 file listing tools"
-requires-python = ">=3.8"
+requires-python = ">=3.9,<3.13"
 keywords = ["MCP", "JSON-RPC", "FastAPI", "Pandas", "HDF5"]
 license = "MIT"
 authors = [
@@ -14,7 +14,7 @@ authors = [
 ]
 readme = "README.md"
 dependencies = [
-  "numpy>=1.26",
+  "numpy>=1.26.0,<2.0.0",
   "fastapi>=0.95,<1.0",
   "uvicorn[standard]>=0.20",
   "pandas>=1.0",
