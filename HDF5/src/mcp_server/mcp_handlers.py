@@ -1,12 +1,12 @@
-
 import json
-from mcp_server.capabilities import data_query, hdf5_list, node_hardware
+from typing import Dict, List, Any, Optional
+from capabilities import data_query, hdf5_list, node_hardware
 
 class UnknownToolError(Exception):
     """Raised when an unsupported tool_name is requested."""
     pass
 
-def list_resources() -> dict:
+def list_resources() -> Dict[str, Any]:
     """
     MCP method: mcp/listResources
     Returns a list of available MCP resources and a count.
@@ -20,60 +20,113 @@ def list_resources() -> dict:
         "_meta": {"count": 3}
     }
 
-def call_tool(tool_name: str, params: dict) -> dict:
+async def filter_values(csv_path: str = "data.csv", threshold: int = 50) -> Dict[str, Any]:
     """
-    MCP method: mcp/callTool
-    Dispatches to the appropriate capability handler based on tool_name.
-    Returns: {
-      content: [ { text: JSON-stringified result } ],
-      _meta: { metadata about the call },
-      isError: bool
-    }
+    Filter CSV data based on a threshold value.
+    
+    Args:
+        csv_path: Path to the CSV file
+        threshold: Threshold value for filtering
+        
+    Returns:
+        Dict containing filtered rows and metadata
     """
-    result = {"content": [], "_meta": {}, "isError": False}
     try:
-        if tool_name == "filter_csv":
-            # CSV filtering: expects csv_path and threshold
-            csv_path = params.get("csv_path", "data.csv")
-            threshold = params.get("threshold", 50)
-            rows = data_query.filter_values(csv_path, threshold)
-            result["content"].append({"text": json.dumps(rows)})
-            result["_meta"] = {
+        rows = data_query.filter_values(csv_path, threshold)
+        return {
+            "content": [{"text": json.dumps(rows)}],
+            "_meta": {
                 "tool": "filter_csv",
                 "file": csv_path,
                 "threshold": threshold,
                 "row_count": len(rows)
-            }
+            },
+            "isError": False
+        }
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "filter_csv", "error": type(e).__name__},
+            "isError": True
+        }
 
-        elif tool_name == "list_hdf5":
-            # HDF5 listing: expects directory path
-            directory = params.get("directory", "data/sim_run_123")
-            files = hdf5_list.list_hdf5(directory)
-            result["content"].append({"text": json.dumps(files)})
-            result["_meta"] = {
+async def list_hdf5_files(directory: str = "data/sim_run_123") -> Dict[str, Any]:
+    """
+    List HDF5 files in a directory.
+    
+    Args:
+        directory: Path to the directory containing HDF5 files
+        
+    Returns:
+        Dict containing list of files and metadata
+    """
+    try:
+        files = hdf5_list.list_hdf5(directory)
+        return {
+            "content": [{"text": json.dumps(files)}],
+            "_meta": {
                 "tool": "list_hdf5",
                 "directory": directory,
                 "count": len(files)
-            }
-
-        elif tool_name == "node_hardware":
-            # Node hardware info: no params needed
-            info = node_hardware.report_cpu_cores()
-            result["content"].append({"text": json.dumps(info)})
-            result["_meta"] = {"tool": "node_hardware"}
-
-        else:
-            # Unknown tool: raise to be caught below
-            raise UnknownToolError(f"Tool '{tool_name}' not available")
-
-    except UnknownToolError:
-        # Propagate so that server can return JSON-RPC error code -32601
-        raise
-
+            },
+            "isError": False
+        }
     except Exception as e:
-        # Any other exception is wrapped into a tool‐level error response
-        result["content"] = [{"text": f"Error: {str(e)}"}]
-        result["_meta"] = {"tool": tool_name, "error": type(e).__name__}
-        result["isError"] = True
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "list_hdf5", "error": type(e).__name__},
+            "isError": True
+        }
 
-    return result
+async def get_hardware_info() -> Dict[str, Any]:
+    """
+    Get information about CPU cores and hardware.
+    
+    Returns:
+        Dict containing hardware information and metadata
+    """
+    try:
+        info = node_hardware.report_cpu_cores()
+        return {
+            "content": [{"text": json.dumps(info)}],
+            "_meta": {"tool": "node_hardware"},
+            "isError": False
+        }
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "node_hardware", "error": type(e).__name__},
+            "isError": True
+        }
+
+def call_tool(tool_name: str, params: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    MCP method: mcp/callTool
+    Dispatches to the appropriate capability handler based on tool_name.
+    
+    Args:
+        tool_name: Name of the tool to call
+        params: Parameters for the tool
+        
+    Returns:
+        Dict containing tool response and metadata
+    """
+    tool_map = {
+        "filter_csv": lambda: filter_values(
+            params.get("csv_path", "data.csv"),
+            params.get("threshold", 50)
+        ),
+        "list_hdf5": lambda: list_hdf5_files(
+            params.get("directory", "data/sim_run_123")
+        ),
+        "node_hardware": lambda: get_hardware_info()
+    }
+    
+    if tool_name not in tool_map:
+        return {
+            "content": [{"text": json.dumps({"error": f"Tool '{tool_name}' not available"})}],
+            "_meta": {"tool": tool_name, "error": "UnknownToolError"},
+            "isError": True
+        }
+        
+    return tool_map[tool_name]()
