@@ -10,7 +10,7 @@ This project implements a basic **Model Context Protocol (MCP)** server in Pytho
 3. **preview data** Preview first N elements of each dataset in an HDF5 file.
 4. **read all data**: Read every element of every dataset in an HDF5 file.
 
-The server adheres to JSON-RPC 2.0, built on **FastAPI**. Unit tests using **pytest** cover success and error cases for each capability and endpoint.
+The server is built on **FastMCP**. Unit tests using **pytest** cover success and error cases for each capability and endpoint.
 
 ---
 
@@ -106,5 +106,3 @@ All tests cover success paths and edge cases for each capability and endpoint.
 
 ## Assumptions & Notes
 - HDF5 listing is simulated via filesystem globbing.  
-- Node hardware info relies on `psutil`; logical count falls back to `os.cpu_count()`.  
-
