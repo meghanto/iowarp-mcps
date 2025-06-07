@@ -36,11 +36,12 @@ Put the following in settings.json:
     "command": "uv",
     "args": [
         "--directory",
-        "path/to/directory/src/adiosmcp/",
+        "path/to/directory/src/mcpserver/",
         "run",
         "server.py"
     ]
 }
+```
 
 ---
 
