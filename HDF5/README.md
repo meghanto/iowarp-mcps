@@ -12,6 +12,7 @@ This project implements a basic **Model Context Protocol (MCP)** server in Pytho
 
 The server is built on **FastMCP**. Unit tests using **pytest** cover success and error cases for each capability and endpoint.
 
+---
 
 ## Setup
 1. Create and activate an `uv` virtual environment:
