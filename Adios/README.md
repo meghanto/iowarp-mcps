@@ -36,10 +36,10 @@ A read-only Model Context Protocol (MCP) server for ADIOS datasets, enabling LLM
    This will create a `.venv/` folder and install all required packages.
 
 --- 
-## Running the Server witih wrp_chat
+## Running the Server with wrp_chat
 Start the server with **wrp_chat**:
 ```bash
-python3 bin/wrp_chat.py --servers=Adios
+python3 ../bin/wrp_chat.py --servers=Adios
 ```
 
 ## Running the Server open source LLM client
