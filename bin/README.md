@@ -1,4 +1,4 @@
-# WRR_CHAT: Scientific MCP Client
+# WRP_CHAT: Scientific MCP Client
 
 `wrp_chat` is a universal command-line client for interacting with any Model Context Protocol (MCP) server in the scientific-mcps suite. It supports two LLM backends:
 1. Google Gemini (via `wrp_chat.py`)
