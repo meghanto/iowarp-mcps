@@ -64,9 +64,8 @@ Below are two installation method: building from source (with full MPI and optio
 6. **Set up your environment** (add to `~/.bashrc` or similar)
 
    ```bash
-   export PATH=/opt/adios2/bin:$PATH
-   export LD_LIBRARY_PATH=/opt/adios2/lib:$LD_LIBRARY_PATH
-   export PYTHONPATH=/opt/adios2/lib/python3.12/site-packages:$PYTHONPATH
+   export LD_LIBRARY_PATH=/adios2/lib:$LD_LIBRARY_PATH
+   export PYTHONPATH=/adios2/local/lib/python3.12/site-packages:$PYTHONPATH
    ```
 
 ## 2. Quick Non‑MPI Install via pip
