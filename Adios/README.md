@@ -22,7 +22,15 @@ A read-only Model Context Protocol (MCP) server for ADIOS datasets, enabling LLM
 
 ## Capabilities
 
-1. Read BP5 (read_bp5): Read all steps, variables, metadata, and attributes from a BP5 file using the ADIOS2 Stream API.
+ 1. list_bp5: List all the bp5 files in a directory. [Args: directorypath] 
+
+ 2. inspect_variables: Inspect all variables in a BP5 file (type, shape, available steps)  [Args: filename]. 
+
+ 3. inspect_attributes: Read global or variable-specific attributes from a BP5 file. [Args: filename, optional: variable_name]. 
+
+ 4. read_variable_at_step: Read a named variable at a specific step from a BP5 file.  [Args: filename, variable_name, target_step]. 
+
+ 5. read_bp5: Reads all the variables/data and their steps from a BP5 file. [Args: filename].
 
 ---
 
