@@ -18,7 +18,7 @@ A read-only Model Context Protocol (MCP) server for ADIOS datasets, enabling LLM
 
 ## Architecture
 
- ![](https://github.com/iowarp/scientific-mcps/blob/main/assets/architecture.png)
+ ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/architecture.png)
 
 ## Capabilities
 
@@ -60,9 +60,18 @@ Put the following in settings.json:
 
 ## Examples
 
-1. Read Bp5 File 
+1. Read variables/data at specific step in a Bp5 File 
 
- ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/read_bp5.png)
+ ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/read_steps.png)
+
+2. Inspect the variables in a BP5 file (type, shape, available steps)
+
+ ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/steps.png)
+
+3. Inspect and read the attributes of a specific variable
+
+ ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/attributes.png)
+
 
 ## Project Structure
 ```text
