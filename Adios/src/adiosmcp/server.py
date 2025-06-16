@@ -1,4 +1,10 @@
 # server.py
+
+#  Created on: 2nd June, 2025
+#      Author: Soham Sonar ssonar2@hawk.iit.edu
+
+
+
 import os
 import sys
 import json
@@ -12,7 +18,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 load_dotenv()
 
 # Import our ADIOS BP5 capability and handler
-from capabilities import bp5 as bp5_module
 import mcp_handlers
 
 # Initialize FastMCP server
@@ -20,17 +25,81 @@ mcp = FastMCP("ADIOSMCP")
 
 # ─── ADIOS BP5 TOOLS ─────────────────────────────────────────────────────────
 
+# List BP5 Files Tool
+@mcp.tool(
+    name="list_bp5",
+    description="List all the bp5 files in a directory. [Args: directorypath] \n"
+)
+async def list_bp5_tool(directory: str = "data/") -> dict:
+    """List all bp5 files in the specified directory."""
+    try:
+        return await mcp_handlers.list_bp5_files(directory)
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "list_bp5", "error": type(e).__name__},
+            "isError": True
+        }
+
+# ─── INSPECT VARIABLES ─────────────────────────────────────────────────────── 
+@mcp.tool(
+    name="inspect_variables",
+    description="Inspect all variables in a BP5 file (type, shape, available steps)  [Args: filename]. \n"
+)
+async def inspect_variables_tool(filename: str) -> dict:
+    try:
+        return await mcp_handlers.inspect_variables_handler(filename)
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "inspect_variables", "error": type(e).__name__},
+            "isError": True
+        }
+
+# ─── INSPECT ATTRIBUTES ──────────────────────────────────────────────────────
+@mcp.tool(
+    name="inspect_attributes",
+    description="Read global or variable-specific attributes from a BP5 file. [Args: filename, optional: variable_name]. \n"
+)
+async def inspect_attributes_tool(
+    filename: str,
+    variable_name: str = None
+) -> dict:
+    try:
+        return await mcp_handlers.inspect_attributes_handler(filename, variable_name)
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "inspect_attributes", "error": type(e).__name__},
+            "isError": True
+        }
+
+import mcp_handlers
+
+# ─── READ VARIABLE AT STEP ────────────────────────────────────────────────────
+@mcp.tool(
+    name="read_variable_at_step",
+    description="Read a named variable at a specific step from a BP5 file.  [Args: filename, variable_name, target_step]. \n"
+)
+async def read_variable_at_step_tool(
+    filename: str, variable_name: str, target_step: int
+) -> dict:
+    return await mcp_handlers.read_variable_at_step_handler(
+        filename, variable_name, target_step
+    )
+
+# ─── READ ALL VARIABLES ───────────────────────────────────────────────────────
 @mcp.tool(
     name="read_bp5",
-    description="Read all steps/variables from a BP5 file using ADIOS2 Stream API."
+    description="Reads all the variables/data and their steps from a BP5 file. [Args: filename]. \n"
 )
 async def read_bp5_tool(filename: str) -> dict:
     """
-    MCP‐exposed tool that reads a BP5 file (any shape/dtype) and returns
-    a nested dict of step→ variables, metadata, and attributes.
+    MCP‐exposed tool that reads a BP5 file and returns
+    a nested dict of step→ variables and their values.
     """
     try:
-        return await mcp_handlers.read_bp5_handler(filename)
+        return await mcp_handlers.read_all_variables_handler(filename)
     except Exception as e:
         # If something goes really wrong in the handler itself
         return {
@@ -38,6 +107,7 @@ async def read_bp5_tool(filename: str) -> dict:
             "_meta": {"tool": "read_bp5", "error": type(e).__name__},
             "isError": True
         }
+
 
 def main():
     """
