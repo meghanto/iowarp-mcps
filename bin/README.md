@@ -1,112 +1,87 @@
-# WRP_CHAT: Scientific MCP Client
+# WRP_CHAT_FACTORY: Universal Scientific MCP Client
 
-`wrp_chat` is a universal command-line client for interacting with any Model Context Protocol (MCP) server in the scientific-mcps suite. It supports two LLM backends:
-1. Google Gemini (via `wrp_chat.py`)
-2. Ollama (via `wrp_chat_ollama.py`)
+`wrp_chat_factory` is a lightweight, provider-agnostic command-line gateway that connects with scientific servers and turns everyday prompt into a series of MCP tool, resources invocations. It supports multiple LLM backends, including Gemini, Ollama, OpenAI, and Claude, through a single interface.
 
 ---
 
-## Setup
+## Quick Start
 
-### For Gemini Backend
+### 1. Setup Environment
 
-1. **Install dependencies** (from the root of the repo):
-   ```bash
-    uv pip install "git+https://github.com/iowarp/scientific-mcps.git@main"
-   ```
+From the root of the repository, create a virtual environment and install the required packages.
 
-2. **Create a `.env` file** in the root directory with your Gemini API key:
-   ```env
-   GEMINI_API_KEY=your_gemini_api_key_here
-   ```
+```bash
+# Create and activate a virtual environment
+python -m venv .venv
+# On Windows: .\.venv\Scripts\activate
+# On macOS/Linux: source .venv/bin/activate
 
-### For Ollama Backend
+# Install all required dependencies from the requirements file
+pip install -r bin/requirements.txt
+```
 
-1. **Install Ollama**:
-   - Visit [Ollama's website](https://ollama.ai/) to download and install Ollama for your platform
-   - For Windows users: Install WSL2 first, then install Ollama through WSL2
+### 2. Configure API Keys
 
-2. **Install Python Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+Create a `.env` file in the project's [bin](.) directory and add the necessary API keys for the providers you wish to use.
+
+```ini
+# .env file
+GEMINI_API_KEY="your-gemini-api-key"
+OPENAI_API_KEY="your-openai-api-key"
+ANTHROPIC_API_KEY="your-anthropic-api-key"
+
+# For a local Ollama instance (no key needed)
+OLLAMA_HOST="http://localhost:11434"
+```
+
+### 3. Run the Client
+
+Start the chat factory by specifying an LLM provider and the MCP server(s) you want to connect to.
+
+```bash
+# Example using the Gemini provider to connect to the Jarvis MCP
+python bin/wrp_chat_factory.py --provider gemini --servers=Jarvis
+```
+
+For more detailed setup instructions, provider-specific configurations, and troubleshooting, please see the **[in-depth instructions](./instructions.md)**.
 
 ---
 
 ## Usage
 
-### Using Gemini Backend
+The script requires two main arguments:
 
-To start the client and connect to one or more MCP servers:
+*   `--provider`: The LLM provider to use. Choices: `gemini`, `ollama`, `openai`, `claude`.
+*   `--servers`: A comma-separated list of MCP server names (e.g., `HDF5,Jarvis`).
 
-```bash
-python3 bin/wrp_chat.py --servers=HDF5,Arxiv,Jarvis
-```
+The client will automatically find the `server.py` file for each specified server.
 
-### Using Ollama Backend
+### End-to-End Example: Using Jarvis MCP
 
-To start the client with Ollama:
+This example demonstrates how to use the client to manage a Jarvis pipeline.
 
-```bash
-python3 bin/wrp_chat_ollama.py --servers=HDF5,Arxiv,Jarvis
-```
+1.  **Start the client with your chosen provider:**
+    ```bash
+    python bin/wrp_chat_factory.py --provider ollama --servers=Jarvis
+    ```
 
-By default, it uses the `llama2` model, but you can specify a different model:
+2.  **Interact with Jarvis using natural language:**
+    ```
+    Query: Initialize jarvis with config, private and shared dir as './jarvis-pipelines'
+    [Calling tool jm_create_config with args {'config': './jarvis-pipelines', 'private': './jarvis-pipelines', 'shared': './jarvis-pipelines'}]
+    [Called jm_create_config: {'status': 'success', 'msg': 'Created ./jarvis-pipelines'}]
 
-```bash
-python3 bin/wrp_chat_ollama.py --servers=Jarvis --model=codellama
-```
+    Query: create a pipeline called ior_test and append package ior to it
+    [Calling tool create_pipeline with args {'pipeline_id': 'ior_test'}]
+    [Called create_pipeline: {'status': 'success', 'pipeline_id': 'ior_test'}]
+    [Calling tool append_pkg with args {'pkg_id': 'ior'}]
+    [Called append_pkg: {'status': 'success', 'pkg_id': 'ior'}]
 
-For both clients:
-- The `--servers` argument is a comma-separated list of MCP server names (matching the subdirectory names in the repo).
-- The client will automatically locate each server's `server.py` under `<ServerName>/src/server.py`.
+    Query: show the configuration of ior in ior_test
+    ...
+    ```
 
-### Example
-
-```bash
-python3 bin/wrp_chat_ollama.py --servers=Jarvis
-```
-
-You will see:
-```
-=== Connecting to Jarvis ===
-Starting server with stdio: /path/to/scientific-mcps/Jarvis/src/server.py
-Connected. Tools available:
- - create_pipeline: Create a new Jarvis-CD pipeline environment.
- - run_pipeline: Execute a Jarvis-CD pipeline end-to-end.
- ...
-MCP Client Started! (type 'quit' to exit)
-
-Query: Initialize jarvis with config, private and shared dir as './jarvis-pipelines'
-[...response...]
-```
-
----
-
-## Environment Variables
-
-- `GEMINI_API_KEY` (required for Gemini backend): Your Google Gemini API key for LLM-powered queries.
-- No API key required for Ollama backend.
-
----
-
-## End-to-End Example: Using Jarvis MCP
-
-1. **Start the client** (using either backend):
-   ```bash
-   bin/wrp_chat --servers=Jarvis
-   # OR
-   bin/wrp_chat_ollama --servers=Jarvis
-   ```
-2. **Interact with Jarvis:**
-   ```
-   Query: Initialize jarvis with config, private and shared dir as './jarvis-pipelines'
-   Query: create a pipeline called ior_test and append package ior to it
-   Query: show the configuration of ior in ior_test
-   Query: update the nprocs to 8 for package ior in pipeline ior_test
-   Query: Build environment for pipeline ior_test
-   Query: select the pipeline ior_test and run it
-   ```
+For more examples with each supported LLM provider, see the **[examples file](./example.md)**.
 
 ---
 

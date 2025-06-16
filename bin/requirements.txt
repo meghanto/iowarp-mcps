@@ -1,0 +1,9 @@
+# Core dependencies
+python-dotenv
+mcp
+
+# LLM Provider SDKs
+google-generativeai
+openai
+anthropic
+ollama 
