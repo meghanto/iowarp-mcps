@@ -34,15 +34,19 @@ First, clone the repository and set up a virtual environment:
    git clone https://github.com/iowarp/scientific-mcps.git
    cd scientific-mcps
    ```
+- Create and activate environment:
+    ```bash
+    # On Windows
+    python -m venv mcp-server
+    mcp-server\Scripts\activate 
+
+    #On macOS/Linux
+    python3 -m venv mcp-server
+    source mcp-server/bin/activate  #On macOS/Linux
+    ```
 - Install uv:
     ```bash
     pip install uv
-    ```
-- Create and activate environment using uv:
-    ```bash
-    uv venv mcp-server
-    mcp-server\Scripts\activate     #On Windows
-    source mcp-server/bin/activate  #On macOS/Linux
     ```
 
 You can install all MCPs at once or select them individually.

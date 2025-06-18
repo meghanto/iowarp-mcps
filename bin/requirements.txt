@@ -1,6 +1,7 @@
 # Core dependencies
 python-dotenv
 mcp
+PyYAML
 
 # LLM Provider SDKs
 google-generativeai

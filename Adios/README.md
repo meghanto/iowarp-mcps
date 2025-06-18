@@ -22,52 +22,85 @@ A read-only Model Context Protocol (MCP) server for ADIOS datasets, enabling LLM
 
 ## Capabilities
 
- 1. list_bp5: List all the bp5 files in a directory. [Args: directorypath] 
+ 1. list_bp5: List all the bp5 files in a directory. 
 
- 2. inspect_variables: Inspect all variables in a BP5 file (type, shape, available steps)  [Args: filename]. 
+ 2. inspect_variables: Inspect all variables in a BP5 file (type, shape, available steps).
 
- 3. inspect_attributes: Read global or variable-specific attributes from a BP5 file. [Args: filename, optional: variable_name]. 
+ 3. inspect_attributes: Read global or variable-specific attributes from a BP5 file. 
 
- 4. read_variable_at_step: Read a named variable at a specific step from a BP5 file.  [Args: filename, variable_name, target_step]. 
+ 4. read_variable_at_step: Read a named variable at a specific step from a BP5 file.
 
- 5. read_bp5: Reads all the variables/data and their steps from a BP5 file. [Args: filename].
+ 5. read_bp5: Reads all the variables/data and their steps from a BP5 file.
 
- 6. get_min_max: Get minimum and maximum of a variable in a BP5 file. [Args: filename, variable_name, optional: step]. 
+ 6. get_min_max: Get minimum and maximum of a variable in a BP5 file.
 
- 7. add_variables: Sum two variables in a BP5 file, either globally or at specific steps. [Args: filename, var1, var2, optional: step1, step2].
+ 7. add_variables: Sum two variables in a BP5 file, either globally or at specific steps.
 
 ---
 
 ## Setup
-1. Create and activate an `uv` virtual environment:
+
+1. If not already done, follow the main installation steps:
    ```bash
-   uv venv           # create a virtual environment based on pyproject.toml
-   source .venv/bin/activate
-   uv sync           # install dependencies into the venv
+   # Clone the repository
+   git clone https://github.com/iowarp/scientific-mcps.git
+   cd scientific-mcps
+
+   # Create and activate environment
+   # On Windows
+   python -m venv mcp-server
+   mcp-server\Scripts\activate 
+
+   # On macOS/Linux
+   python3 -m venv mcp-server
+   source mcp-server/bin/activate
+
+   # Install uv
+   pip install uv
    ```
-   This will create a `.venv/` folder and install all required packages.
+
+2. Install the Adios MCP either:
+   
+   As part of all MCPs:
+   ```bash
+   # Install all MCPs from pyproject.toml
+   uv pip install --requirement pyproject.toml
+   ```
+
+   Or individually:
+   ```bash
+   # Install just the Adios MCP
+   uv pip install "git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Adios"
+   ```
 
 --- 
-## Running the Server with wrp_chat
-Start the server with **wrp_chat**:
-```bash
-python3 ../bin/wrp_chat.py --servers=Adios
-```
+## Running the Server with the WRP Client
+To interact with the ADIOS MCP server, use the main `wrp.py` client. You will need to configure it to point to the ADIOS server.
 
-## Running the Server open source LLM client
-Put the following in settings.json:
-```bash
-"adios-mcp": {
-    "command": "uv",
-    "args": [
-        "--directory",
-        "path/to/directory/src/adiosmcp/",
-        "run",
-        "server.py"
-    ]
-}
+1.  **Configure:** Ensure that `Adios` is listed in the `MCP` section of your chosen configuration file (e.g., in `bin/confs/Gemini.yaml` or `bin/confs/Ollama.yaml`).
+    ```yaml
+    # In bin/confs/Gemini.yaml
+    MCP:
+      - Adios
+      # - Jarvis
+      # - HDF5
+    ```
 
-```
+2.  **Run:** Start the client from the repository root with your desired configuration:
+    ```bash
+    # Example using the Gemini configuration 
+    
+    # On Windows 
+    python bin/wrp.py --conf=bin/confs/Gemini.yaml
+    
+    # On macOS/Linux
+    python3 bin/wrp.py --conf=bin/confs/Gemini.yaml
+    ```
+    For quick setup with Gemini, see our [Quick Start Guide](docs/basic_install.md).
+    
+    
+    For detailed setup with local LLMs and other providers, see the [Complete Installation Guide](../bin/docs/Installation.md).
+
 ---
 
 ## Few Examples
