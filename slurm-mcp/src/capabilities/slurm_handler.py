@@ -40,14 +40,22 @@ def _create_sbatch_script(original_script: str, cores: int, memory: Optional[str
     fd, temp_script = tempfile.mkstemp(suffix='.sh', prefix='slurm_job_')
     
     # Ensure logs directory exists
-    os.makedirs("logs/slurm_output", exist_ok=True)
+    # Create logs directory if enhanced parameters are used
+    if any([memory, time_limit, partition]):
+        os.makedirs("logs/slurm_output", exist_ok=True)
+        output_path = "logs/slurm_output/slurm_%j.out"
+        error_path = "logs/slurm_output/slurm_%j.err"
+    else:
+        # Use simple paths for basic functionality
+        output_path = "slurm_%j.out"
+        error_path = "slurm_%j.err"
     
     with os.fdopen(fd, 'w') as f:
         f.write("#!/bin/bash\n")
         f.write(f"#SBATCH --cpus-per-task={cores}\n")
         f.write(f"#SBATCH --job-name={job_name or 'mcp_job'}\n")
-        f.write(f"#SBATCH --output=logs/slurm_output/slurm_%j.out\n")
-        f.write(f"#SBATCH --error=logs/slurm_output/slurm_%j.err\n")
+        f.write(f"#SBATCH --output={output_path}\n")
+        f.write(f"#SBATCH --error={error_path}\n")
         
         if memory:
             f.write(f"#SBATCH --mem={memory}\n")
