@@ -50,6 +50,10 @@ htmlcov/
 *.out
 *.err
 
+# Slurm output files (organized in logs/slurm_output/)
+logs/slurm_output/*.out
+logs/slurm_output/*.err
+
 # OS files
 .DS_Store
 Thumbs.db

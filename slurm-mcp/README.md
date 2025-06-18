@@ -422,11 +422,3 @@ For questions and support:
 - Check the troubleshooting section
 - Review test examples for usage patterns
 
-## Changelog
-
-### v0.1.0
-- Initial implementation with basic Slurm job submission
-- MCP protocol support (stdio and SSE transports)
-- Comprehensive test suite
-- Mock Slurm implementation for safe testing
-- Performance optimizations

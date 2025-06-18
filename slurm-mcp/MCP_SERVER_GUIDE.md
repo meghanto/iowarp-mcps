@@ -26,10 +26,6 @@ python3 sbatch_mcp_demo.py
 ./server_manager.sh logs     # View server logs
 ```
 
-### Interactive Management
-```bash
-python3 server_status_checker.py
-```
 
 ## API Endpoints
 

@@ -39,12 +39,15 @@ def _create_sbatch_script(original_script: str, cores: int, memory: Optional[str
     # Create a temporary script with SBATCH directives
     fd, temp_script = tempfile.mkstemp(suffix='.sh', prefix='slurm_job_')
     
+    # Ensure logs directory exists
+    os.makedirs("logs/slurm_output", exist_ok=True)
+    
     with os.fdopen(fd, 'w') as f:
         f.write("#!/bin/bash\n")
         f.write(f"#SBATCH --cpus-per-task={cores}\n")
         f.write(f"#SBATCH --job-name={job_name or 'mcp_job'}\n")
-        f.write(f"#SBATCH --output=slurm_%j.out\n")
-        f.write(f"#SBATCH --error=slurm_%j.err\n")
+        f.write(f"#SBATCH --output=logs/slurm_output/slurm_%j.out\n")
+        f.write(f"#SBATCH --error=logs/slurm_output/slurm_%j.err\n")
         
         if memory:
             f.write(f"#SBATCH --mem={memory}\n")
@@ -554,9 +557,9 @@ def get_job_output(job_id: str, output_type: str = "stdout") -> dict:
                 # Look for standard output file patterns
                 output_file = None
                 if output_type == "stdout":
-                    output_file = job_details.get("stdout") or f"slurm-{job_id}.out"
+                    output_file = job_details.get("stdout") or f"logs/slurm_output/slurm-{job_id}.out"
                 elif output_type == "stderr":
-                    output_file = job_details.get("stderr") or f"slurm-{job_id}.err"
+                    output_file = job_details.get("stderr") or f"logs/slurm_output/slurm-{job_id}.err"
                 
                 if output_file and os.path.exists(output_file):
                     with open(output_file, 'r') as f:
@@ -738,13 +741,16 @@ def submit_array_job(script_path: str, array_range: str, cores: int = 1,
             
             fd, temp_script = tempfile.mkstemp(suffix='.sh', prefix='slurm_array_')
             
+            # Ensure logs directory exists
+            os.makedirs("logs/slurm_output", exist_ok=True)
+            
             with os.fdopen(fd, 'w') as f:
                 f.write("#!/bin/bash\n")
                 f.write(f"#SBATCH --array={array_range}\n")
                 f.write(f"#SBATCH --cpus-per-task={cores}\n")
                 f.write(f"#SBATCH --job-name={job_name or 'array_job'}\n")
-                f.write(f"#SBATCH --output=slurm_%A_%a.out\n")
-                f.write(f"#SBATCH --error=slurm_%A_%a.err\n")
+                f.write(f"#SBATCH --output=logs/slurm_output/slurm_%A_%a.out\n")
+                f.write(f"#SBATCH --error=logs/slurm_output/slurm_%A_%a.err\n")
                 
                 if memory:
                     f.write(f"#SBATCH --mem={memory}\n")
