@@ -1,6 +1,6 @@
-# WRP_CHAT_FACTORY: Universal Scientific MCP Client
+# WRP_CHAT: Universal Scientific MCP Client
 
-`wrp_chat_factory` is a lightweight, provider-agnostic command-line gateway that connects with scientific servers and turns everyday prompt into a series of MCP tool, resources invocations. It supports multiple LLM backends, including Gemini, Ollama, OpenAI, and Claude, through a single interface.
+`wrp_chat` is a lightweight, provider-agnostic command-line gateway that connects with scientific servers and turns everyday prompts into a series of MCP tool and resource invocations. It supports multiple LLM backends, including Gemini, Ollama, OpenAI, and Claude, through a single, configuration-driven interface.
 
 ---
 
@@ -11,58 +11,69 @@
 From the root of the repository, create a virtual environment and install the required packages.
 
 ```bash
-# Create and activate a virtual environment
-python -m venv .venv
-# On Windows: .\.venv\Scripts\activate
-# On macOS/Linux: source .venv/bin/activate
+# Create and activate environment
+# On Windows
+python -m venv mcp-server
+mcp-server\Scripts\activate 
 
-# Install all required dependencies from the requirements file
-pip install -r bin/requirements.txt
+# On macOS/Linux
+python3 -m venv mcp-server
+source mcp-server/bin/activate
+
+# Install uv
+pip install uv
+
+# Install client dependencies
+uv pip install -r bin/requirements.txt
 ```
 
-### 2. Configure API Keys
+### 2. Configure the Client
 
-Create a `.env` file in the project's [bin](.) directory and add the necessary API keys for the providers you wish to use.
+The client is configured using YAML files located in the `bin/confs` directory. Pre-configured files for common setups are provided.
 
-```ini
-# .env file
-GEMINI_API_KEY="your-gemini-api-key"
-OPENAI_API_KEY="your-openai-api-key"
-ANTHROPIC_API_KEY="your-anthropic-api-key"
+**To use an external provider like Gemini:**
 
-# For a local Ollama instance (no key needed)
-OLLAMA_HOST="http://localhost:11434"
-```
+1.  Open `bin/confs/Gemini.yaml`.
+2.  Add your API key to the `api_key` field.
+
+**To use a local provider like Ollama:**
+
+1.  Make sure the Ollama service is running.
+2.  Open `bin/confs/Ollama.yaml` and ensure the `model_name` matches a model you have pulled (e.g., `llama3`).
+
+For more details, see the template file: `bin/confs/config.template.yaml`.
 
 ### 3. Run the Client
 
-Start the chat factory by specifying an LLM provider and the MCP server(s) you want to connect to.
+Start the chat client by specifying a configuration file.
 
 ```bash
-# Example using the Gemini provider to connect to the Jarvis MCP
-python bin/wrp_chat_factory.py --provider gemini --servers=Jarvis
+# Example using the pre-configured Gemini setup for Jarvis
+python bin/wrp.py --conf=bin/confs/Gemini.yaml
+
+# Example using the pre-configured Ollama setup for Jarvis
+python bin/wrp.py --conf=bin/confs/Ollama.yaml
 ```
 
-For more detailed setup instructions, provider-specific configurations, and troubleshooting, please see the **[in-depth instructions](./instructions.md)**.
+For more detailed setup instructions and examples, please see the **[in-depth instructions](./docs/instructions.md)**.
 
 ---
 
 ## Usage
 
-The script requires two main arguments:
+The script requires one argument:
 
-*   `--provider`: The LLM provider to use. Choices: `gemini`, `ollama`, `openai`, `claude`.
-*   `--servers`: A comma-separated list of MCP server names (e.g., `HDF5,Jarvis`).
+*   `--conf`: The path to a YAML configuration file.
 
-The client will automatically find the `server.py` file for each specified server.
+The client will automatically find the `server.py` file for each server listed in the configuration's `MCP` section.
 
 ### End-to-End Example: Using Jarvis MCP
 
 This example demonstrates how to use the client to manage a Jarvis pipeline.
 
-1.  **Start the client with your chosen provider:**
+1.  **Start the client with your chosen configuration:**
     ```bash
-    python bin/wrp_chat_factory.py --provider ollama --servers=Jarvis
+    python bin/wrp.py --conf=bin/confs/Ollama.yaml
     ```
 
 2.  **Interact with Jarvis using natural language:**
@@ -81,13 +92,13 @@ This example demonstrates how to use the client to manage a Jarvis pipeline.
     ...
     ```
 
-For more examples with each supported LLM provider, see the **[examples file](./example.md)**.
+For more examples, see the **[examples file](./docs/example.md)**.
 
 ---
 
 ## Notes
-- You can connect to multiple servers at once by listing them in `--servers` (e.g. `--servers=HDF5,Arxiv,Jarvis`).
-- The client will print available tools for each server on connect.
+- You can connect to multiple servers at once by listing them in your configuration file.
+- The client will print available tools for each server upon connection.
 - Type `quit` or `exit` to leave the chat loop.
 - For more details on each MCP, see the respective subdirectory's README.
-- When using Ollama backend, ensure the Ollama service is running before starting the client. 
+- When using Ollama, ensure the Ollama service is running before starting the client. 
