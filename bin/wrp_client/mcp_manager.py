@@ -1,3 +1,4 @@
+import json
 import asyncio
 import sys
 import os
@@ -27,14 +28,15 @@ class MCPManager:
     """
     Manages the connection and interaction with a single MCP server.
     """
-    def __init__(self, llm_adapter: BaseLLM):
+    def __init__(self, llm_adapter: BaseLLM, verbose: bool = False):
         self.session: Optional[ClientSession] = None
         self.exit_stack = AsyncExitStack()
         self.llm = llm_adapter
         self.tools: List[ToolDef] = []
+        self.verbose = verbose
 
     async def connect(self, server_script: str):
-        print(f"Starting server with stdio: {server_script}")
+        print(f"Starting server with stdio: {server_script}" if self.verbose else "")
         params = StdioServerParameters(command=sys.executable, args=[server_script], env=os.environ)
         reader, writer = await self.exit_stack.enter_async_context(stdio_client(params))
         self.session = await self.exit_stack.enter_async_context(ClientSession(reader, writer))
@@ -50,7 +52,7 @@ class MCPManager:
             )
             for t in tool_list.tools
         ]
-        print("\nConnected. Tools available:")
+        print("\nConnected. Tools available:\n")
         for tool in self.tools:
             print(f" * {tool.name}: {tool.description}")
 
@@ -64,16 +66,34 @@ class MCPManager:
                 final_parts = []
                 for tool_call in llm_reply.tool_calls:
                     name, args = tool_call["name"], tool_call["args"]
-                    print(f"[Calling tool {name} with args {args}]")
+                    if self.verbose:
+                        print(f"[Calling tool {name} with args {args}]")
                     try:
                         tr = await self.session.call_tool(name, args)
                         raw_txt = tr.content[0].text if tr.content else "No content returned"
-                        final_parts.append(f"[Called {name}: {raw_txt}]")
+
+                        is_error = False
+                        try:
+                            parsed = json.loads(raw_txt)
+                            if isinstance(parsed, dict) and (parsed.get("isError") or "error" in parsed):
+                                is_error = True
+                        except Exception:
+                            pass
+
+                        if self.verbose:
+                            final_parts.append(f"[Called {name}: {raw_txt}]")
+                        else:
+                            if is_error:
+                                final_parts.append("Incorrect filepath or argument passed.")
+                            else:
+                                final_parts.append(f"Output: {raw_txt}")
+
                     except Exception as e:
                         final_parts.append(f"[Error calling {name}: {e}]")
                 return "\n".join(final_parts)
             else:
                 return llm_reply.text
+
 
         except Exception as e:
             return f"Error during LLM processing: {e}"

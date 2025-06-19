@@ -24,6 +24,12 @@ async def async_main():
         required=True,
         help="Path to the configuration file (e.g., bin/confs/GeminiJarvis.yaml).",
     )
+    parser.add_argument(
+    "-v", "--verbose",
+    action="store_true",
+    help="Enable verbose output (tool calls, arguments, etc.)."
+    )
+
     args = parser.parse_args()
 
     try:
@@ -31,6 +37,9 @@ async def async_main():
     except (FileNotFoundError, ValueError) as e:
         print(f"Error loading configuration: {e}", file=sys.stderr)
         sys.exit(1)
+
+    verbose = args.verbose or config.get("Verbose", False)
+    print(f"\nVerbose mode is enabled" if verbose else '')
 
     try:
         llm_config = config.get('LLM', {})
@@ -55,7 +64,7 @@ async def async_main():
         print(f"\n=== Connecting to {name} ===")
         try:
             server_py = find_server_py(name)
-            manager = MCPManager(llm_adapter)
+            manager = MCPManager(llm_adapter, verbose=verbose)
             await manager.connect(server_py)
             await manager.chat_loop()
         except FileNotFoundError as e:

@@ -155,7 +155,7 @@ def main():
             print(json.dumps({"message": f"Starting SSE on {host}:{port}"}), file=sys.stderr)
             mcp.run(transport="sse", host=host, port=port)
         else:
-            print(json.dumps({"message": "Starting stdio transport"}), file=sys.stderr)
+            #print(json.dumps({"message": "Starting stdio transport"}), file=sys.stderr)
             mcp.run(transport="stdio")
     except Exception as e:
         print(json.dumps({"error": str(e)}), file=sys.stderr)
