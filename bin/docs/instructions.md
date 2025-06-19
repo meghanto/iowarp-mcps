@@ -84,6 +84,14 @@ python bin/wrp.py --conf=bin/confs/Ollama.yaml
 
 The script will automatically find and start the MCP server process(es) listed in your configuration file.
 
+**Introducing verbose mode for more detailed and extensive output:**
+
+Using -v or --verbose in the argument, Verbose mode enables detailed output for debugging, including tool calls, arguments, and full error messages.
+When disabled, the interface displays only essential user-facing responses for cleaner interaction.
+
+```bash
+python bin/wrp.py --conf=bin/confs/Gemini.yaml --verbose
+```
 ---
 
 ## 3. Configuration
