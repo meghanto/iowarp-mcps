@@ -7,11 +7,11 @@
 1. To List all the bp5 files in a directory. [Args: directorypath]
 
 - prompt: list the files at Adios/data
-- Answer: [Called list_bp5: [
+- Answer: [
   "Adios/data/data3.bp",
   "Adios/data/data1.bp",
   "Adios/data/data2.bp"
-]]
+]
 
 Sample:
 ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/list_files.png)
@@ -20,14 +20,14 @@ Sample:
 
 - prompt: how many steps do we have in Adios/data/data2.bp
 - Answer: 
-[Called inspect_variables: {
+Output: {
   "greeting": {
     "AvailableStepsCount": "1",
     "Shape": "",
     "SingleValue": "true",
     "Type": "string"
   }
-}]
+}
 
 Sample:
 ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/steps.png) 
@@ -36,7 +36,7 @@ Sample:
 
 - prompt: inspect the attributes from variable pressure in Adios/data/data1.bp
 - Answer: 
-[Called inspect_attributes: {
+Output: {
   "unit": {
     "value": [
       "Pa"
@@ -44,7 +44,7 @@ Sample:
     "Type": "string",
     "Elements": "1"
   }
-}]
+}
 
 Sample:
 ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/attributes.png)  
@@ -53,9 +53,9 @@ Sample:
 
 - prompt: Read the value of variable physical_time at step 4 in Adios/data/data1.bp
 - Answer: 
-[Called read_variable_at_step: {
+Output: {
   "value": 0.04
-}]
+}
 
 Sample:
 ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/read_steps.png)
@@ -64,7 +64,7 @@ Sample:
 
 - prompt: Read bp file at Adios/data/data3.bp
 - Answer: 
-[Called read_bp5: {
+Output: {
   "Nx": {
     "Step:0": 10
   },
@@ -82,7 +82,7 @@ Sample:
       9.0
     ]
   }
-}]
+}
 
 Sample:
 ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/read_bp5.png)
@@ -91,10 +91,10 @@ Sample:
 
 - prompt: Get the minimum value of variable physical_time from Adios/data/data1.bp
 - Answer: 
-[Called get_min_max: {
+Output: {
   "min": 0.0,
   "max": 0.04
-}]
+}
 
 Sample:
 ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/minmax.png)
@@ -105,9 +105,9 @@ Sample:
 
 - prompt: Add the value of variable physical_time at step 2 and variable nproc at step 0 in Adios/data/data1.bp
 - Answer: 
-[Called add_variables: {
+Output: {
   "sum": 2.02
-}]
+}
 
 Sample:
 ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/add_variables.png)

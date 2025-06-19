@@ -2,7 +2,7 @@
 name = "IoWarp_MCPs"
 version = "0.1.0"
 description = "Install all sub-MCP packages together."
-requires-python = "==3.12"
+requires-python = "==3.12.0"
 
 dependencies = [
   "arxiv-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Arxiv",

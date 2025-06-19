@@ -42,6 +42,12 @@ Before you begin, make sure you have the following installed on your system:
    uv pip install "git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Adios"
    ```
 
+3. Install Client Dependencies:
+    ```bash
+    # From the root directory
+    uv pip install -r bin/requirements.txt
+    ```
+
 ### Step 3: Get a Gemini API Key
 
 You need a Google Gemini API key to proceed.
