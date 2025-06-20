@@ -34,15 +34,19 @@ First, clone the repository and set up a virtual environment:
    git clone https://github.com/iowarp/scientific-mcps.git
    cd scientific-mcps
    ```
+- Create and activate environment:
+    ```bash
+    # On Windows
+    python -m venv mcp-server
+    mcp-server\Scripts\activate 
+
+    #On macOS/Linux
+    python3 -m venv mcp-server
+    source mcp-server/bin/activate  #On macOS/Linux
+    ```
 - Install uv:
     ```bash
     pip install uv
-    ```
-- Create and activate environment using uv:
-    ```bash
-    uv venv mcp-server
-    mcp-server\Scripts\activate     #On Windows
-    source mcp-server/bin/activate  #On macOS/Linux
     ```
 
 You can install all MCPs at once or select them individually.
@@ -74,9 +78,13 @@ uv pip install --requirement pyproject.toml
 
 ---
 
-## Running the Universal Client (`wrp_chat_factory`)
+## Running the Universal Client (`wrp_chat`)
 
-This repository includes a universal client, `bin/wrp_chat_factory.py`, that allows you to interact with any MCP server using natural language. It supports multiple LLM providers (Gemini, OpenAI, Claude, Ollama).
+This repository includes a universal client, `bin/wrp.py`, that allows you to interact with any MCP server using natural language. It supports multiple LLM providers (Gemini, OpenAI, Claude, Ollama).
+
+> For detailed setup instructions, provider-specific examples, and troubleshooting, please see the **[in-depth instructions](./bin/docs/instructions.md)**.
+
+For a quick Gemini setup -
 
 1.  **Install Client Dependencies:**
     ```bash
@@ -84,15 +92,36 @@ This repository includes a universal client, `bin/wrp_chat_factory.py`, that all
     uv pip install -r bin/requirements.txt
     ```
 2.  **Configure API Keys:**
-    Create a `.env` file in the [bin](bin) directory and add your API keys. See the client's [documentation](bin/README.md) for details.
+    Your API keys for providers like Gemini, OpenAI, or Anthropic are managed in the configuration files.
 
-3.  **Run the Client:**
-    ```bash
-    # Example: Connect to the Jarvis server using the Ollama provider
-    python bin/wrp_chat_factory.py --provider ollama --servers=Jarvis
+    For long-term use, open the relevant pre-configured file in `bin/confs` (e.g., `Gemini.yaml`) and enter your key directly:
+    ```yaml
+    # In bin/confs/Gemini.yaml
+    LLM:
+    Provider: Gemini
+    api_key: your-gemini-api-key # <-- ADD KEY HERE
+    model_name: gemini-1.5-flash
     ```
 
-> For detailed setup instructions, provider-specific examples, and troubleshooting, please see the **[client's official documentation](./bin/README.md)**.
+    For one-time use, you can use environment variables. First, export the key in your terminal:
+    ```bash
+    # On macOS/Linux
+    export GEMINI_API_KEY="your-gemini-api-key"
+    # On Windows
+    $env:GEMINI_API_KEY="your-gemini-api-key"
+
+3.  **Run the Client:**
+    To run the client, execute the `wrp` script from your terminal, specifying a configuration file with the `--conf` flag.
+
+    **Example for Gemini:**
+    ```bash
+    python bin/wrp.py --conf=bin/confs/Gemini.yaml
+    ```
+
+4. **For Additional Troubleshooting & Debugging use verbose:**
+```bash
+python bin/wrp.py --conf=bin/confs/Gemini.yaml --verbose
+```
 
 ---
 ## Project Structure
