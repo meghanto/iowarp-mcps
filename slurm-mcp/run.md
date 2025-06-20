@@ -38,7 +38,7 @@ python3 --version
 
 ### 1. Navigate to SLURM MCP Directory
 ```bash
-cd /home/sislam6/Illinois_Tech/PhD/Spring25_iit/CS550/scientific-mcps/slurm-mcp
+cd <project directory>
 ```
 
 ### 2. Sync Dependencies using uv
