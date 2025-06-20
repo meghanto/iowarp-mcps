@@ -232,8 +232,8 @@ create_test_job() {
     cat > slurm_test_job.sh << 'EOF'
 #!/bin/bash
 #SBATCH --job-name=test_job
-#SBATCH --output=slurm_test_%j.out
-#SBATCH --error=slurm_test_%j.err
+#SBATCH --output=logs/slurm_output/slurm_test_%j.out
+#SBATCH --error=logs/slurm_output/slurm_test_%j.err
 #SBATCH --time=00:02:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1

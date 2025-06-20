@@ -4,18 +4,16 @@ These handlers wrap the Slurm capabilities for MCP protocol compliance.
 """
 import json
 from typing import Optional
-from capabilities.slurm_handler import (
-    submit_slurm_job, 
-    get_job_status,
-    cancel_slurm_job,
-    list_slurm_jobs,
-    get_slurm_info,
-    get_job_details,
-    get_job_output,
-    get_queue_info,
-    submit_array_job,
-    get_node_info
-)
+from capabilities.job_submission import submit_slurm_job
+from capabilities.job_status import get_job_status
+from capabilities.job_cancellation import cancel_slurm_job
+from capabilities.job_listing import list_slurm_jobs
+from capabilities.cluster_info import get_slurm_info
+from capabilities.job_details import get_job_details
+from capabilities.job_output import get_job_output
+from capabilities.queue_info import get_queue_info
+from capabilities.array_jobs import submit_array_job
+from capabilities.node_info import get_node_info
 
 
 def submit_slurm_job_handler(script_path: str, cores: int, memory: Optional[str] = None, 

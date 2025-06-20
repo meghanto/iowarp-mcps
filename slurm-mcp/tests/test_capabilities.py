@@ -1,6 +1,7 @@
 """
 Tests for Slurm capabilities.
-Tests both real and mock Slurm job submission and status checking.
+Tests real Slurm job submission and status checking.
+Requires Slurm to be installed and available on the system.
 """
 import pytest
 import os
@@ -25,7 +26,6 @@ from capabilities.slurm_handler import (
     get_node_info,
     _check_slurm_available,
     _create_sbatch_script,
-    _submit_mock_slurm_job,
     _submit_real_slurm_job
 )
 
@@ -53,8 +53,8 @@ class TestSlurmCapabilities:
         assert "#!/bin/bash" in content
         assert f"#SBATCH --cpus-per-task={cores}" in content
         assert "#SBATCH --job-name=mcp_job" in content
-        assert "#SBATCH --output=slurm_%j.out" in content
-        assert "#SBATCH --error=slurm_%j.err" in content
+        assert "#SBATCH --output=logs/slurm_output/slurm_%j.out" in content
+        assert "#SBATCH --error=logs/slurm_output/slurm_%j.err" in content
         
         # Cleanup
         os.unlink(sbatch_script)
@@ -83,29 +83,6 @@ class TestSlurmCapabilities:
         
         # Cleanup
         os.unlink(sbatch_script)
-
-    def test_mock_job_submission_basic(self, temp_script, valid_cores):
-        """Test basic mock job submission."""
-        job_id = _submit_mock_slurm_job(temp_script, valid_cores)
-        
-        # Should return a 7-digit job ID
-        assert isinstance(job_id, str)
-        assert len(job_id) >= 6  # At least 6 digits
-        assert job_id.isdigit()
-
-    def test_mock_job_submission_enhanced(self, temp_script, job_parameters):
-        """Test enhanced mock job submission with all parameters."""
-        job_id = _submit_mock_slurm_job(
-            temp_script, 4,
-            memory=job_parameters["memory"],
-            time_limit=job_parameters["time_limit"],
-            job_name=job_parameters["job_name"],
-            partition=job_parameters["partition"]
-        )
-        
-        assert isinstance(job_id, str)
-        assert len(job_id) >= 6
-        assert job_id.isdigit()
 
     def test_job_submission_validation(self, temp_script):
         """Test job submission parameter validation."""
@@ -315,32 +292,44 @@ class TestSlurmCapabilities:
         assert "job_id" in cancel_result
         assert "status" in cancel_result
 
-    def test_mock_vs_real_detection(self):
-        """Test that mock vs real Slurm is properly detected and reported."""
+    def test_real_slurm_detection(self):
+        """Test that real Slurm detection works properly."""
         is_real = _check_slurm_available()
         
-        # Test job submission
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.sh', delete=False) as f:
-            f.write("#!/bin/bash\necho 'test'\n")
-            script_path = f.name
-        
-        os.chmod(script_path, 0o755)
-        
-        try:
-            job_id = submit_slurm_job(script_path, 2)
-            status = get_job_status(job_id)
+        # Test job submission only if Slurm is available
+        if is_real:
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.sh', delete=False) as f:
+                f.write("#!/bin/bash\necho 'test'\n")
+                script_path = f.name
             
-            # The real_slurm flag should match detected availability
-            assert status["real_slurm"] == is_real
-        finally:
-            os.unlink(script_path)
-        
-        # Should return a 7-digit job ID
-        assert isinstance(job_id, str)
-        assert job_id.isdigit()
-        # Job IDs can vary in length depending on Slurm configuration
-        # Accept any reasonable job ID length (1-10 digits)
-        assert 1 <= len(job_id) <= 10
+            os.chmod(script_path, 0o755)
+            
+            try:
+                job_id = submit_slurm_job(script_path, 2)
+                status = get_job_status(job_id)
+                
+                # The real_slurm flag should be True
+                assert status["real_slurm"] == True
+                
+                # Should return a valid job ID
+                assert isinstance(job_id, str)
+                assert job_id.isdigit()
+                assert 1 <= len(job_id) <= 10
+            finally:
+                os.unlink(script_path)
+        else:
+            # If Slurm is not available, submission should fail
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.sh', delete=False) as f:
+                f.write("#!/bin/bash\necho 'test'\n")
+                script_path = f.name
+            
+            os.chmod(script_path, 0o755)
+            
+            try:
+                with pytest.raises(RuntimeError, match="Slurm is not available"):
+                    submit_slurm_job(script_path, 2)
+            finally:
+                os.unlink(script_path)
 
     def test_job_submission_with_valid_script(self, temp_script, valid_cores):
         """Test job submission with valid script and cores."""

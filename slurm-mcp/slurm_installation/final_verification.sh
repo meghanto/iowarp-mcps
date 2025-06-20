@@ -29,7 +29,7 @@ if command -v sbatch >/dev/null 2>&1; then
     cat > final_test.sh << 'EOF'
 #!/bin/bash
 #SBATCH --job-name=final_test
-#SBATCH --output=final_%j.out
+#SBATCH --output=logs/slurm_output/final_%j.out
 #SBATCH --time=00:01:00
 #SBATCH --nodes=1
 

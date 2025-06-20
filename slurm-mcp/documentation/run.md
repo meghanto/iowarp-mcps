@@ -38,7 +38,11 @@ python3 --version
 
 ### 1. Navigate to SLURM MCP Directory
 ```bash
+<<<<<<< HEAD:slurm-mcp/run.md
 cd <project directory>
+=======
+cd < project directory >
+>>>>>>> b796917 (mock capability removed and added robust implementation):slurm-mcp/documentation/run.md
 ```
 
 ### 2. Sync Dependencies using uv
@@ -370,8 +374,3 @@ scontrol show job <job_id>
 
 The SLURM MCP server provides a comprehensive, protocol-based interface to SLURM workload management, offering enhanced functionality over direct SLURM commands while maintaining full compatibility with the underlying SLURM system. The server successfully demonstrates all core capabilities with a 100% test success rate and provides real-time job management, monitoring, and output retrieval capabilities.
 
----
-*Generated on: June 18, 2025*
-*Environment: Linux with SLURM 23.11.4*
-*Python: 3.12.7*
-*uv: 0.6.14*

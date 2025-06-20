@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=parallel_job
-#SBATCH --output=parallel-%j.out
-#SBATCH --error=parallel-%j.err
+#SBATCH --output=logs/slurm_output/parallel_%j.out
+#SBATCH --error=logs/slurm_output/parallel_%j.err
 #SBATCH --time=00:30:00
 #SBATCH --nodes=2
 #SBATCH --ntasks=8

@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=quick_test
-#SBATCH --output=quick_%j.out
+#SBATCH --output=logs/slurm_output/quick_%j.out
 #SBATCH --time=00:01:00
 #SBATCH --nodes=1
 
