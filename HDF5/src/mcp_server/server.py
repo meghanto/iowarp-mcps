@@ -5,13 +5,12 @@ from fastmcp import FastMCP
 from dotenv import load_dotenv
 
 # Add the parent directory to Python path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Import HDF5 capabilities
-from capabilities import hdf5_list, inspect_hdf5, preview_hdf5, read_all_hdf5
 import mcp_handlers
 
 # Initialize FastMCP server instance
