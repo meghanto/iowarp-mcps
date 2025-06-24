@@ -20,7 +20,7 @@ dependencies = [
   "parallel-sort-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Parallel_Sort",
   "parquet-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=parquet",
   "plot-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Plot",
-  "slurm-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=slurm-mcp"
+  "slurm-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Slurm"
 ]
 
 [project.scripts]
@@ -35,7 +35,7 @@ pandas-mcp = "server:main"
 parallel-sort-mcp = "server:main"
 parquet-mcp = "server:main"
 plot-mcp = "server:main"
-slurm-mcp = "server:main"
+slurm-mcp = "slurm_mcp.server:main"
 
 [tool.setuptools]
 packages = []

@@ -1,8 +1,0 @@
-fastapi>=0.110
-uvicorn
-pytest
-pydantic
-httpx
-boto3
-pyarrow
-pandas
