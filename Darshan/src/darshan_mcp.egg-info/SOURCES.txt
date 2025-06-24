@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/darshan_mcp/__init__.py
+src/darshan_mcp/server.py
+src/darshan_mcp.egg-info/PKG-INFO
+src/darshan_mcp.egg-info/SOURCES.txt
+src/darshan_mcp.egg-info/dependency_links.txt
+src/darshan_mcp.egg-info/entry_points.txt
+src/darshan_mcp.egg-info/requires.txt
+src/darshan_mcp.egg-info/top_level.txt
+src/darshan_mcp/capabilities/__init__.py
+src/darshan_mcp/capabilities/darshan_parser.py
+tests/test_darshan_parser.py
+tests/test_server.py
