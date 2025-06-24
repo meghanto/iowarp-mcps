@@ -112,6 +112,8 @@ claude add mcp adios -- uv --directory ~/scientific-mcps/Adios run adios-mcp
 ---
 ## Few Examples
 
+**Note: Mention Absolute path of all the files you want to have operations ex. Read file at Adios/data/data1.bp**
+
 1. Read variables/data at specific step in a Bp5 File 
 
  ![](https://github.com/iowarp/scientific-mcps/blob/main/Adios/assets/read_steps.png)
