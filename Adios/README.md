@@ -38,43 +38,25 @@ A read-only Model Context Protocol (MCP) server for ADIOS datasets, enabling LLM
 
 ---
 
+## Prerequisites
+
+- Python 3.10 or higher
+- [uv](https://docs.astral.sh/uv/) package manager
+- Linux/macOS environment (for optimal compatibility)
+
 ## Setup
+**Run the Mcp Server directly:**
 
-1. If not already done, follow the main installation steps:
    ```bash
-   # Clone the repository
-   git clone https://github.com/iowarp/scientific-mcps.git
-   cd scientific-mcps
-
-   # Create and activate environment
-   # On Windows
-   python -m venv mcp-server
-   mcp-server\Scripts\activate 
-
-   # On macOS/Linux
-   python3 -m venv mcp-server
-   source mcp-server/bin/activate
-
-   # Install uv
-   pip install uv
+   uv run adios-mcp
    ```
-
-2. Install the Adios MCP either:
    
-   As part of all MCPs:
-   ```bash
-   # Install all MCPs from pyproject.toml
-   uv pip install --requirement pyproject.toml
-   ```
-
-   Or individually:
-   ```bash
-   # Install just the Adios MCP
-   uv pip install "git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Adios"
-   ```
-
+   This will create a `.venv/` folder, install all required packages, and run the server directly.
 --- 
-## Running the Server with the WRP Client
+
+## Running the Server with different types of Clients:
+
+### Running the Server with the WARP Client
 To interact with the ADIOS MCP server, use the main `wrp.py` client. You will need to configure it to point to the ADIOS server.
 
 1.  **Configure:** Ensure that `Adios` is listed in the `MCP` section of your chosen configuration file (e.g., in `bin/confs/Gemini.yaml` or `bin/confs/Ollama.yaml`).
@@ -90,10 +72,6 @@ To interact with the ADIOS MCP server, use the main `wrp.py` client. You will ne
     ```bash
     # Example using the Gemini configuration 
     
-    # On Windows 
-    python bin/wrp.py --conf=bin/confs/Gemini.yaml
-    
-    # On macOS/Linux
     python3 bin/wrp.py --conf=bin/confs/Gemini.yaml
     ```
     For quick setup with Gemini, see our [Quick Start Guide](docs/basic_install.md).
@@ -101,9 +79,40 @@ To interact with the ADIOS MCP server, use the main `wrp.py` client. You will ne
     
     For detailed setup with local LLMs and other providers, see the [Complete Installation Guide](../bin/docs/Installation.md).
 
----
+### Running the Server on Claude Command Line Interface Tool.
 
+1. Install the Claude Code using NPM,
+Install [NodeJS 18+](https://nodejs.org/en/download), then run:
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+2. Running the server:
+```bash
+claude add mcp adios -- uv --directory ~/scientific-mcps/Adios run adios-mcp
+```
+
+### Running the Server on open source LLM client (Claude, Copilot, etc.)
+
+**Put the following in settings.json of any open source LLMs like Claude or Microsoft Co-pilot:**
+
+```bash
+"adios-mcp": {
+    "command": "uv",
+    "args": [
+        "--directory",
+        "path/to/directory/src/adiosmcp/",
+        "run",
+        "server.py"
+    ]
+}
+```
+
+---
 ## Few Examples
+
+**Note: Mention Absolute path of all the files you want to have operations ex. Read file at Adios/data/data1.bp**
 
 1. Read variables/data at specific step in a Bp5 File 
 

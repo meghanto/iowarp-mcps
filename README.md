@@ -27,9 +27,17 @@ The following capabilities have been implemented:
 
 ---
 
+## Prerequisites
+- Python 3.10 or higher (https://www.python.org/)
+- [uv](https://docs.astral.sh/uv/) package manager
+- Linux/macOS environment (for optimal compatibility)
+
+
 ## Installation
 
-This repository supports two installation methods:
+The Scientific Mcps supports three installation methods:
+
+1. Global Installation of all mcps together -
 
 - Clone the repository:
     ```bash
@@ -52,6 +60,8 @@ This repository supports two installation methods:
     ```
 
 You can install all MCPs at once or select them individually.
+
+---
 
 **To install all MCPs:**
 ```bash
@@ -82,7 +92,10 @@ uv pip install --requirement pyproject.toml
 
 ---
 
-## Running the Universal Client (`wrp_chat`)
+## Running the Server with different types of Clients:
+
+
+### Running the Universal Client (`wrp_chat`)
 
 This repository includes a universal client, `bin/wrp.py`, that allows you to interact with any MCP server using natural language. It supports multiple LLM providers (Gemini, OpenAI, Claude, Ollama).
 
@@ -127,6 +140,48 @@ For a quick Gemini setup -
 python bin/wrp.py --conf=bin/confs/Gemini.yaml --verbose
 ```
 
+2. Running a specific Mcp directly.
+**Run the Mcp Server directly:**
+
+   ```bash
+   cd Adios     # Jarvis or any other specific mcp.
+   uv run adios-mcp     # change the mcp name ex. jarvis-mcp   
+   ```
+   
+   This will create a `.venv/` folder, install all required packages, and run the server directly.
+--- 
+
+### Running the Server on Claude Command Line Interface Tool.
+
+1. Install the Claude Code using NPM,
+Install [NodeJS 18+](https://nodejs.org/en/download), then run:
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+2. Running the server:
+```bash
+claude add mcp jarvis -- uv --directory ~/scientific-mcps/Jarvis run jarvis-mcp
+```
+
+### Running the Server on open source LLM client (Claude, Copilot, etc.)
+
+**To add the Adios MCP**
+**Put the following in settings.json of any open source LLMs like Claude or Microsoft Co-pilot:**
+
+```bash
+"adios-mcp": {
+    "command": "uv",
+    "args": [
+        "--directory",
+        "path/to/directory/src/adiosmcp/",
+        "run",
+        "server.py"
+    ]
+}
+```
+
 ---
 ## Project Structure
 
@@ -145,7 +200,7 @@ scientific-mcps/
 ├── Plot/
 ├── Slurm/
 ├── bin/
-│   ├── wrp_chat_factory.py
+│   ├── wrp.py
 │   ├── README.md
 │   ├── instructions.md
 │   └── ...
