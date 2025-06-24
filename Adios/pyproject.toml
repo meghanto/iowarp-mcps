@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "adios-mcp"
 version = "0.1.0"
@@ -15,3 +19,9 @@ dependencies = [
     "numpy",
     "adios2"
 ]
+
+[project.scripts]
+adios-mcp = "adiosmcp.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

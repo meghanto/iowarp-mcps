@@ -1,18 +1,18 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=64.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "node-hardware-mcp"
 version = "0.1.0"
-description = "MCP server with Pandas data querying and HDF5 file listing tools"
-requires-python = ">=3.8"
+description = "Node Hardware MCP server"
+readme = "README.md"
+requires-python = ">=3.10"
 keywords = ["MCP", "JSON-RPC", "FastAPI", "Pandas", "HDF5"]
 license = "MIT"
 authors = [
   { name = "shazzadul", email = "sislam6@hawk.iit.edu" }
 ]
-readme = "README.md"
 dependencies = [
   "fastapi>=0.95,<1.0",
   "uvicorn[standard]>=0.20",
@@ -20,6 +20,9 @@ dependencies = [
   "psutil>=5.9" 
 ]
 optional-dependencies = { test = ["pytest>=6.0"] }
+
+[project.scripts]
+node-hardware-mcp = "mcp_server.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

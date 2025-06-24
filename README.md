@@ -27,7 +27,7 @@ The following capabilities have been implemented:
 
 ## Installation
 
-First, clone the repository and set up a virtual environment:
+This repository supports two installation methods:
 
 - Clone the repository:
     ```bash

@@ -1,22 +1,41 @@
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "IoWarp_MCPs"
+name = "scientific-mcps"
 version = "0.1.0"
 description = "Install all sub-MCP packages together."
-requires-python = "==3.12.0"
+requires-python = ">=3.10"
 
 dependencies = [
+  "adios-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Adios",
   "arxiv-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Arxiv",
+  "chronolog-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Chronolog",
   "compression-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Compression",
   "hdf5-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=HDF5",
+  "jarvis-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Jarvis",
   "node-hardware-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Node_Hardware",
   "pandas-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Pandas",
   "parallel-sort-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Parallel_Sort",
   "parquet-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=parquet",
   "plot-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Plot",
-  "slurm-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Slurm",
-  "jarvis-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Jarvis",
-  "Adios-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Adios"
+  "slurm-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=slurm-mcp"
 ]
+
+[project.scripts]
+adios-mcp = "adiosmcp.server:main"
+arxiv-mcp = "server:main"
+chronolog-mcp = "chronomcp.server:main"
+compression-mcp = "server:main"
+hdf5-mcp = "mcp_server.server:main"
+jarvis-mcp = "jarvis_mcp.server:main"
+node-hardware-mcp = "mcp_server.server:main"
+pandas-mcp = "server:main"
+parallel-sort-mcp = "server:main"
+parquet-mcp = "server:main"
+plot-mcp = "server:main"
+slurm-mcp = "server:main"
 
 [tool.setuptools]
 packages = []

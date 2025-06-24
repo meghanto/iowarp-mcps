@@ -63,11 +63,14 @@ class MCPManager:
             llm_reply = await self.llm.chat(messages, self.tools)
             
             if llm_reply.tool_calls:
-                final_parts = []
+                tool_results = []
+                verbose_parts = []
+                
                 for tool_call in llm_reply.tool_calls:
                     name, args = tool_call["name"], tool_call["args"]
                     if self.verbose:
-                        print(f"[Calling tool {name} with args {args}]")
+                        verbose_parts.append(f"[Calling tool {name} with args {args}]")
+                    
                     try:
                         tr = await self.session.call_tool(name, args)
                         raw_txt = tr.content[0].text if tr.content else "No content returned"
@@ -81,19 +84,38 @@ class MCPManager:
                             pass
 
                         if self.verbose:
-                            final_parts.append(f"[Called {name}: {raw_txt}]")
+                            verbose_parts.append(f"[Called {name}: {raw_txt}]")
+                        
+                        if is_error:
+                            tool_results.append("Error: Incorrect filepath or argument passed.")
                         else:
-                            if is_error:
-                                final_parts.append("Incorrect filepath or argument passed.")
-                            else:
-                                final_parts.append(f"Output: {raw_txt}")
+                            tool_results.append(raw_txt)
 
                     except Exception as e:
-                        final_parts.append(f"[Error calling {name}: {e}]")
-                return "\n".join(final_parts)
+                        error_msg = f"Error calling {name}: {e}"
+                        tool_results.append(error_msg)
+                        if self.verbose:
+                            verbose_parts.append(f"[{error_msg}]")
+
+                # Combine all tool results for LLM processing
+                combined_results = "\n".join(tool_results)
+                
+                # Create a new message with the original query and tool results
+                followup_messages = [
+                    {"role": "user", "content": f"Original query: {query}\n\nTool results: {combined_results}\n\nPlease provide a clear, natural language response to the original query based on these tool results."}
+                ]
+                
+                # Get LLM to process the results into natural language (no tools needed)
+                final_reply = await self.llm.chat(followup_messages, [])
+                
+                if self.verbose:
+                    # Show verbose info first, then the natural language output
+                    verbose_output = "\n".join(verbose_parts)
+                    return f"{verbose_output}\nOutput: {final_reply.text}"
+                else:
+                    return f"Output: {final_reply.text}"
             else:
                 return llm_reply.text
-
 
         except Exception as e:
             return f"Error during LLM processing: {e}"
