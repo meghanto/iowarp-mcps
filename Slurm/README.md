@@ -5,23 +5,6 @@
 
 A comprehensive Model Context Protocol (MCP) server implementation for submitting and managing Slurm jobs. This server provides a standardized interface for interacting with Slurm workload manager through the MCP protocol, enabling seamless integration with AI assistants and other MCP clients.
 
-## Quick Start
-
-```bash
-# Clone and setup
-cd slurm-mcp
-uv sync
-
-# Start the MCP server
-./server_manager.sh start
-
-# Test functionality  
-python comprehensive_capability_test.py
-
-# Stop the server
-./server_manager.sh stop
-```
-
 ## Features
 
 - **🚀 Job Submission**: Submit Slurm jobs with specified core counts and resource requirements
@@ -36,6 +19,94 @@ python comprehensive_capability_test.py
 - **🔧 Modular Architecture**: Separated capabilities for better maintainability and extensibility
 - **🔄 Array Job Support**: Submit and manage Slurm array jobs with ease
 - **📊 Cluster Monitoring**: Real-time cluster and node information retrieval
+
+## Prerequisites
+
+- Python 3.10 or higher
+- [uv](https://docs.astral.sh/uv/) package manager
+- Linux/macOS environment (for optimal compatibility)
+
+## Quick Start
+
+```bash
+# Setup
+uv sync
+
+# Start the MCP server
+./server_manager.sh start
+
+# Test functionality  
+python comprehensive_capability_test.py
+
+# Stop the server
+./server_manager.sh stop
+```
+
+## Setup
+**Run the Mcp Server directly:**
+
+   ```bash
+   uv run slurm-mcp
+   ```
+   
+   This will create a `.venv/` folder, install all required packages, and run the server directly.
+--- 
+
+## Running the Server with different types of Clients:
+
+### Running the Server with the WARP Client
+To interact with the Slurm MCP server, use the main `wrp.py` client. You will need to configure it to point to the Slurm server.
+
+1.  **Configure:** Ensure that `Slurm` is listed in the `MCP` section of your chosen configuration file (e.g., in `bin/confs/Gemini.yaml` or `bin/confs/Ollama.yaml`).
+    ```yaml
+    # In bin/confs/Gemini.yaml
+    MCP:
+      - Slurm
+      
+    ```
+
+2.  **Run:** Start the client from the repository root with your desired configuration:
+    ```bash
+    # Example using the Gemini configuration 
+    
+    python3 bin/wrp.py --conf=bin/confs/Gemini.yaml
+    ```
+    For quick setup with Gemini, see our [Quick Start Guide](docs/basic_install.md).
+    
+    
+    For detailed setup with local LLMs and other providers, see the [Complete Installation Guide](../bin/docs/Installation.md).
+
+### Running the Server on Claude Command Line Interface Tool.
+
+1. Install the Claude Code using NPM,
+Install [NodeJS 18+](https://nodejs.org/en/download), then run:
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+2. Running the server:
+```bash
+claude add mcp slurm -- uv --directory ~/scientific-mcps/Slurm run slurm-mcp
+```
+
+### Running the Server on open source LLM client (Claude, Copilot, etc.)
+
+**Put the following in settings.json of any open source LLMs like Claude or Microsoft Co-pilot:**
+
+```bash
+"slurm-mcp": {
+    "command": "uv",
+    "args": [
+        "--directory",
+        "path/to/directory/src/",
+        "run",
+        "server.py"
+    ]
+}
+```
+
+---
 
 ## Output Organization
 
@@ -176,60 +247,8 @@ The capabilities are organized into focused, single-responsibility modules:
 - **`utils.py`**: Common functions and utilities
 - **`slurm_handler.py`**: Backward compatibility wrapper
 
-## Prerequisites
 
-- Python 3.10 or higher
-- [uv](https://docs.astral.sh/uv/) package manager
-- Linux/macOS environment (for optimal compatibility)
-
-## Installation
-
-### Quick Setup
-
-```bash
-# Clone and navigate to the project
-cd slurm-mcp
-
-# Install dependencies using uv
-uv sync
-
-# Install development dependencies (if not already installed)
-uv add pytest pytest-asyncio --dev
-```
-
-### Manual Setup
-
-```bash
-# Initialize uv environment
-uv init slurm-mcp
-cd slurm-mcp
-
-# Add production dependencies
-uv add "mcp[cli]"
-uv add python-dotenv
-
-# Add development dependencies
-uv add pytest pytest-asyncio --dev
-```
-
-## Usage
-
-### 1. Running the MCP Server
-
-#### Stdio Transport (Default)
-```bash
-# Start server with stdio transport
-uv run python src/server.py
-```
-
-#### SSE Transport (for web clients)
-```bash
-# Set environment variables for SSE transport
-export MCP_TRANSPORT=sse
-export MCP_SSE_HOST=0.0.0.0
-export MCP_SSE_PORT=8000
-
-# Start server with SSE transport
+## Start server with SSE transport
 uv run python src/server.py
 ```
 

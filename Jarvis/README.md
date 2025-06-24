@@ -19,49 +19,74 @@ With **Jarvis-MCP**, you can:
 * Build and run pipelines
 
 ---
+
 ## Setup
+**Run the Mcp Server directly:**
 
-- Run the following command:
-  ```bash
-  ..\mcp-server\Scripts\activate     # On Windows: to activate env
-  ../source mcp-server/bin/activate  # On macOS/Linux: to activate env
+   ```bash
+   uv run jarvis-mcp
+   ```
+   
+   This will create a `.venv/` folder, install all required packages, and run the server directly.
+--- 
 
-  # Once activated, 
-  uv pip install .                   # To install current mcp server
-  ```
----
+## Running the Server with different types of Clients:
 
-## Running the server
+### Running the Server with the WARP Client
+To interact with the Jarvis MCP server, use the main `wrp.py` client. You will need to configure it to point to the Jarvis server.
 
-To run **Jarvis-MCP** on **ARES** or any **root node**, use:
+1.  **Configure:** Ensure that `Jarvis` is listed in the `MCP` section of your chosen configuration file (e.g., in `bin/confs/Gemini.yaml` or `bin/confs/Ollama.yaml`).
+    ```yaml
+    # In bin/confs/Gemini.yaml
+    MCP:
+      - Jarvis
+      
+    ```
+
+2.  **Run:** Start the client from the repository root with your desired configuration:
+    ```bash
+    # Example using the Gemini configuration 
+    
+    python3 bin/wrp.py --conf=bin/confs/Gemini.yaml
+    ```
+    For quick setup with Gemini, see our [Quick Start Guide](docs/basic_install.md).
+    
+    
+    For detailed setup with local LLMs and other providers, see the [Complete Installation Guide](../bin/docs/Installation.md).
+
+### Running the Server on Claude Command Line Interface Tool.
+
+1. Install the Claude Code using NPM,
+Install [NodeJS 18+](https://nodejs.org/en/download), then run:
 
 ```bash
-python3 src/jarvis_mcp/server.py # for Linux/macOS
-# or
-python src/jarvis_mcp/server.py # for Windows
+npm install -g @anthropic-ai/claude-code
 ```
 
-This command will start Jarivs MCP server.
-
-"OR" simply type
+2. Running the server:
 ```bash
-jarvis-mcp-server
+claude add mcp jarvis -- uv --directory ~/scientific-mcps/Jarvis run jarvis-mcp
 ```
 
-Refer to Installation and setup [guide.](./docs/GUIDE.md)
+### Running the Server on open source LLM client (Claude, Copilot, etc.)
 
+**Put the following in settings.json of any open source LLMs like Claude or Microsoft Co-pilot:**
+
+```bash
+"jarvis-mcp": {
+    "command": "uv",
+    "args": [
+        "--directory",
+        "path/to/directory/src/jarvis_mcp/",
+        "run",
+        "server.py"
+    ]
+}
+```
 
 ---
 
 ## Operations and Screenshots 
-
-To use Jarvis MCP connect it with a client or enter dev command to do the tool calling. 
-
-```bash 
-mcp dev src/jarvis_mcp/server.py
-```
-
-Below are the outputs of Jarvis MCP connected with a simple Gemini Client script. 
 
 ##### 1. **Initialize Jarvis**
 
