@@ -25,7 +25,11 @@ The following capabilities have been implemented:
 
 ---
 
-**For Optimal Compatibility and to run all the mcps together prefer setting up on Linux(Ubuntu)**
+## Prerequisites
+- Python 3.10 or higher (https://www.python.org/)
+- [uv](https://docs.astral.sh/uv/) package manager
+- Linux/macOS environment (for optimal compatibility)
+
 
 ## Installation
 

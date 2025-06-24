@@ -20,6 +20,13 @@ With **Jarvis-MCP**, you can:
 
 ---
 
+## Prerequisites
+
+- Python 3.10 or higher
+- [uv](https://docs.astral.sh/uv/) package manager
+- Linux/macOS environment (for optimal compatibility)
+
+
 ## Setup
 **Run the Mcp Server directly:**
 
