@@ -1,0 +1,2 @@
+[console_scripts]
+lmod-mcp = lmod_mcp.server:main

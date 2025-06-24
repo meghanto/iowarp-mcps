@@ -14,8 +14,10 @@ The following capabilities have been implemented:
 | `Arxiv` | Data | Fetches recent research papers from the Arxiv API. |
 | `ChronoLog` | External System | Provides tools to log and retrieve data from a ChronoLog server. |
 | `Compression` | Tool | Simulates file compression using Python's `gzip` module. |
+| `Darshan` | Analysis | Analyzes I/O profiler trace files for performance insights. |
 | `HDF5` | Data | Lists `.hdf5` files from a specified local directory. |
 | `Jarvis` | Tool | Manages the full lifecycle of data-centric pipelines. |
+| `Lmod` | Tool | Manages environment modules using the Lmod system. |
 | `Node_Hardware` | Tool | Reports the number of CPU cores on the current system. |
 | `Pandas` | Data | Loads and filters data from a CSV file using the `pandas` library. |
 | `Parallel_Sort`| Tool | Simulates sorting a large text file and returns the sorted result. |
@@ -65,8 +67,10 @@ uv pip install --requirement pyproject.toml
 | `Arxiv` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Arxiv"` | [docs](./Arxiv/README.md) |
 | `ChronoLog` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Chronolog"` | [docs](./Chronolog/README.md) |
 | `Compression` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Compression"` | [docs](./Compression/README.md) |
+| `Darshan` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Darshan"` | [docs](./Darshan/README.md) |
 | `HDF5` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=HDF5"` | [docs](./HDF5/README.md) |
 | `Jarvis` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Jarvis"` | [docs](./Jarvis/README.md) |
+| `Lmod` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=lmod"` | [docs](./lmod/README.md) |
 | `Node_Hardware` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Node_Hardware"` | [docs](./Node_Hardware/README.md) |
 | `Pandas` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Pandas"` | [docs](./Pandas/README.md) |
 | `Parallel_Sort` | `"git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Parallel_Sort"`| [docs](./Parallel_Sort/README.md) |
