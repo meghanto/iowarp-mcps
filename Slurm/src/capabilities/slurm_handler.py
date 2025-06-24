@@ -1,62 +1,53 @@
-import uuid
-import subprocess
-import os
-from typing import Dict, Any
-from ..models import JSONRPCResponse
+"""
+Slurm job management capabilities (Backward compatibility module).
+This module re-exports all functions from individual capability modules
+to maintain backward compatibility with existing code.
 
-# Handle job submission requests
-async def handle_request(params: Dict[str, Any]):
-    required_params = ["script", "cores"]
-    
-    # Check if required parameters are provided
-    if not all(p in params for p in required_params):
-        return JSONRPCResponse(
-            error={"code": -32602, "message": f"Required parameters: {', '.join(required_params)}"}
-        ).dict()
-    
-    try:
-        script_path = params["script"]
-        cores = params["cores"]
-        memory = params.get("memory", "4GB")  # Default memory to 4GB if not provided
-        job_name = params.get("jobName", "mcp_job")  # Default job name to 'mcp_job' if not provided
-        
-        # Validate the script file path
-        if not os.path.exists(script_path):
-            raise ValueError(f"Script file not found: {script_path}")
-        
-        # Validate the cores input
-        if not isinstance(cores, int) or cores < 1:
-            raise ValueError("Cores must be a positive integer")
-        
-        # Simulate job submission
-        job_id = str(uuid.uuid4())  # Generate a unique job ID
-        mock_command = [
-            "sbatch",
-            f"--job-name={job_name}",
-            f"--ntasks={cores}",
-            f"--mem={memory}",
-            script_path
-        ]
-        
-        # In a real implementation, the subprocess would submit the job
-        # For example, use subprocess.run to submit the job:
-        # result = subprocess.run(mock_command, capture_output=True, text=True)
-        
-        # For simulation, we'll mock the response
-        return {
-            "jobId": job_id,
-            "status": "PENDING",  # Job is in a pending state
-            "command": " ".join(mock_command),  # The simulated sbatch command
-            "submissionTime": "2023-01-01T12:00:00Z",  # Simulated submission time
-            "metadata": {
-                "estimatedStart": "2023-01-01T12:05:00Z",  # Estimated job start time
-                "queue": "normal",  # Job queue
-                "allocatedNodes": []  # No nodes allocated yet
-            }
-        }
+For new code, consider importing directly from specific capability modules:
+- job_submission: submit_slurm_job
+- job_status: get_job_status
+- job_cancellation: cancel_slurm_job
+- job_listing: list_slurm_jobs
+- job_details: get_job_details
+- job_output: get_job_output
+- cluster_info: get_slurm_info
+- queue_info: get_queue_info
+- array_jobs: submit_array_job
+- node_info: get_node_info
+- utils: check_slurm_available
+"""
 
-    except Exception as e:
-        # Handle any exceptions and return a JSON-RPC error response
-        return JSONRPCResponse(
-            error={"code": -32000, "message": str(e)}
-        ).dict()
+# Re-export all functions for backward compatibility
+from .job_submission import submit_slurm_job, _submit_real_slurm_job, _create_sbatch_script
+from .job_status import get_job_status
+from .job_cancellation import cancel_slurm_job
+from .job_listing import list_slurm_jobs
+from .job_details import get_job_details
+from .job_output import get_job_output
+from .cluster_info import get_slurm_info
+from .queue_info import get_queue_info
+from .array_jobs import submit_array_job
+from .node_info import get_node_info
+from .utils import check_slurm_available
+
+# Keep old function name for backward compatibility
+def _check_slurm_available():
+    """Check if Slurm is available on the system (deprecated - use check_slurm_available)."""
+    return check_slurm_available()
+
+__all__ = [
+    'submit_slurm_job',
+    '_submit_real_slurm_job',
+    '_create_sbatch_script',
+    'get_job_status',
+    'cancel_slurm_job',
+    'list_slurm_jobs',
+    'get_job_details',
+    'get_job_output',
+    'get_slurm_info',
+    'get_queue_info',
+    'submit_array_job',
+    'get_node_info',
+    '_check_slurm_available',
+    'check_slurm_available'
+]
