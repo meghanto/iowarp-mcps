@@ -4,7 +4,7 @@
 
 set -e
 
-PROJECT_DIR="/home/sislam6/Illinois_Tech/PhD/Spring25_iit/CS550/scientific-mcps/slurm-mcp"
+PROJECT_DIR="/home/sislam6/Illinois_Tech/PhD/Spring25_iit/CS550/scientific-mcps/Slurm"
 SERVER_SCRIPT="src/server.py"
 LOG_FILE="server_manager.log"
 PID_FILE="server.pid"
