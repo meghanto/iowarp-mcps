@@ -11,7 +11,8 @@ keywords = ["MCP", "JSON-RPC", "FastAPI", "Pandas", "HDF5"]
 license = "MIT"
 authors = [
   { name = "shazzadul", email = "sislam6@hawk.iit.edu" },
-  { name ="Soham Sonar", email = "ssonar2@hawk.iit.edu"}
+  { name ="Soham Sonar", email = "ssonar2@hawk.iit.edu"},
+  { name ="Aum Sathwara", email = "asathwara@hawk.iit.edu"}
 ]
 readme = "README.md"
 dependencies = [
@@ -28,6 +29,9 @@ dependencies = [
 ]
 
 optional-dependencies = { test = ["pytest>=6.0", "httpx"]}
+
+[project.scripts]
+hdf5-mcp = "mcp_server.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

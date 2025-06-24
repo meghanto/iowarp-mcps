@@ -1,6 +1,13 @@
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "plot-mcp"
 version = "0.1.0"
+description = "Plot MCP server"
+readme = "README.md"
+requires-python = ">=3.10"
 dependencies = [
     "fastapi",
     "uvicorn",
@@ -10,9 +17,8 @@ dependencies = [
     "pandas"
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[project.scripts]
+plot-mcp = "server:main"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src"]
+[tool.setuptools.packages.find]
+where = ["src"]

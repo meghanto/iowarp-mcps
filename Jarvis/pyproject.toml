@@ -7,7 +7,7 @@ name = "jarvis-mcp"
 version = "0.1.0"
 description = "MCP server and client for Jarvis-CD pipelines"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.12.0"
 dependencies = [
   "fastmcp",
   "fastapi",
@@ -23,4 +23,4 @@ where = ["src"]
 
 [project.scripts]
 # this creates a `mcp-server` and `mcp-client` CLI on your $PATH:
-jarvis-mcp-server = "jarvis_mcp.server:main"
+jarvis-mcp = "jarvis_mcp.server:main"

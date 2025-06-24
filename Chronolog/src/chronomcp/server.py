@@ -40,5 +40,8 @@ async def retrieve_interaction(
     """
     return await _retrieve(chronicle_name, story_name, start_time, end_time)
 
-if __name__ == "__main__":
+def main():
     mcp.run()
+
+if __name__ == "__main__":
+    main()

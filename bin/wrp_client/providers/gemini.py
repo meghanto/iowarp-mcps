@@ -43,24 +43,27 @@ class GeminiLLM(BaseLLM):
     ) -> LLMReply:
         query = messages[-1]["content"]
         
-        tool_descs = []
-        for t in tools:
-            parameters = {
-                "type": t.input_schema.get("type", "object"),
-                "properties": {
-                    k: {"type": v.get("type", "string"), "description": v.get("description", "")}
-                    for k, v in t.input_schema.get("properties", {}).items()
-                },
-                "required": t.input_schema.get("required", []),
-            }
-            tool_descs.append({
-                "name": t.name,
-                "description": t.description,
-                "parameters": parameters,
-            })
-        
-        tools_schema = types.Tool(function_declarations=tool_descs)
-        config = types.GenerateContentConfig(tools=[tools_schema])
+        # Only create tools config if tools are provided
+        config = None
+        if tools:
+            tool_descs = []
+            for t in tools:
+                parameters = {
+                    "type": t.input_schema.get("type", "object"),
+                    "properties": {
+                        k: {"type": v.get("type", "string"), "description": v.get("description", "")}
+                        for k, v in t.input_schema.get("properties", {}).items()
+                    },
+                    "required": t.input_schema.get("required", []),
+                }
+                tool_descs.append({
+                    "name": t.name,
+                    "description": t.description,
+                    "parameters": parameters,
+                })
+            
+            tools_schema = types.Tool(function_declarations=tool_descs)
+            config = types.GenerateContentConfig(tools=[tools_schema])
 
         response = await asyncio.to_thread(
             self.client.models.generate_content,

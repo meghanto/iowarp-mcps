@@ -1,11 +1,22 @@
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "chronolog-mcp"
 version = "0.1.0"
-description = "Add your description here"
+description = "ChronoLog MCP server"
 readme = "README.md"
 requires-python = "==3.11.12"
 dependencies = [
-    "mcp[cli]>=1.2.0",
-    "python-dotenv>=1.0.1",
-    "google-genai>=0.1.0"
+    "fastmcp",
+    "python-dotenv",
+    "google-genai",
+    "h5py"
 ]
+
+[project.scripts]
+chronolog-mcp = "chronomcp.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

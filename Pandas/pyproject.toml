@@ -1,13 +1,13 @@
 # pyproject.toml
 
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=64.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pandas-mcp"
 version = "0.1.0"
-description = "A Scientific MCP Server for AI agents/LLMs to access scientific computing resources"
+description = "Pandas MCP server"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -36,6 +36,9 @@ dev = [
     "mypy>=1.2.0",
 ]
 
+[project.scripts]
+pandas-mcp = "server:main"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
@@ -49,3 +52,6 @@ target-version = ["py310"]
 [tool.isort]
 profile = "black"
 line_length = 88
+
+[tool.setuptools.packages.find]
+where = ["src"]
