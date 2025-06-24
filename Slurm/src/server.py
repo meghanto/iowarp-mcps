@@ -237,6 +237,74 @@ async def get_node_info_tool() -> dict:
     return mcp_handlers.get_node_info_handler()
 
 
+@mcp.tool(
+    name="allocate_slurm_nodes",
+    description="Allocate nodes using salloc for interactive sessions or resource reservation."
+)
+async def allocate_slurm_nodes_tool(
+    nodes: int = 1,
+    cores: int = 1,
+    memory: str = None,
+    time_limit: str = "01:00:00",
+    partition: str = None,
+    job_name: str = None,
+    immediate: bool = False
+) -> dict:
+    """
+    Allocate Slurm nodes using salloc command.
+    
+    Args:
+        nodes: Number of nodes to allocate (default: 1)
+        cores: Number of cores per node (default: 1) 
+        memory: Memory requirement (e.g., "4G", "2048M")
+        time_limit: Time limit (e.g., "1:00:00", default: "01:00:00")
+        partition: Slurm partition to use
+        job_name: Name for the allocation
+        immediate: Whether to return immediately without waiting for allocation
+        
+    Returns:
+        Dictionary with allocation information
+    """
+    logger.info(f"Allocating {nodes} nodes with {cores} cores each")
+    return mcp_handlers.allocate_nodes_handler(nodes, cores, memory, time_limit, partition, job_name, immediate)
+
+
+@mcp.tool(
+    name="deallocate_slurm_nodes", 
+    description="Deallocate previously allocated nodes by canceling the allocation."
+)
+async def deallocate_slurm_nodes_tool(allocation_id: str) -> dict:
+    """
+    Deallocate Slurm nodes by canceling the allocation.
+    
+    Args:
+        allocation_id: The allocation ID to cancel
+        
+    Returns:
+        Dictionary with deallocation status
+    """
+    logger.info(f"Deallocating allocation {allocation_id}")
+    return mcp_handlers.deallocate_nodes_handler(allocation_id)
+
+
+@mcp.tool(
+    name="get_allocation_status",
+    description="Get the status of a node allocation."
+)
+async def get_allocation_status_tool(allocation_id: str) -> dict:
+    """
+    Get status of a node allocation.
+    
+    Args:
+        allocation_id: The allocation ID to check
+        
+    Returns:
+        Dictionary with allocation status information
+    """
+    logger.info(f"Checking status of allocation {allocation_id}")
+    return mcp_handlers.get_allocation_status_handler(allocation_id)
+
+
 def main():
     """
     Main entry point for the Slurm MCP server.
