@@ -1,7 +1,7 @@
 # server.py
 
 #  Created on: 2nd June, 2025
-#      Author: Soham Sonar ssonar2@hawk.iit.edu
+#      Author: Soham Sonar ssonar2@hawk.illinoistech.edu
 
 
 
@@ -28,7 +28,7 @@ mcp = FastMCP("ADIOSMCP")
 # List BP5 Files Tool
 @mcp.tool(
     name="list_bp5",
-    description="List all the bp5 files in a directory. [Args: directorypath] \n"
+    description="Lists all BP5 files in a given directory, the bp5 files are actually directories so both file and directory words are correct. The 'directory' parameter must be an absolute path."
 )
 async def list_bp5_tool(directory: str = "data/") -> dict:
     """List all bp5 files in the specified directory."""
@@ -44,11 +44,11 @@ async def list_bp5_tool(directory: str = "data/") -> dict:
 # ─── INSPECT VARIABLES ─────────────────────────────────────────────────────── 
 @mcp.tool(
     name="inspect_variables",
-    description="Inspect all variables in a BP5 file (type, shape, available steps)  [Args: filename]. \n"
+    description="Inspects variables in a BP5 file. If variable_name is provided, returns data for that specific variable. Otherwise, shows type, shape, and steps for all variables. The 'filename' parameter must be an absolute path to the BP5 file."
 )
-async def inspect_variables_tool(filename: str) -> dict:
+async def inspect_variables_tool(filename: str, variable_name: str = None) -> dict:
     try:
-        return await mcp_handlers.inspect_variables_handler(filename)
+        return await mcp_handlers.inspect_variables_handler(filename, variable_name)
     except Exception as e:
         return {
             "content": [{"text": json.dumps({"error": str(e)})}],
@@ -59,7 +59,7 @@ async def inspect_variables_tool(filename: str) -> dict:
 # ─── INSPECT ATTRIBUTES ──────────────────────────────────────────────────────
 @mcp.tool(
     name="inspect_attributes",
-    description="Read global or variable-specific attributes from a BP5 file. [Args: filename, optional: variable_name]. \n"
+    description="Reads global or variable-specific attributes from a BP5 file. The 'filename' parameter must be an absolute path. The 'variable_name' is optional."
 )
 async def inspect_attributes_tool(
     filename: str,
@@ -79,7 +79,7 @@ import mcp_handlers
 # ─── READ VARIABLE AT STEP ────────────────────────────────────────────────────
 @mcp.tool(
     name="read_variable_at_step",
-    description="Read a named variable at a specific step from a BP5 file.  [Args: filename, variable_name, target_step]. \n"
+    description="Reads a named variable at a specific step from a BP5 file. All parameters are required. The 'filename' must be an absolute path."
 )
 async def read_variable_at_step_tool(
     filename: str, variable_name: str, target_step: int
@@ -91,7 +91,7 @@ async def read_variable_at_step_tool(
 # ─── READ ALL VARIABLES ───────────────────────────────────────────────────────
 @mcp.tool(
     name="read_bp5",
-    description="Reads all the variables/data and their steps from a BP5 file. [Args: filename]. \n"
+    description="Reads all variables and their data from every step in a BP5 file. The 'filename' must be an absolute path."
 )
 async def read_bp5_tool(filename: str) -> dict:
     """
@@ -111,34 +111,13 @@ async def read_bp5_tool(filename: str) -> dict:
 # ─── GET MIN / MAX ──────────────────────────────────────────────────────────────
 @mcp.tool(
     name="get_min_max",
-    description=(
-        "Get minimum and maximum of a variable in a BP5 file. [Args: filename, variable_name, optional: step]. \n"
-    ),
+    description="Gets the minimum and maximum of a variable in a BP5 file. The 'filename' must be an absolute path. The 'step' is optional."
 )
 async def get_min_max_tool(
     filename: str, variable_name: str, step: int = None
 ) -> dict:
     return await mcp_handlers.get_min_max_handler(
         filename, variable_name, step
-    )
-
-
-# ─── ADD VARIABLES ──────────────────────────────────────────────────────────────
-@mcp.tool(
-    name="add_variables",
-    description=(
-        "Sum two variables in a BP5 file, either globally or at specific steps. [Args: filename, var1, var2, optional: step1, step2]. \n"
-    ),
-)
-async def add_variables_tool(
-    filename: str,
-    var1: str,
-    var2: str,
-    step1: int = None,
-    step2: int = None,
-) -> dict:
-    return await mcp_handlers.add_variables_handler(
-        filename, var1, var2, step1, step2
     )
 
 
