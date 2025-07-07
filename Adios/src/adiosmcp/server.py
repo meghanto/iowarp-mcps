@@ -56,6 +56,23 @@ async def inspect_variables_tool(filename: str, variable_name: str = None) -> di
             "isError": True
         }
 
+# ─── INSPECT VARIABLES AT STEP ─────────────────────────────────────────────────
+@mcp.tool(
+    name="inspect_variables_at_step",
+    description="Inspects a specific variable at a given step in a BP5 file. Shows variable type, shape, min, max. All parameters are required. The 'filename' must be an absolute path."
+)
+async def inspect_variables_at_step_tool(
+    filename: str, variable_name: str, step: int
+) -> dict:
+    try:
+        return await mcp_handlers.inspect_variables_at_step_handler(filename, variable_name, step)
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "inspect_variables_at_step", "error": type(e).__name__},
+            "isError": True
+        }
+
 # ─── INSPECT ATTRIBUTES ──────────────────────────────────────────────────────
 @mcp.tool(
     name="inspect_attributes",

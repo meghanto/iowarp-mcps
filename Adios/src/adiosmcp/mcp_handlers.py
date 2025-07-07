@@ -1,7 +1,7 @@
 # mcp_handlers.py
 import json
 from typing import Any, Dict, Optional
-from capabilities import bp5_list, bp5_inspect_variables, bp5_attributes, bp5_read_variable_at_step, bp5_read_all_variables, bp5_minmax
+from capabilities import bp5_list, bp5_inspect_variables, bp5_attributes, bp5_read_variable_at_step, bp5_read_all_variables, bp5_minmax, bp5_inspect_variables_at_step
 
 class UnknownToolError(Exception):
     """Raised when an unsupported tool_name is requested."""
@@ -109,6 +109,30 @@ async def get_min_max_handler(
             "content": [{"text": json.dumps({"error": str(e)})}],
             "_meta": {"tool": "get_min_max", "error": type(e).__name__},
             "isError": True,
+        }
+
+async def inspect_variables_at_step_handler(
+    filename: str, variable_name: str, step: int
+) -> Dict[str, Any]:
+    """
+    Async handler for 'inspect_variables_at_step' tool.
+    
+    Args:
+        filename: Path to the BP5 file
+        variable_name: Name of the variable to inspect
+        step: Step number to inspect
+        
+    Returns:
+        Dict containing variable metadata or error information
+    """
+    try:
+        result = bp5_inspect_variables_at_step.inspect_variables_at_step(filename, variable_name, step)
+        return result
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "inspect_variables_at_step", "error": type(e).__name__},
+            "isError": True
         }
 
 
