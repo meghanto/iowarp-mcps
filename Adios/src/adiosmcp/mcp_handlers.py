@@ -53,6 +53,30 @@ async def inspect_variables_handler(filename: str, variable_name: str = None) ->
             "isError": True
         }
 
+async def inspect_variables_at_step_handler(
+    filename: str, variable_name: str, step: int
+) -> Dict[str, Any]:
+    """
+    Async handler for 'inspect_variables_at_step' tool.
+    
+    Args:
+        filename: Path to the BP5 file
+        variable_name: Name of the variable to inspect
+        step: Step number to inspect
+        
+    Returns:
+        Dict containing variable metadata or error information
+    """
+    try:
+        result = bp5_inspect_variables_at_step.inspect_variables_at_step(filename, variable_name, step)
+        return result
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "inspect_variables_at_step", "error": type(e).__name__},
+            "isError": True
+        }
+
 async def inspect_attributes_handler(
     filename: str, variable_name: str = None
 ) -> Dict[str, Any]:
@@ -81,22 +105,6 @@ async def read_variable_at_step_handler(
             "isError": True
         }
     
-async def read_all_variables_handler(filename: str) -> Dict[str, Any]:
-    """
-    Async handler for the 'read_bp5' tool.
-    Invokes bp5_module.bp5(filename) and returns its result,
-    or an error‐formatted dict if an exception occurs.
-    """
-    try:
-        data = bp5_read_all_variables.read_all_variables(filename)
-        return data
-    except Exception as e:
-        return {
-            "content": [{"text": json.dumps({"error": str(e)})}],
-            "_meta": {"tool": "read_bp5", "error": type(e).__name__},
-            "isError": True
-        }
-
 async def get_min_max_handler(
     filename: str, variable_name: str, step: Optional[int] = None
 ) -> Dict[str, Any]:
@@ -109,30 +117,6 @@ async def get_min_max_handler(
             "content": [{"text": json.dumps({"error": str(e)})}],
             "_meta": {"tool": "get_min_max", "error": type(e).__name__},
             "isError": True,
-        }
-
-async def inspect_variables_at_step_handler(
-    filename: str, variable_name: str, step: int
-) -> Dict[str, Any]:
-    """
-    Async handler for 'inspect_variables_at_step' tool.
-    
-    Args:
-        filename: Path to the BP5 file
-        variable_name: Name of the variable to inspect
-        step: Step number to inspect
-        
-    Returns:
-        Dict containing variable metadata or error information
-    """
-    try:
-        result = bp5_inspect_variables_at_step.inspect_variables_at_step(filename, variable_name, step)
-        return result
-    except Exception as e:
-        return {
-            "content": [{"text": json.dumps({"error": str(e)})}],
-            "_meta": {"tool": "inspect_variables_at_step", "error": type(e).__name__},
-            "isError": True
         }
 
 

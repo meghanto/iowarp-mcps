@@ -105,26 +105,6 @@ async def read_variable_at_step_tool(
         filename, variable_name, target_step
     )
 
-# ─── READ ALL VARIABLES ───────────────────────────────────────────────────────
-@mcp.tool(
-    name="read_bp5",
-    description="Reads all variables and their data from every step in a BP5 file. The 'filename' must be an absolute path."
-)
-async def read_bp5_tool(filename: str) -> dict:
-    """
-    MCP‐exposed tool that reads a BP5 file and returns
-    a nested dict of step→ variables and their values.
-    """
-    try:
-        return await mcp_handlers.read_all_variables_handler(filename)
-    except Exception as e:
-        # If something goes really wrong in the handler itself
-        return {
-            "content": [{"text": json.dumps({"error": str(e)})}],
-            "_meta": {"tool": "read_bp5", "error": type(e).__name__},
-            "isError": True
-        }
-
 # ─── GET MIN / MAX ──────────────────────────────────────────────────────────────
 @mcp.tool(
     name="get_min_max",
