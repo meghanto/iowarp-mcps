@@ -105,18 +105,6 @@ async def read_variable_at_step_tool(
         filename, variable_name, target_step
     )
 
-# ─── GET MIN / MAX ──────────────────────────────────────────────────────────────
-@mcp.tool(
-    name="get_min_max",
-    description="Gets the minimum and maximum of a variable in a BP5 file. The 'filename' must be an absolute path. The 'step' is optional."
-)
-async def get_min_max_tool(
-    filename: str, variable_name: str, step: int = None
-) -> dict:
-    return await mcp_handlers.get_min_max_handler(
-        filename, variable_name, step
-    )
-
 
 def main():
     """

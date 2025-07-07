@@ -105,19 +105,6 @@ async def read_variable_at_step_handler(
             "isError": True
         }
     
-async def get_min_max_handler(
-    filename: str, variable_name: str, step: Optional[int] = None
-) -> Dict[str, Any]:
-    try:
-        # returns {"min":…, "max":…} or {"step":…, "min":…, "max":…}
-        result = bp5_minmax.get_min_max(filename, variable_name, step)
-        return result
-    except Exception as e:
-        return {
-            "content": [{"text": json.dumps({"error": str(e)})}],
-            "_meta": {"tool": "get_min_max", "error": type(e).__name__},
-            "isError": True,
-        }
 
 
 
