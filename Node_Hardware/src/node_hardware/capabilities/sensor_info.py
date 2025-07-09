@@ -1,6 +1,15 @@
 """
-Sensor information capabilities.
-Handles temperature and other sensor information.
+Sensor information capabili                        temp_info = {
+                            "label": sensor.label or "Unknown",
+                            "current": sensor.current,
+                            "high": sensor.high,
+                            "critical": sensor.critical,
+                            "current_formatted": f"{sensor.current:.1f}C"
+                        }
+                        if sensor.high:
+                            temp_info["high_formatted"] = f"{sensor.high:.1f}C"
+                        if sensor.critical:
+                            temp_info["critical_formatted"] = f"{sensor.critical:.1f}C"es temperature and other sensor information.
 """
 import psutil
 from .utils import run_command, check_command_available
@@ -34,12 +43,12 @@ def get_sensor_info() -> dict:
                             "current": sensor.current,
                             "high": sensor.high,
                             "critical": sensor.critical,
-                            "current_formatted": f"{sensor.current:.1f}°C"
+                            "current_formatted": f"{sensor.current:.1f}C"
                         }
                         if sensor.high:
-                            temp_info["high_formatted"] = f"{sensor.high:.1f}°C"
+                            temp_info["high_formatted"] = f"{sensor.high:.1f}C"
                         if sensor.critical:
-                            temp_info["critical_formatted"] = f"{sensor.critical:.1f}°C"
+                            temp_info["critical_formatted"] = f"{sensor.critical:.1f}C"
                         
                         sensor_info["temperatures"][sensor_name].append(temp_info)
         except:
@@ -106,7 +115,7 @@ def get_sensor_info() -> dict:
                         sensor_info["thermal_zones"].append({
                             "zone": zone_name,
                             "temperature": temp_celsius,
-                            "temperature_formatted": f"{temp_celsius:.1f}°C"
+                            "temperature_formatted": f"{temp_celsius:.1f}C"
                         })
                     except:
                         pass

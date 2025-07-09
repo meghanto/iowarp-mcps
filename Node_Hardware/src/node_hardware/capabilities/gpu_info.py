@@ -40,7 +40,7 @@ def get_gpu_info() -> dict:
                                 "memory_total": f"{parts[2]} MB",
                                 "memory_used": f"{parts[3]} MB",
                                 "memory_free": f"{parts[4]} MB",
-                                "temperature": f"{parts[5]}°C",
+                                "temperature": f"{parts[5]}C",
                                 "utilization_gpu": f"{parts[6]}%",
                                 "utilization_memory": f"{parts[7]}%"
                             })

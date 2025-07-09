@@ -32,7 +32,7 @@ def test_cpu_info():
     assert 'architecture' in result
     assert isinstance(result['logical_cores'], int)
     assert result['logical_cores'] > 0
-    print("✅ CPU info test passed")
+    print("CPU info test passed")
 
 
 def test_memory_info():
@@ -50,7 +50,7 @@ def test_memory_info():
     assert 'used' in vm
     assert 'percent' in vm
     assert vm['total'] > 0
-    print("✅ Memory info test passed")
+    print(" Memory info test passed")
 
 
 def test_disk_info():
@@ -64,7 +64,7 @@ def test_disk_info():
     assert 'summary' in result
     assert isinstance(result['partitions'], list)
     assert result['total_partitions'] >= 0
-    print("✅ Disk info test passed")
+    print(" Disk info test passed")
 
 
 def test_network_info():
@@ -78,7 +78,7 @@ def test_network_info():
     assert 'io_statistics' in result
     assert isinstance(result['interfaces'], list)
     assert result['total_interfaces'] >= 0
-    print("✅ Network info test passed")
+    print(" Network info test passed")
 
 
 def test_system_info():
@@ -95,7 +95,7 @@ def test_system_info():
     os_info = result['os_info']
     assert 'system' in os_info
     assert 'platform' in os_info
-    print("✅ System info test passed")
+    print(" System info test passed")
 
 
 def test_process_info():
@@ -110,7 +110,7 @@ def test_process_info():
     assert isinstance(result['processes'], list)
     assert len(result['processes']) <= 5
     assert result['total_processes'] >= 0
-    print("✅ Process info test passed")
+    print(" Process info test passed")
 
 
 def test_hardware_summary():
@@ -135,7 +135,7 @@ def test_hardware_summary():
     assert 'disk' in detailed
     assert 'network' in detailed
     assert 'system' in detailed
-    print("✅ Hardware summary test passed")
+    print(" Hardware summary test passed")
 
 
 def test_performance_monitor():
@@ -155,7 +155,7 @@ def test_performance_monitor():
     assert 'requested' in duration
     assert 'actual' in duration
     assert duration['requested'] == 1
-    print("✅ Performance monitor test passed")
+    print(" Performance monitor test passed")
 
 
 def test_gpu_info():
@@ -169,7 +169,7 @@ def test_gpu_info():
     assert 'amd_available' in result
     assert 'intel_available' in result
     assert isinstance(result['gpus'], list)
-    print("✅ GPU info test passed")
+    print(" GPU info test passed")
 
 
 def test_sensor_info():
@@ -184,7 +184,7 @@ def test_sensor_info():
     assert 'sensors_available' in result
     assert isinstance(result['temperatures'], dict)
     assert isinstance(result['fans'], dict)
-    print("✅ Sensor info test passed")
+    print(" Sensor info test passed")
 
 
 if __name__ == "__main__":

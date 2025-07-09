@@ -36,7 +36,7 @@ async def test_server_tools():
     
     # This is a basic check - in a real MCP test we'd use the protocol
     print(f"Expected tools: {tools}")
-    print("✅ Server tools test passed")
+    print(" Server tools test passed")
 
 
 @pytest.mark.asyncio
@@ -53,9 +53,9 @@ async def test_mcp_tool_cpu_info():
         assert 'logical_cores' in result
         assert 'physical_cores' in result
         assert isinstance(result['logical_cores'], int)
-        print("✅ MCP CPU info tool test passed")
+        print(" MCP CPU info tool test passed")
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f" Test failed: {e}")
         raise
 
 
@@ -72,9 +72,9 @@ async def test_mcp_tool_memory_info():
         
         assert 'virtual_memory' in result
         assert 'swap_memory' in result
-        print("✅ MCP memory info tool test passed")
+        print(" MCP memory info tool test passed")
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f" Test failed: {e}")
         raise
 
 
@@ -91,9 +91,9 @@ async def test_mcp_tool_hardware_summary():
         
         assert 'summary' in result
         assert 'detailed' in result
-        print("✅ MCP hardware summary tool test passed")
+        print(" MCP hardware summary tool test passed")
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f" Test failed: {e}")
         raise
 
 
@@ -111,9 +111,9 @@ async def test_mcp_tool_process_info():
         assert 'processes' in result
         assert 'total_processes' in result
         assert len(result['processes']) <= 5
-        print("✅ MCP process info tool test passed")
+        print(" MCP process info tool test passed")
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f" Test failed: {e}")
         raise
 
 
@@ -131,9 +131,9 @@ async def test_mcp_tool_performance_monitor():
         assert 'monitoring_duration' in result
         assert 'cpu' in result
         assert 'memory' in result
-        print("✅ MCP performance monitor tool test passed")
+        print(" MCP performance monitor tool test passed")
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f" Test failed: {e}")
         raise
 
 
@@ -151,9 +151,9 @@ def test_server_main_function():
         # We can't actually run main() as it starts the server
         # But we can test that it exists and is callable
         assert callable(main)
-        print("✅ Server main function test passed")
+        print(" Server main function test passed")
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f" Test failed: {e}")
         raise
 
 

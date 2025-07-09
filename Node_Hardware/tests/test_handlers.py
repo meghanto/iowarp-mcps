@@ -24,7 +24,7 @@ def test_get_cpu_info_handler():
     assert 'physical_cores' in result
     assert 'architecture' in result
     assert isinstance(result['logical_cores'], int)
-    print("✅ CPU info handler test passed")
+    print(" CPU info handler test passed")
 
 
 def test_get_memory_info_handler():
@@ -38,7 +38,7 @@ def test_get_memory_info_handler():
     assert 'swap_memory' in result
     assert 'total' in result['virtual_memory']
     assert 'available' in result['virtual_memory']
-    print("✅ Memory info handler test passed")
+    print(" Memory info handler test passed")
 
 
 def test_get_disk_info_handler():
@@ -52,7 +52,7 @@ def test_get_disk_info_handler():
     assert 'total_partitions' in result
     assert 'summary' in result
     assert isinstance(result['partitions'], list)
-    print("✅ Disk info handler test passed")
+    print(" Disk info handler test passed")
 
 
 def test_get_network_info_handler():
@@ -66,7 +66,7 @@ def test_get_network_info_handler():
     assert 'total_interfaces' in result
     assert 'io_statistics' in result
     assert isinstance(result['interfaces'], list)
-    print("✅ Network info handler test passed")
+    print(" Network info handler test passed")
 
 
 def test_get_system_info_handler():
@@ -80,7 +80,7 @@ def test_get_system_info_handler():
     assert 'hostname' in result
     assert 'uptime' in result
     assert 'system' in result['os_info']
-    print("✅ System info handler test passed")
+    print(" System info handler test passed")
 
 
 def test_get_process_info_handler():
@@ -95,7 +95,7 @@ def test_get_process_info_handler():
     assert 'statistics' in result
     assert isinstance(result['processes'], list)
     assert len(result['processes']) <= 5
-    print("✅ Process info handler test passed")
+    print(" Process info handler test passed")
 
 
 def test_get_hardware_summary_handler():
@@ -112,7 +112,7 @@ def test_get_hardware_summary_handler():
     assert 'disk' in result['summary']
     assert 'network' in result['summary']
     assert 'system' in result['summary']
-    print("✅ Hardware summary handler test passed")
+    print(" Hardware summary handler test passed")
 
 
 def test_monitor_performance_handler():
@@ -127,7 +127,7 @@ def test_monitor_performance_handler():
     assert 'memory' in result
     assert 'disk_io' in result
     assert 'network_io' in result
-    print("✅ Performance monitor handler test passed")
+    print(" Performance monitor handler test passed")
 
 
 def test_get_gpu_info_handler():
@@ -142,7 +142,7 @@ def test_get_gpu_info_handler():
     assert 'amd_available' in result
     assert 'intel_available' in result
     assert isinstance(result['gpus'], list)
-    print("✅ GPU info handler test passed")
+    print(" GPU info handler test passed")
 
 
 def test_get_sensor_info_handler():
@@ -157,7 +157,7 @@ def test_get_sensor_info_handler():
     assert 'battery' in result
     assert 'sensors_available' in result
     assert isinstance(result['temperatures'], dict)
-    print("✅ Sensor info handler test passed")
+    print(" Sensor info handler test passed")
 
 
 def test_error_handling():
@@ -170,7 +170,7 @@ def test_error_handling():
     # Should still return a valid structure, possibly with error
     assert 'processes' in result
     assert 'total_processes' in result
-    print("✅ Error handling test passed")
+    print(" Error handling test passed")
 
 
 if __name__ == "__main__":

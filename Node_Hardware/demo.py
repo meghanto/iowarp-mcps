@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple demonstration of No        print("   Start the server with: uv run node-hardware-mcp")
-        print("   Or with: uv run python src/node_hardware/server.py")e Hardware MCP Server capabilities.
+Simple demonstration of Node Hardware MCP Server capabilities.
 """
 import json
 import sys
@@ -20,21 +19,21 @@ def demonstrate_capabilities():
         from capabilities.cpu_info import get_cpu_info
         from capabilities.memory_info import get_memory_info
         
-        print("\n📊 CPU Information:")
+        print("\nCPU Information:")
         cpu_info = get_cpu_info()
-        print(f"   • Logical cores: {cpu_info.get('logical_cores', 'N/A')}")
-        print(f"   • Physical cores: {cpu_info.get('physical_cores', 'N/A')}")
-        print(f"   • CPU model: {cpu_info.get('cpu_model', 'N/A')}")
-        print(f"   • Architecture: {cpu_info.get('architecture', 'N/A')}")
+        print(f"   Logical cores: {cpu_info.get('logical_cores', 'N/A')}")
+        print(f"   Physical cores: {cpu_info.get('physical_cores', 'N/A')}")
+        print(f"   CPU model: {cpu_info.get('cpu_model', 'N/A')}")
+        print(f"   Architecture: {cpu_info.get('architecture', 'N/A')}")
         
-        print("\n💾 Memory Information:")
+        print("\nMemory Information:")
         memory_info = get_memory_info()
         vm = memory_info.get('virtual_memory', {})
-        print(f"   • Total memory: {vm.get('total_formatted', 'N/A')}")
-        print(f"   • Available memory: {vm.get('available_formatted', 'N/A')}")
-        print(f"   • Memory usage: {vm.get('percent_formatted', 'N/A')}")
+        print(f"   Total memory: {vm.get('total_formatted', 'N/A')}")
+        print(f"   Available memory: {vm.get('available_formatted', 'N/A')}")
+        print(f"   Memory usage: {vm.get('percent_formatted', 'N/A')}")
         
-        print("\n🔧 MCP Tools Available:")
+        print("\nMCP Tools Available:")
         tools = [
             "get_cpu_info - Get detailed CPU information",
             "get_memory_info - Get memory usage statistics", 
@@ -51,16 +50,16 @@ def demonstrate_capabilities():
         for i, tool in enumerate(tools, 1):
             print(f"   {i:2d}. {tool}")
         
-        print("\n✅ Node Hardware MCP Server is ready to use!")
+        print("\nNode Hardware MCP Server is ready to use!")
         print("   Start the server with: uv run python src/node_hardware/server.py")
         print("   Or use the script: uv run node-hardware-mcp")
         print("   The server uses MCP protocol via stdio transport by default")
         
     except ImportError as e:
-        print(f"❌ Import error: {e}")
+        print(f"Import error: {e}")
         print("   Make sure all dependencies are installed with: uv sync")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
     
     print("\n" + "=" * 60)
 

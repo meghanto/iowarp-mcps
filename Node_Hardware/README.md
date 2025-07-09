@@ -9,16 +9,16 @@ The server acts as a bridge between MCP clients and system hardware information,
 ## Features
 
 ### Core Capabilities
-- 🖥️ **CPU Information**: Detailed CPU information including cores, frequency, and usage statistics
-- 💾 **Memory Monitoring**: Comprehensive memory usage including virtual and swap memory
-- 💿 **Disk Information**: Disk usage, partitions, and I/O statistics
-- 🌐 **Network Monitoring**: Network interfaces, statistics, and connection information
-- 🖥️ **System Information**: OS details, uptime, users, and system metrics
-- 📊 **Process Monitoring**: Running processes with resource usage
-- 🔧 **Hardware Summary**: Comprehensive hardware overview
-- ⚡ **Performance Monitoring**: Real-time performance metrics
-- 🎮 **GPU Information**: GPU detection and information (if available)
-- 🌡️ **Sensor Information**: Temperature and sensor monitoring
+- **CPU Information**: Detailed CPU information including cores, frequency, and usage statistics
+- **Memory Monitoring**: Comprehensive memory usage including virtual and swap memory
+- **Disk Information**: Disk usage, partitions, and I/O statistics
+- **Network Monitoring**: Network interfaces, statistics, and connection information
+- **System Information**: OS details, uptime, users, and system metrics
+- **Process Monitoring**: Running processes with resource usage
+- **Hardware Summary**: Comprehensive hardware overview
+- **Performance Monitoring**: Real-time performance metrics
+- **GPU Information**: GPU detection and information (if available)
+- **Sensor Information**: Temperature and sensor monitoring
 
 ### MCP Tools Available
 1. **get_cpu_info** - Get detailed CPU information
