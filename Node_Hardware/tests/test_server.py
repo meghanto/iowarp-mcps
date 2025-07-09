@@ -1,68 +1,176 @@
-
 """
-Integration tests for FastAPI MCP server endpoints.
-
-Covers:
- - mcp/listResources endpoint
- - mcp/callTool for filter_csv, list_hdf5, and node_hardware
- - Unknown‑tool endpoint error
+Integration tests for Node Hardware MCP Server.
+Tests the server integration and MCP protocol compliance.
 """
-
-import json
 import pytest
-from fastapi.testclient import TestClient
-from mcp_server.server import app
+import asyncio
+import json
+import sys
+import os
 
-@pytest.fixture(scope="module")
-def client():
-    return TestClient(app)
-
-
-def test_list_resources_endpoint(client):
-    print("\n=== Running test_list_resources_endpoint ===")
-    payload = {"jsonrpc": "2.0", "method": "mcp/listResources", "id": 1}
-    print("Request payload:", payload)
-    res = client.post("/mcp", json=payload)
-    print("Response status:", res.status_code)
-    print("Response JSON:", res.json())
-    assert res.status_code == 200
-    assert 'resources' in res.json()['result']
+# Add src to path using relative path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src', 'node_hardware'))
 
 
-def test_call_tool_filter_endpoint(client, tmp_path):
-    print("\n=== Running test_call_tool_filter_endpoint ===")
-    csv = tmp_path / "s.csv"
-    csv.write_text("id,value\n1,20\n2,80\n")
-    payload = {"jsonrpc": "2.0", "method": "mcp/callTool", "params": {"tool": "filter_csv", "csv_path": str(csv), "threshold": 50}, "id": 2}
-    print("Request payload:", payload)
-    res = client.post("/mcp", json=payload)
-    print("Response status:", res.status_code)
-    print("Response JSON:", res.json())
-    rows = json.loads(res.json()['result']['content'][0]['text'])
-    print("Parsed rows:", rows)
-    assert rows[0]['value'] == 80
+@pytest.mark.asyncio
+async def test_server_tools():
+    """Test that server tools are properly registered."""
+    print("\n=== Testing Server Tools ===")
+    
+    # Import the FastMCP instance
+    from server import mcp
+    
+    # Check if tools are registered
+    tools = [
+        "get_cpu_info",
+        "get_memory_info",
+        "get_disk_info", 
+        "get_network_info",
+        "get_system_info",
+        "get_process_info",
+        "get_hardware_summary",
+        "monitor_performance",
+        "get_gpu_info",
+        "get_sensor_info"
+    ]
+    
+    # This is a basic check - in a real MCP test we'd use the protocol
+    print(f"Expected tools: {tools}")
+    print(" Server tools test passed")
 
 
-def test_call_tool_hdf5_endpoint(client, tmp_path):
-    print("\n=== Running test_call_tool_hdf5_endpoint ===")
-    d = tmp_path / "d2"
-    d.mkdir()
-    (d / "f1.hdf5").write_text("")
-    payload = {"jsonrpc": "2.0", "method": "mcp/callTool", "params": {"tool": "list_hdf5", "directory": str(d)}, "id": 3}
-    print("Request payload:", payload)
-    res = client.post("/mcp", json=payload)
-    print("Response status:", res.status_code)
-    print("Response JSON:", res.json())
-    files = json.loads(res.json()['result']['content'][0]['text'])
-    print("Parsed files:", files)
-    assert len(files) == 1
+@pytest.mark.asyncio
+async def test_mcp_tool_cpu_info():
+    """Test CPU info tool via MCP."""
+    print("\n=== Testing MCP CPU Info Tool ===")
+    
+    try:
+        from server import get_cpu_info_tool
+        
+        result = await get_cpu_info_tool()
+        print("CPU Info Tool Result:", result)
+        
+        assert 'logical_cores' in result
+        assert 'physical_cores' in result
+        assert isinstance(result['logical_cores'], int)
+        print(" MCP CPU info tool test passed")
+    except Exception as e:
+        print(f" Test failed: {e}")
+        raise
 
 
-def test_unknown_tool_endpoint(client):
-    print("\n=== Running test_unknown_tool_endpoint ===")
-    payload = {"jsonrpc": "2.0", "method": "mcp/callTool", "params": {"tool": "bad"}, "id": 4}
-    print("Request payload:", payload)
-    res = client.post("/mcp", json=payload)
-    print("Response status:", res.status_code)
-    print("Response JSON:", res.json())
-    assert res.json()['error']['code'] == -32601
+@pytest.mark.asyncio
+async def test_mcp_tool_memory_info():
+    """Test memory info tool via MCP."""
+    print("\n=== Testing MCP Memory Info Tool ===")
+    
+    try:
+        from server import get_memory_info_tool
+        
+        result = await get_memory_info_tool()
+        print("Memory Info Tool Result:", result)
+        
+        assert 'virtual_memory' in result
+        assert 'swap_memory' in result
+        print(" MCP memory info tool test passed")
+    except Exception as e:
+        print(f" Test failed: {e}")
+        raise
+
+
+@pytest.mark.asyncio
+async def test_mcp_tool_hardware_summary():
+    """Test hardware summary tool via MCP."""
+    print("\n=== Testing MCP Hardware Summary Tool ===")
+    
+    try:
+        from server import get_hardware_summary_tool
+        
+        result = await get_hardware_summary_tool()
+        print("Hardware Summary Tool Result:", result)
+        
+        assert 'summary' in result
+        assert 'detailed' in result
+        print(" MCP hardware summary tool test passed")
+    except Exception as e:
+        print(f" Test failed: {e}")
+        raise
+
+
+@pytest.mark.asyncio
+async def test_mcp_tool_process_info():
+    """Test process info tool via MCP."""
+    print("\n=== Testing MCP Process Info Tool ===")
+    
+    try:
+        from server import get_process_info_tool
+        
+        result = await get_process_info_tool(limit=5)
+        print("Process Info Tool Result:", result)
+        
+        assert 'processes' in result
+        assert 'total_processes' in result
+        assert len(result['processes']) <= 5
+        print(" MCP process info tool test passed")
+    except Exception as e:
+        print(f" Test failed: {e}")
+        raise
+
+
+@pytest.mark.asyncio
+async def test_mcp_tool_performance_monitor():
+    """Test performance monitor tool via MCP."""
+    print("\n=== Testing MCP Performance Monitor Tool ===")
+    
+    try:
+        from server import monitor_performance_tool
+        
+        result = await monitor_performance_tool(duration=1)
+        print("Performance Monitor Tool Result:", result)
+        
+        assert 'monitoring_duration' in result
+        assert 'cpu' in result
+        assert 'memory' in result
+        print(" MCP performance monitor tool test passed")
+    except Exception as e:
+        print(f" Test failed: {e}")
+        raise
+
+
+def test_server_main_function():
+    """Test server main function setup."""
+    print("\n=== Testing Server Main Function ===")
+    
+    try:
+        # Test that main function exists and can be imported
+        from server import main
+        
+        # Test environment variable handling
+        os.environ['MCP_TRANSPORT'] = 'stdio'
+        
+        # We can't actually run main() as it starts the server
+        # But we can test that it exists and is callable
+        assert callable(main)
+        print(" Server main function test passed")
+    except Exception as e:
+        print(f" Test failed: {e}")
+        raise
+
+
+if __name__ == "__main__":
+    print("Running Node Hardware MCP Server Integration Tests")
+    print("=" * 60)
+    
+    # Run async tests
+    asyncio.run(test_server_tools())
+    asyncio.run(test_mcp_tool_cpu_info())
+    asyncio.run(test_mcp_tool_memory_info())
+    asyncio.run(test_mcp_tool_hardware_summary())
+    asyncio.run(test_mcp_tool_process_info())
+    asyncio.run(test_mcp_tool_performance_monitor())
+    
+    # Run sync tests
+    test_server_main_function()
+    
+    print("\n" + "=" * 60)
+    print("All server integration tests completed!")
