@@ -1,291 +1,218 @@
-# MCP Server Implementation
+# Parallel Sort MCP Server
 
+A comprehensive Model Context Protocol (MCP) server for advanced log file processing and analysis. Provides parallel sorting capabilities, statistical analysis, pattern detection, and flexible export options for large-scale log data processing.
 
-## MCP Capabilities
+## Implemented MCP Capabilities
 
+| Capability | Type | Description |
+|------------|------|-------------|
+| `sort_log_by_timestamp` | Tool | Sort log file lines by timestamps in YYYY-MM-DD HH:MM:SS format |
+| `parallel_sort_large_file` | Tool | Sort large log files using parallel processing with chunked approach |
+| `analyze_log_statistics` | Tool | Generate comprehensive statistics and analysis for log files |
+| `detect_log_patterns` | Tool | Detect patterns including anomalies, error clusters, and trending issues |
+| `filter_logs` | Tool | Filter log entries based on multiple conditions with complex logical operations |
+| `filter_by_time_range` | Tool | Filter log entries by time range using start and end timestamps |
+| `filter_by_log_level` | Tool | Filter log entries by log level (ERROR, WARN, INFO, DEBUG, etc.) |
+| `filter_by_keyword` | Tool | Filter log entries by keywords in the message content |
+| `apply_filter_preset` | Tool | Apply predefined filter presets for common use cases |
+| `export_to_json` | Tool | Export log processing results to JSON format |
+| `export_to_csv` | Tool | Export log entries to CSV format with structured columns |
+| `export_to_text` | Tool | Export log entries to plain text format |
+| `generate_summary_report` | Tool | Generate comprehensive summary report with statistics and analysis |
 
-**Sort Handler**
-- Sorts log file lines by timestamps in the format: YYYY-MM-DD HH:MM:SS
-- Handles edge cases such as:
-  - Empty files
-  - Invalid timestamp formats
-- Returns either sorted entries or a descriptive error message
+## Quick Start
 
+### Installation
 
-## Environment Setup (Linux)
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/iowarp/scientific-mcps.git
+   cd scientific-mcps/Parallel_Sort
+   ```
 
-1. Install uv:
+2. **Install dependencies:**
+   ```bash
+   uv sync
+   ```
+
+3. **Test the installation:**
+   ```bash
+   uv run python -m pytest tests/ -v
+   ```
+
+### Running the Server
+
 ```bash
-pip install uv
+# Using the script
+uv run parallel-sort-mcp
+
+# Direct execution
+uv run python src/parallel_sort/server.py
 ```
 
-2. Create and activate environment using uv:
+## Usage Examples
+
+### Basic Log Sorting
+```python
+# Sort a log file by timestamp
+sort_log_by_timestamp("application.log")
+```
+
+### Parallel Processing for Large Files
+```python
+# Sort large files with parallel processing
+parallel_sort_large_file("huge_log.txt", chunk_size_mb=100, max_workers=4)
+```
+
+### Log Analysis
+```python
+# Generate comprehensive statistics
+analyze_log_statistics("application.log")
+
+# Detect patterns and anomalies
+detect_log_patterns("application.log")
+```
+
+### Advanced Filtering
+```python
+# Filter by time range
+filter_by_time_range("app.log", "2024-01-01 08:00:00", "2024-01-01 18:00:00")
+
+# Filter by log level
+filter_by_log_level("app.log", "ERROR,FATAL", exclude=False)
+
+# Apply preset filters
+apply_filter_preset("app.log", "errors_only")
+```
+
+### Export Options
+```python
+# Export to different formats
+export_to_json(data, include_metadata=True)
+export_to_csv(data, include_headers=True)
+generate_summary_report(data)
+```
+
+## Core Features
+
+- **Parallel Processing**: True parallel sorting for large files using multiprocessing
+- **Advanced Analytics**: Comprehensive statistics, pattern detection, and temporal analysis
+- **Flexible Filtering**: Multi-condition filtering with logical operations and presets
+- **Multiple Export Formats**: JSON, CSV, plain text, and summary reports
+- **Memory Efficient**: Streaming processing and configurable chunk sizes
+- **Error Handling**: Robust handling of invalid timestamps and malformed entries
+
+## Testing
+
+Run the comprehensive test suite:
+
 ```bash
-uv venv mcp-server
-source mcp-server/bin/activate
+# Run all tests
+uv run pytest
+
+# Run specific test files
+uv run pytest tests/test_sort_handler.py
+uv run pytest tests/test_export_handler.py
+
+# Run with verbose output
+uv run pytest -v
 ```
 
-3. Install dependencies using uv:
-```bash
-# Install dependencies from pyproject.toml
-uv pip install --requirement pyproject.toml
+## Configuration
+
+The server supports environment variables:
+
+- `MCP_TRANSPORT`: Transport type (`stdio` or `sse`)
+- `MCP_SSE_HOST`: Host for SSE transport (default: `0.0.0.0`)
+- `MCP_SSE_PORT`: Port for SSE transport (default: `8000`)
+
+## Integration with MCP Clients
+
+### Claude Desktop
+Add to your configuration:
+```json
+{
+  "parallel-sort-mcp": {
+    "command": "uv",
+    "args": [
+      "--directory", "/path/to/scientific-mcps/Parallel_Sort",
+      "run", "parallel-sort-mcp"
+    ]
+  }
+}
 ```
 
-Dependencies are specified in pyproject.toml:
-```toml
-[project]
-name = "mcp_server"
-version = "0.1.0"
-dependencies = [
-    "fastapi>=0.115.12",
-    "numpy>=2.2.4",
-    "pandas>=2.2.3",
-    "pyarrow>=19.0.1",
-    "pydantic>=2.11.3",
-    "pytest>=8.3.5",
-    "pytest-asyncio==0.26.0",
-    "requests>=2.32.3",
-    "uvicorn>=0.34.1",
-]
-
-python = ">=3.10"
-```
-
-## Running the MCP Server
-
-1. Ensure you're in the virtual environment
-2. Start the FastAPI server using uvicorn:
-```bash
-uvicorn src.server:app --reload --host 0.0.0.0 --port 8000
-```
-
-The server will start on `http://localhost:8000` by default.
-
-## Running Tests
-
-Run all tests:
-```bash
-python3 -m pytest
-```
-![Successful Tests](images/tests.png)
-
-Run specific test files:
-```bash
-python3 -m pytest tests/test_sort_handler.py
-python3 -m pytest tests/test_parquet_handler.py
-python3 -m pytest tests/test_compression_handler.py
-python3 -m pytest tests/test_pandas_handler.py
-```
+### Other MCP Clients
+The server uses stdio transport by default and is compatible with any MCP client.
 
 ## Project Structure
+
 ```
-MCP-Server/
-├── src/
-│   ├── capabilities/
-│   │   ├── __init__.py
-│   │   └── sort_handler.py
-│   ├── __init__.py
-│   ├── mcp_handlers.py
-|   └── server.py
-├── tests/
-│   ├── __init__.py
-│   └── test_sort_handler.py
-├── data/
-├── images/
+Parallel_Sort/
 ├── README.md
 ├── pyproject.toml
-└── pytest.ini
+├── uv.lock
+├── src/
+│   └── parallel_sort/
+│       ├── __init__.py
+│       ├── server.py
+│       ├── mcp_handlers.py
+│       └── capabilities/
+│           ├── __init__.py
+│           ├── sort_handler.py
+│           ├── statistics_handler.py
+│           ├── pattern_detection.py
+│           ├── filter_handler.py
+│           ├── export_handler.py
+│           └── parallel_processor.py
+└── tests/
+    ├── __init__.py
+    ├── test_sort_handler.py
+    ├── test_statistics_handler.py
+    ├── test_pattern_detection.py
+    ├── test_filter_handler.py
+    ├── test_export_handler.py
+    ├── test_mcp_handlers.py
+    └── test_server.py
 ```
 
-## JSON-RPC Requests and Responses
+## Filter Presets
 
-### 1. List Resources
+Available predefined filter presets:
 
-![List Resources Request/Response](images/listResources.png)
+- `errors_only`: Show only ERROR, FATAL, and CRITICAL entries
+- `warnings_and_errors`: Show WARNING and error level entries
+- `exclude_debug`: Exclude DEBUG and TRACE entries
+- `connection_issues`: Find connection-related issues
+- `authentication_events`: Find authentication-related events
 
-Request:
-```json
-{
-    "jsonrpc": "2.0",
-    "method": "mcp/listResources",
-    "id": 1
-}
-```
+## Performance Features
 
-Response:
-```json
-{
-    "jsonrpc": "2.0",
-    "result": [
-        {
-            "id": "resource1",
-            "name": "Weather Data",
-            "type": "Parquet",
-            "description": "Weather measurements including temperature, humidity, and pressure",
-            "path": "data/weather_data.parquet",
-            "format": "parquet",
-            "columns": ["temperature", "humidity", "pressure", "timestamp"]
-        },
-        {
-            "id": "resource2",
-            "name": "System Logs",
-            "type": "Log",
-            "description": "System event logs with timestamps",
-            "path": "data/huge_log.txt",
-            "format": "text",
-            "schema": "timestamp:string message:string level:string"
-        },
-        {
-            "id": "resource3",
-            "name": "Student Records",
-            "type": "CSV",
-            "description": "Student academic records with marks",
-            "path": "data/data.csv",
-            "format": "csv",
-            "columns": ["id", "name", "subject", "marks"]
-        },
-        {
-            "id": "resource4",
-            "name": "Application Logs",
-            "type": "Log",
-            "description": "Application startup and runtime logs with timestamps and log levels",
-            "path": "data/output.log",
-            "format": "text",
-            "schema": "timestamp:string level:string message:string",
-            "sample": "[2024-03-16 00:00:15] INFO: Application startup"
-        }
-    ],
-    "id": 1
-}
-```
+### Parallel Processing
+- Automatic detection of large files (>100MB default)
+- Configurable chunk sizes for memory efficiency
+- Multi-core processing with worker pools
+- Intelligent merging of sorted chunks
 
-### 2. Get Resource
+### Memory Optimization
+- Streaming file processing for large datasets
+- Temporary file cleanup
+- Configurable memory usage limits
+- Efficient data structures for sorting
 
-![Get Resource Request/Response](images/getResource.png)
+## Use Cases
 
-Request:
-```json
-{
-    "jsonrpc": "2.0",
-    "method": "mcp/getResource",
-    "params": {
-        "id": "resource1"
-    },
-    "id": 1
-}
-```
+- **DevOps & System Administration**: Analyze application logs, monitor system health
+- **Security Analysis**: Detect authentication failures, identify anomalous patterns
+- **Performance Monitoring**: Analyze response times, identify bottlenecks
+- **Data Science & Analytics**: Process large log datasets, extract patterns for ML
 
-Response:
-```json
-{
-    "jsonrpc": "2.0",
-    "result": {
-        "id": "resource1",
-        "name": "Weather Data",
-        "type": "Parquet",
-        "description": "Weather measurements including temperature, humidity, and pressure",
-        "path": "data/weather_data.parquet",
-        "format": "parquet",
-        "columns": ["temperature", "humidity", "pressure", "timestamp"]
-    },
-    "id": 1
-}
-```
+## Documentation
 
-### 3. List Available Tools
+- [Project Structure](src/parallel_sort/)
+- [Test Examples](tests/)
+- [Capabilities Documentation](src/parallel_sort/capabilities/)
 
-![List Tools Request/Response](images/listTools.png)
+## License
 
-Request:
-```json
-{
-    "jsonrpc": "2.0",
-    "method": "mcp/listTools",
-    "id": 1
-}
-```
-
-Response:
-```json
-{
-    "jsonrpc": "2.0",
-    "result": [
-        {
-            "id": "tool2",
-            "name": "Parallel Sorting",
-            "description": "Sorts log file entries by timestamp",
-            "usage": "'tool': 'sort', 'file': 'log_filename' in params."
-        },
-    ],
-    "id": 1
-}
-```
-
-
-
-### 4. Sort Log Data
-
-#### Example 1: Small Log File
-Request:
-```json
-{
-    "jsonrpc": "2.0",
-    "method": "mcp/callTool",
-    "params": {
-        "tool": "sort",
-        "file": "small_log.txt"
-    },
-    "id": 1
-}
-```
-
-Response:
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "result": [
-        "2024-03-15 09:15:22 WARNING High CPU usage detected",
-        "2024-03-15 09:30:55 WARNING Network latency increased",
-        "2024-03-15 10:30:45 INFO Server started successfully",
-        "2024-03-15 11:00:45 INFO Scheduled maintenance started"
-    ]
-}
-```
-
-#### Example 2: Large Log File
-
-![Sort Large Log Request/Response](images/compress.png)
-
-Request:
-```json
-{
-    "jsonrpc": "2.0",
-    "method": "mcp/callTool",
-    "params": {
-        "tool": "sort",
-        "file": "huge_log.txt"
-    },
-    "id": 1
-}
-```
-
-Response:
-```json
-{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "result": [
-        "2024-03-15 09:00:00 INFO System initialization complete",
-        "2024-03-15 09:15:22 WARNING High CPU usage detected",
-        "2024-03-15 09:30:55 WARNING Network latency increased",
-        "2024-03-15 09:45:18 INFO User authentication successful",
-        "2024-03-15 10:00:15 INFO Backup process started",
-        "2024-03-15 10:15:33 ERROR File system error detected",
-        "2024-03-15 10:30:45 INFO Server started successfully",
-        "2024-03-15 11:00:45 INFO Scheduled maintenance started",
-        "2024-03-15 11:30:00 WARNING Memory usage above 80%",
-        "2024-03-15 11:45:30 ERROR Database connection failed"
-    ]
-}
-```
+MIT License - see the main repository for details.
