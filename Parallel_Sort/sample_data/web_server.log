@@ -1,0 +1,21 @@
+2024-01-15 08:00:01 INFO [HTTP] Server started on port 8080
+2024-01-15 08:00:02 DEBUG [HTTP] Loading SSL certificates
+2024-01-15 08:05:15 INFO [REQUEST] GET /api/users - 200 OK (15ms)
+2024-01-15 08:05:22 INFO [REQUEST] POST /api/login - 200 OK (45ms)
+2024-01-15 08:06:33 ERROR [REQUEST] GET /api/data - 500 Internal Server Error (2ms)
+2024-01-15 08:06:34 ERROR [DATABASE] Connection pool exhausted
+2024-01-15 08:06:35 WARN [RECOVERY] Attempting database reconnection
+2024-01-15 08:07:12 INFO [REQUEST] GET /health - 200 OK (1ms)
+2024-01-15 08:10:45 WARN [SECURITY] Suspicious request pattern detected from IP 192.168.1.100
+2024-01-15 08:10:46 ERROR [SECURITY] Rate limit exceeded for IP 192.168.1.100
+2024-01-15 08:15:33 INFO [REQUEST] PUT /api/profile - 200 OK (89ms)
+2024-01-15 08:20:15 DEBUG [CACHE] Cache hit ratio: 85%
+2024-01-15 08:25:44 INFO [REQUEST] DELETE /api/session - 204 No Content (12ms)
+2024-01-15 08:30:22 ERROR [PAYMENT] Payment gateway timeout
+2024-01-15 08:30:23 WARN [PAYMENT] Retrying payment processing
+2024-01-15 08:30:25 INFO [PAYMENT] Payment processed successfully (retry)
+2024-01-15 09:00:00 INFO [MAINTENANCE] Daily log rotation started
+2024-01-15 09:00:01 DEBUG [MAINTENANCE] Archiving logs older than 30 days
+2024-01-15 09:00:15 INFO [MAINTENANCE] Log rotation completed
+2024-01-15 09:15:33 FATAL [SYSTEM] Critical system error - shutting down
+2024-01-15 09:15:34 ERROR [SYSTEM] Emergency shutdown initiated
