@@ -17,7 +17,10 @@ from jarvis_mcp.capabilities.jarvis_handler import (
     destroy_pipeline,
     get_pkg_config,
     update_pipeline,
-    build_pipeline_env
+    build_pipeline_env,
+    get_all_packages,
+    get_all_repos,
+    get_package_info
 )
 
 # Import JarvisManager (singleton-based configuration and repo manager)
@@ -102,6 +105,76 @@ async def destroy_pipeline_tool(pipeline_id: str) -> dict:
     """Completely destroy the pipeline and clean up associated resources."""
     return await destroy_pipeline(pipeline_id)
 
+
+# ─── ELEVATED API TOOLS ─────────────────────────────────────────────────────────
+
+@mcp.tool(
+    name="get_all_packages", 
+    description="Get all available packages from all repositories with their descriptions and capabilities. This tool scans through all registered Jarvis repositories and returns a comprehensive catalog of available packages including their types, descriptions, configuration parameters, capabilities, and installation requirements. Use this to explore what packages are available before creating pipelines or to understand the full ecosystem of tools at your disposal."
+)
+async def get_all_packages_tool() -> dict:
+    """
+    Get a comprehensive list of all available packages across all repositories.
+    Returns package names, types, descriptions, capabilities, and configuration options.
+    """
+    return await get_all_packages()
+
+
+@mcp.tool(
+    name="get_all_repos",
+    description="Get all currently registered repositories with their status, package counts, and metadata. This tool provides detailed information about each repository including the repository name, file system path, current status (active/inactive), total number of packages available, metadata such as maintainer information, and repository health status. Use this to understand your repository configuration, troubleshoot repository issues, or get an overview of your package ecosystem before managing repositories or debugging package availability."
+)
+async def get_all_repos_tool() -> dict:
+    """
+    Get a comprehensive list of all registered repositories.
+    Returns repository names, paths, status, package counts, and metadata.
+    """
+    return await get_all_repos()
+
+
+@mcp.tool(
+    name="get_package_info",
+    description="Get detailed information about a specific package including README, configuration, capabilities, and more. This comprehensive tool retrieves extensive details about any package in the Jarvis ecosystem including its full description, README documentation, configuration parameters with their types and default values, package capabilities and features, output specifications, installation instructions, and usage examples. Use flexible boolean flags to control which information sections are returned. This is essential for understanding how to properly configure and use packages in your pipelines, troubleshooting package issues, or learning about package functionality before integration."
+)
+async def get_package_info_tool(
+    package_name: str,
+    return_description: bool = True,
+    return_readme: bool = True,
+    return_configuration: bool = True,
+    return_capabilities: bool = True,
+    return_outputs: bool = False,
+    return_installation: bool = False,
+    return_usage_examples: bool = False
+) -> dict:
+    """
+    Get detailed information about a specific package.
+    
+    Args:
+        package_name: Name of the package to get information about
+        return_description: Include package description
+        return_readme: Include full README content
+        return_configuration: Include configuration parameters
+        return_capabilities: Include package capabilities
+        return_outputs: Include information about outputs (extracted from README)
+        return_installation: Include installation instructions (extracted from README)
+        return_usage_examples: Include usage examples (extracted from README)
+    
+    Returns:
+        Detailed package information based on requested components
+    """
+    return await get_package_info(
+        package_name=package_name,
+        return_description=return_description,
+        return_readme=return_readme,
+        return_configuration=return_configuration,
+        return_capabilities=return_capabilities,
+        return_outputs=return_outputs,
+        return_installation=return_installation,
+        return_usage_examples=return_usage_examples
+    )
+
+
+# ─── JARVIS MANAGER TOOLS ───────────────────────────────────────────────────────
 
 @mcp.tool(name="jm_create_config", description="Initialize JarvisManager config directories.")
 def jm_create_config(config_dir: str, private_dir: str, shared_dir: str = None) -> list:
