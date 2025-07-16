@@ -11,7 +11,7 @@ sys.path.insert(0, sys.path[0] + '/..')
 
 from wrp_client.config import load_config
 from wrp_client.providers.factory import get_llm_adapter
-from wrp_client.mcp_manager import MCPManager, find_server_py
+from wrp_client.mcp_manager import MCPManager, find_server, discover_plugins
 
 
 async def async_main():
@@ -41,6 +41,18 @@ async def async_main():
     verbose = args.verbose or config.get("Verbose", False)
     print(f"\nVerbose mode is enabled" if verbose else '')
 
+    # Discover all available plugins once at startup
+    print("Discovering available plugins...")
+    try:
+        available_plugins = discover_plugins()
+        print(f"Found {len(available_plugins)} plugins")
+        if verbose:
+            for name in sorted(available_plugins.keys()):
+                print(f"  - {name}")
+    except Exception as e:
+        print(f"Warning: Plugin discovery failed: {e}", file=sys.stderr)
+        available_plugins = {}
+
     try:
         llm_config = config.get('LLM', {})
         provider_name = llm_config.pop('Provider')
@@ -63,7 +75,7 @@ async def async_main():
 
         print(f"\n=== Connecting to {name} ===")
         try:
-            server_py = find_server_py(name)
+            server_py = find_server(name, available_plugins)
             manager = MCPManager(llm_adapter, verbose=verbose)
             await manager.connect(server_py)
             await manager.chat_loop()
