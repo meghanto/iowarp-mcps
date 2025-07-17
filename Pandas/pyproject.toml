@@ -1,0 +1,73 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pandas-mcp"
+version = "0.1.0"
+description = "MCP server for comprehensive pandas data analysis capabilities"
+readme = "README.md"
+requires-python = ">=3.12.0"
+dependencies = [
+    "fastmcp>=0.1.0",
+    "fastapi>=0.104.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "pandas>=2.2.0",
+    "numpy>=1.24.0",
+    "scipy>=1.11.0",
+    "openpyxl>=3.1.0",
+    "xlrd>=2.0.0",
+    "pyarrow>=15.0.0",
+    "tables>=3.9.0",
+    "sqlalchemy>=2.0.0",
+    "psutil>=5.9.0",
+    "scikit-learn>=1.3.0",
+    "rich>=13.0.0",
+    "tabulate>=0.9.0",
+]
+
+[project.scripts]
+pandas-mcp = "pandasmcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pandasmcp"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/pandasmcp",
+    "README.md",
+    "pyproject.toml"
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.4.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.7.0",
+    "ruff>=0.1.0"
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "RUF"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
