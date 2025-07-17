@@ -9,6 +9,7 @@ from capabilities.text_search import search_by_title, search_by_abstract, search
 from capabilities.date_search import search_date_range
 from capabilities.paper_details import get_paper_details, find_similar_papers
 from capabilities.export_utils import export_to_bibtex
+from capabilities.download_paper import download_paper_pdf, get_pdf_url, download_multiple_pdfs
 
 
 async def search_arxiv_handler(query: str = "cs.AI", max_results: int = 5) -> Dict[str, Any]:
@@ -248,5 +249,85 @@ async def find_similar_papers_handler(reference_paper_id: str, max_results: int 
         return {
             "content": [{"text": json.dumps({"error": str(e)})}],
             "_meta": {"tool": "find_similar_papers", "error": type(e).__name__},
+            "isError": True
+        }
+
+
+async def download_paper_pdf_handler(arxiv_id: str, download_path: str = None) -> Dict[str, Any]:
+    """
+    Handler wrapping the PDF download capability for MCP.
+    Downloads the PDF of a paper and returns download information.
+    
+    Args:
+        arxiv_id: ArXiv paper ID
+        download_path: Optional path to save the PDF
+        
+    Returns:
+        MCP-compliant response dictionary
+    """
+    try:
+        result = await download_paper_pdf(arxiv_id, download_path)
+        return result
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "download_paper_pdf", "error": type(e).__name__},
+            "isError": True
+        }
+
+
+async def get_pdf_url_handler(arxiv_id: str) -> Dict[str, Any]:
+    """
+    Handler wrapping the PDF URL retrieval capability for MCP.
+    Gets the direct PDF URL without downloading.
+    
+    Args:
+        arxiv_id: ArXiv paper ID
+        
+    Returns:
+        MCP-compliant response dictionary
+    """
+    try:
+        result = await get_pdf_url(arxiv_id)
+        return result
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "get_pdf_url", "error": type(e).__name__},
+            "isError": True
+        }
+
+
+async def download_multiple_pdfs_handler(arxiv_ids_json: str, download_path: str = None, max_concurrent: int = 3) -> Dict[str, Any]:
+    """
+    Handler wrapping the multiple PDF download capability for MCP.
+    Downloads multiple PDFs concurrently with rate limiting.
+    
+    Args:
+        arxiv_ids_json: JSON string containing list of ArXiv IDs
+        download_path: Optional path to save PDFs
+        max_concurrent: Maximum number of concurrent downloads
+        
+    Returns:
+        MCP-compliant response dictionary
+    """
+    try:
+        # Parse the JSON string to get the ArXiv IDs list
+        arxiv_ids = json.loads(arxiv_ids_json)
+        if not isinstance(arxiv_ids, list):
+            raise ValueError("Expected a list of ArXiv IDs")
+        
+        result = await download_multiple_pdfs(arxiv_ids, download_path, max_concurrent)
+        return result
+    except json.JSONDecodeError as e:
+        return {
+            "content": [{"text": json.dumps({"error": f"Invalid JSON format: {str(e)}"})}],
+            "_meta": {"tool": "download_multiple_pdfs", "error": "JSONDecodeError"},
+            "isError": True
+        }
+    except Exception as e:
+        return {
+            "content": [{"text": json.dumps({"error": str(e)})}],
+            "_meta": {"tool": "download_multiple_pdfs", "error": type(e).__name__},
             "isError": True
         }

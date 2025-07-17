@@ -15,9 +15,11 @@ src/arxiv_mcp/capabilities/category_search.py
 src/arxiv_mcp/capabilities/date_search.py
 src/arxiv_mcp/capabilities/export_utils.py
 src/arxiv_mcp/capabilities/paper_details.py
+src/arxiv_mcp/capabilities/pdf_download.py
 src/arxiv_mcp/capabilities/text_search.py
 tests/test_category_search.py
 tests/test_export_utils.py
 tests/test_integration.py
 tests/test_paper_details.py
+tests/test_pdf_download.py
 tests/test_text_search.py
