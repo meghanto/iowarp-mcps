@@ -207,6 +207,33 @@ scientific-mcps/
 └── ...
 ```
 
+## Development Progress
+
+Current development status of all MCP implementations:
+
+| MCP Name | Owner/s | Current Phase | Status | Last Update | Blockers | Next Step |
+|---|---|---|---|---|---|---|
+| Adios | Soham | Code pushed to git | active development | 07/11/2025 | N/A | Request to update (add to description) |
+| Arxiv | Isa | PR waiting approval | active development | 07/11/2025 | N/A | - |
+| Chronolog | Aum | Code pushed to git | active development | - | - | - |
+| Compression | Aum, Shazzadul | PR to be made | active development | - | Codebase PR not approved yet | - |
+| HDF5 | Soham | PR to be made | active development | - | Codebase PR not approved yet | - |
+| Jarvis | Jaime, Shazzadul | Discoverability (¼) | active development | 07/16/2025 | Ongoing development | - |
+| Node Hardware | Shazzadul | PR to be made | active development | - | - | - |
+| Pandas | Shazzadul | PR to be made | active development | - | Codebase PR not approved yet | - |
+| Parallel Sort | Isa | Code pushed to git | active development | 07/11/2025 | - | - |
+| Plot | Shazzadul | Code pushed to git | active development | - | PR waiting approval | - |
+| Slurm | Shazzadul | Code pushed to git | active development | - | - | - |
+| Parquet | Shazzadul | PR to be made | active development | - | Codebase PR not approved yet | - |
+
+**Status Options:**
+- active development: Core functionality being built
+- descriptions: Needs description updates
+- documentation: Ready for documentation phase
+- testing: Ready for testing phase
+
+---
+
 ## Usage
 
 To run any MCP server directly or learn more about its specific capabilities, navigate into its directory and follow the instructions in its local `README.md`.
