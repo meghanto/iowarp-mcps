@@ -1,40 +1,74 @@
 
-# Jarvis-MCP
+# Jarvis-MCP - Phase 1: Discoverability
 
-*A MCP server to interact with Jarvis*
+*A MCP server for exploring and understanding the Jarvis ecosystem*
 
 ---
 
 ## Overview
 
-**Jarvis-MCP** is a python package that allows you to control Jarvis using a Model Context Protocol (MCP) server.
+**Jarvis-MCP** is a Python package that implements **Phase 1: Discoverability** tools for the Jarvis Model Context Protocol (MCP) server. This phase focuses on enabling users to explore and understand the Jarvis ecosystem - available packages, repositories, capabilities, and system resources.
 
-With **Jarvis-MCP**, you can:
+With **Jarvis-MCP Phase 1**, you can:
 
-* Initialize and configure Jarvis
-* Bootstrap from ARES
-* Create, list, run, and destroy pipelines
-* Add or remove packages from a pipeline
-* Update package configurations
-* Build and run pipelines
+* **Discover Packages**: Get comprehensive catalog of all available packages across repositories
+* **Explore Package Details**: Retrieve detailed information about specific packages including configuration, capabilities, and usage examples
+* **Manage Repositories**: List, add, remove, and prioritize package repositories
+* **Analyze Resources**: Get comprehensive cluster resource information for deployment planning
+* **Configure System**: Initialize Jarvis configuration, set hostfiles, and build resource graphs
 
 ---
 
 ## Prerequisites
 
-- Python 3.10 or higher
+- Python 3.12 or higher
 - [uv](https://docs.astral.sh/uv/) package manager
 - Linux/macOS environment (for optimal compatibility)
+- Jarvis-CD (optional, for full functionality)
 
+## Phase 1 Tools Implemented
+
+The following discoverability tools are available:
+
+| Tool | Type | Description |
+|---|---|---|
+| `get_all_packages` | Discovery | Retrieve comprehensive catalog of all available packages from all repositories |
+| `get_package_info` | Discovery | Get detailed information about specific packages including README, configuration, and capabilities |
+| `get_all_repos` | Repository Management | List all registered repositories with status, package counts, and metadata |
+| `modify_repo` | Repository Management | Add, remove, or promote repositories with safety controls |
+| `get_resource_status` | Resource Planning | Provide cluster resource information for deployment planning |
+| `jm_create_config` | Configuration | Initialize JarvisManager configuration directories |
+| `jm_load_config` | Configuration | Load existing JarvisManager configuration |
+| `jm_set_hostfile` | Configuration | Set hostfile path for multi-node deployments |
+| `jm_graph_build` | Configuration | Build or rebuild the resource graph |
 
 ## Setup
-**Run the Mcp Server directly:**
 
-   ```bash
-   uv run jarvis-mcp
-   ```
-   
-   This will create a `.venv/` folder, install all required packages, and run the server directly.
+### Method 1: Direct UV Run (Recommended for Development)
+```bash
+# From the Jarvis directory
+uv run jarvis-mcp
+```
+This will create a `.venv/` folder, install all required packages, and run the server directly.
+
+### Method 2: Installation and CLI
+```bash
+# Install in development mode
+uv pip install -e .
+
+# Run the server
+jarvis-mcp
+```
+
+### Method 3: Python Module Execution
+```bash
+# Run with stdio transport (default)
+python -m jarvis_mcp.server
+
+# Run with SSE transport
+MCP_TRANSPORT=sse python -m jarvis_mcp.server
+```
+
 --- 
 
 ## Running the Server with different types of Clients:
@@ -61,11 +95,9 @@ To interact with the Jarvis MCP server, use the main `wrp.py` client. You will n
     
     For detailed setup with local LLMs and other providers, see the [Complete Installation Guide](../bin/docs/Installation.md).
 
-### Running the Server on Claude Command Line Interface Tool.
+### Running the Server on Claude Command Line Interface Tool
 
-1. Install the Claude Code using NPM,
-Install [NodeJS 18+](https://nodejs.org/en/download), then run:
-
+1. Install the Claude Code using NPM:
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
@@ -79,113 +111,202 @@ claude add mcp jarvis -- uv --directory ~/scientific-mcps/Jarvis run jarvis-mcp
 
 **Put the following in settings.json of any open source LLMs like Claude or Microsoft Co-pilot:**
 
-```bash
+```json
 "jarvis-mcp": {
     "command": "uv",
     "args": [
         "--directory",
-        "path/to/directory/src/jarvis_mcp/",
+        "path/to/scientific-mcps/Jarvis",
         "run",
-        "server.py"
+        "jarvis-mcp"
     ]
 }
 ```
 
 ---
 
-## Operations and Screenshots 
+## Phase 1 Operations and Usage Examples
 
-##### 1. **Initialize Jarvis**
+##### 1. **Initialize Jarvis Configuration**
 
-The first step is to initialize Jarvis. This prepares the system for interaction.
+The first step is to initialize Jarvis configuration directories. This prepares the system for interaction.
 
 ```bash
-# Command to initialize Jarvis
-Query: Initialize jarvis with configur, private and shared dir as " . /jarvis—pipelines'
+# Query to initialize Jarvis
+Query: Initialize Jarvis configuration with config dir './config', private dir './private', and shared dir './shared'
 ```
 
-**Output Screenshot**
-
-![alt text](<./docs/assets/Screenshot 2025-05-15 160800.png>)
+**Example Usage:**
+```python
+# Initialize configuration
+await jm_create_config(
+    config_dir="./config",
+    private_dir="./private", 
+    shared_dir="./shared"
+)
+```
 
 ---
 
-##### 2. **Create Pipeline (`ior_test`) and append package**
+##### 2. **Discover Available Packages**
 
-Create a new pipeline named `ior_test` and append package to it. This will be used for testing purposes.
+Explore the complete catalog of available packages across all repositories.
 
 ```bash
-# Command to create a pipeline
-Query: create a pipeline called ior_test and append package ior to it
+# Query to get all packages
+Query: What packages are available in the Jarvis ecosystem?
 ```
 
-**Output Screenshot**
+**Example Usage:**
+```python
+# Get all packages
+catalog = await get_all_packages()
 
-![alt text](<./docs/assets/Screenshot 2025-05-15 162219.png>)
+# Filter by package type
+applications = await get_all_packages(package_type="application")
+
+# Sort by popularity
+popular = await get_all_packages(sort_by="popularity")
+```
 
 ---
 
-##### 3. **Change Configuration of Added Package**
+##### 3. **Get Detailed Package Information**
 
-You can also see and modify the configuration of the package you've added to the pipeline.
-
-```bash
-# Command to change the configuration
-Query: show the configuration of ior in ior_test
-```
-
-**Output Screenshot**
-
-![alt text](<./docs/assets/Screenshot 2025-05-15 162322.png>)
+Learn about specific packages including their configuration parameters and capabilities.
 
 ```bash
-# Command to change the configuration
-Query: update the nprocs to 8 for package ior in pipeline ior_test
+# Query to get package details
+Query: What is the Incompact3D package and how do I configure it?
 ```
 
-![alt text](<./docs/assets/Screenshot 2025-05-15 162545.png>)
----
+**Example Usage:**
+```python
+# Get basic package info
+info = await get_package_info("incompact3d")
 
-##### 4. **Build Environment for `ior_test` Pipeline**
-
-After configuring the pipeline, you can build the environment for `ior_test`.
-
-```bash
-# Command to build the environment
-Query: Build environment for pipeline ior_test 
+# Get configuration parameters
+config_info = await get_package_info(
+    "incompact3d",
+    return_config_params=True,
+    return_examples=True
+)
 ```
-
-**Output Screenshot**
-
-![alt text](<./docs/assets/Screenshot 2025-05-15 162922.png>)
 
 ---
 
-##### 5. **Run the Pipeline (`ior_test`)**
+##### 4. **Manage Package Repositories**
 
-Finally, you can run the pipeline to see everything in action.
+List, add, or manage package repositories in the system.
 
 ```bash
-# Command to run the pipeline
-Query: select the pipeline ior_test and run it
+# Query to list repositories
+Query: What repositories are currently configured?
 ```
 
-**Output Screenshot**
+**Example Usage:**
+```python
+# List all repositories
+repos = await get_all_repos()
 
-![alt text](<./docs/assets/Screenshot 2025-05-15 163023.png>)
+# Add a new repository
+result = await modify_repo(
+    repo_name="myorg_tools",
+    operation="add",
+    repo_path="/path/to/myorg_tools"
+)
+
+# Promote repository to highest priority
+result = await modify_repo(
+    repo_name="myorg_tools",
+    operation="promote"
+)
+```
 
 ---
 
-or **write below** to create pipeline, append package to it and run it:
+##### 5. **Analyze Cluster Resources**
+
+Get comprehensive information about available cluster resources for deployment planning.
+
 ```bash
-Query: create a pipeline called ior_test_2. Add package ior with nprocs set to 16. After adding, set the pipeline ior_test_2 as current and build environment for it and run it.
+# Query to get resource status
+Query: What resources are available on this cluster?
 ```
-![alt text](<./docs/assets/Screenshot 2025-05-15 163759.png>)
+
+**Example Usage:**
+```python
+# Get complete resource status
+resources = await get_resource_status()
+
+# Focus on hardware information
+hardware = await get_resource_status(
+    include_network=False,
+    include_storage=False,
+    detail_level="comprehensive"
+)
+```
 
 ---
+
+##### 6. **Build Resource Graph**
+
+Build the resource graph for resource-aware deployment planning.
+
+```bash
+# Query to build resource graph
+Query: Build the resource graph for the cluster
+```
+
+**Example Usage:**
+```python
+# Build resource graph
+await jm_graph_build(net_sleep=1.0)
+```
+
+---
+
+## Testing
+
+Run the comprehensive Phase 1 test suite:
+
+```bash
+# From the Jarvis directory
+python test_phase1.py
+```
+
+The test suite verifies:
+- ✅ Model imports and functionality
+- ✅ Discoverability function availability
+- ✅ Server structure and tool registration
+- ✅ Pydantic model serialization
+
+## Implementation Status
+
+**Current Phase**: ✅ **Phase 1 (Discoverability)** - Complete and Tested
+
+**Implemented Tools**:
+- ✅ Package Discovery (`get_all_packages`)
+- ✅ Package Information (`get_package_info`)
+- ✅ Repository Management (`get_all_repos`, `modify_repo`)
+- ✅ Resource Planning (`get_resource_status`)
+- ✅ Configuration Management (`jm_*` tools)
+
+**Next Phases**:
+- **Phase 2: Composition** - Intelligent workflow design and package combination
+- **Phase 3: Configuration** - Parameter optimization and performance tuning
+- **Phase 4: Deployment** - Execution management and monitoring
+
+## Documentation
+
+For detailed documentation about the Phase 1 implementation:
+- [PHASE1_README.md](./PHASE1_README.md) - Complete Phase 1 documentation
+
 
 ## Notes
 
-* Ensure your environment is set up with Python 3.10+
-* You’ll need an `.env` file if you're using the Gemini API directly
-* Use `pip install -e .` in the repo to enable CLI tools like `mcp-server` (optional)
+* Ensure your environment is set up with Python 3.12+
+* Jarvis-CD is optional but recommended for full functionality
+* Use `uv pip install -e .` to enable development mode
+* The server supports both stdio and SSE transports
+* Phase 1 focuses on discoverability - pipeline creation and execution will be available in future phases
