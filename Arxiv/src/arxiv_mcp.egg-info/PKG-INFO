@@ -39,6 +39,9 @@ A comprehensive Model Context Protocol (MCP) server for accessing and analyzing 
 | `get_paper_details` | Tool | Get detailed information about a specific paper |
 | `export_to_bibtex` | Tool | Export search results to BibTeX format |
 | `find_similar_papers` | Tool | Find papers similar to a reference paper |
+| `download_paper_pdf` | Tool | Download the PDF of a paper from ArXiv |
+| `get_pdf_url` | Tool | Get the direct PDF URL for a paper |
+| `download_multiple_pdfs` | Tool | Download multiple PDFs concurrently |
 
 ## Quick Start
 
@@ -94,6 +97,18 @@ get_paper_details("1706.03762")  # Attention Is All You Need
 ```python
 # Export search results for citation
 export_to_bibtex(papers_list)
+```
+
+### Download Paper PDFs
+```python
+# Download a single paper PDF
+download_paper_pdf("1706.03762")  # Attention Is All You Need
+
+# Get PDF URL without downloading
+get_pdf_url("1706.03762")
+
+# Download multiple PDFs concurrently
+download_multiple_pdfs('["1706.03762", "2301.12345"]', download_path="/path/to/save")
 ```
 
 ## Common ArXiv Categories

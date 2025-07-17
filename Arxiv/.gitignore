@@ -18,3 +18,13 @@ htmlcov/
 
 .vscode/
 .idea/
+
+# Python packaging artifacts
+*.egg-info/
+*.egg-info
+build/
+dist/
+*.egg
+
+# Literature context files
+literature_context.md
