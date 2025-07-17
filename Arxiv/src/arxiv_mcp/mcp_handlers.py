@@ -3,7 +3,7 @@ MCP handlers for ArXiv research paper search and retrieval.
 These handlers wrap the ArXiv capabilities for MCP protocol compliance.
 """
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any
 from capabilities.category_search import search_arxiv, get_recent_papers, search_by_subject
 from capabilities.text_search import search_by_title, search_by_abstract, search_papers_by_author
 from capabilities.date_search import search_date_range
