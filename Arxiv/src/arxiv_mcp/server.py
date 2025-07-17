@@ -215,6 +215,63 @@ async def find_similar_papers_tool(reference_paper_id: str, max_results: int = 1
     return await mcp_handlers.find_similar_papers_handler(reference_paper_id, max_results)
 
 
+@mcp.tool(
+    name="download_paper_pdf",
+    description="Download the PDF of a paper from ArXiv."
+)
+async def download_paper_pdf_tool(arxiv_id: str, download_path: str = None) -> dict:
+    """
+    Download PDF of an ArXiv paper.
+    
+    Args:
+        arxiv_id: ArXiv paper ID (e.g., '2301.12345' or 'cs/0501001')
+        download_path: Optional path to save the PDF
+        
+    Returns:
+        Dictionary with download information
+    """
+    logger.info(f"Downloading PDF for paper: {arxiv_id}")
+    return await mcp_handlers.download_paper_pdf_handler(arxiv_id, download_path)
+
+
+@mcp.tool(
+    name="get_pdf_url",
+    description="Get the direct PDF URL for a paper without downloading."
+)
+async def get_pdf_url_tool(arxiv_id: str) -> dict:
+    """
+    Get PDF URL for an ArXiv paper.
+    
+    Args:
+        arxiv_id: ArXiv paper ID (e.g., '2301.12345' or 'cs/0501001')
+        
+    Returns:
+        Dictionary with PDF URL information
+    """
+    logger.info(f"Getting PDF URL for paper: {arxiv_id}")
+    return await mcp_handlers.get_pdf_url_handler(arxiv_id)
+
+
+@mcp.tool(
+    name="download_multiple_pdfs",
+    description="Download multiple PDFs concurrently with rate limiting."
+)
+async def download_multiple_pdfs_tool(arxiv_ids_json: str, download_path: str = None, max_concurrent: int = 3) -> dict:
+    """
+    Download multiple PDFs concurrently.
+    
+    Args:
+        arxiv_ids_json: JSON string containing list of ArXiv IDs
+        download_path: Optional path to save PDFs
+        max_concurrent: Maximum number of concurrent downloads
+        
+    Returns:
+        Dictionary with download results
+    """
+    logger.info(f"Downloading multiple PDFs with max_concurrent: {max_concurrent}")
+    return await mcp_handlers.download_multiple_pdfs_handler(arxiv_ids_json, download_path, max_concurrent)
+
+
 def main():
     """
     Main entry point for the ArXiv MCP server.
