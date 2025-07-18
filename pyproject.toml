@@ -27,7 +27,7 @@ dependencies = [
 
 [project.scripts]
 adios-mcp = "adiosmcp.server:main"
-arxiv-mcp = "server:main"
+arxiv-mcp = "arxiv_mcp.server:main"
 chronolog-mcp = "chronomcp.server:main"
 compression-mcp = "server:main"
 darshan-mcp = "darshan_mcp.server:main"
@@ -35,11 +35,11 @@ hdf5-mcp = "mcp_server.server:main"
 jarvis-mcp = "jarvis_mcp.server:main"
 lmod-mcp = "lmod_mcp.server:main"
 node-hardware-mcp = "mcp_server.server:main"
-pandas-mcp = "server:main"
+pandas-mcp = "pandasmcp.server:main"
 parallel-sort-mcp = "server:main"
 parquet-mcp = "server:main"
-plot-mcp = "server:main"
-slurm-mcp = "slurm_mcp.server:main"
+plot-mcp = "plot.server:main"
+slurm-mcp = "server:main"
 
 [tool.setuptools]
 packages = []
