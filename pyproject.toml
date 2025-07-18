@@ -39,7 +39,7 @@ pandas-mcp = "pandasmcp.server:main"
 parallel-sort-mcp = "server:main"
 parquet-mcp = "server:main"
 plot-mcp = "plot.server:main"
-slurm-mcp = "server:main"
+slurm-mcp = "slurm_mcp.server:main"
 
 [tool.setuptools]
 packages = []
