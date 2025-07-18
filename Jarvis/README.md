@@ -21,7 +21,7 @@ With **Jarvis-MCP Phase 1**, you can:
 
 ## Prerequisites
 
-- Python 3.12 or higher
+- Python 3.10.12 or higher
 - [uv](https://docs.astral.sh/uv/) package manager
 - Linux/macOS environment (for optimal compatibility)
 - Jarvis-CD (optional, for full functionality)

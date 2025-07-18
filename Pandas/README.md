@@ -1,6 +1,6 @@
 # Pandas MCP Server
 
-[![Python](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![UV](https://img.shields.io/badge/uv-package%20manager-green.svg)](https://docs.astral.sh/uv/)
 [![MCP](https://img.shields.io/badge/MCP-Model%20Context%20Protocol-orange.svg)](https://github.com/modelcontextprotocol)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -68,7 +68,7 @@ A comprehensive **Model Context Protocol (MCP)** server for advanced data analys
 
 1. **Navigate to Pandas Directory**
 ```bash
-cd /path/to/Jarvis/Pandas
+cd /path/to/scientific-mcps/Pandas
 ```
 
 2. **Install Dependencies with UV**
@@ -100,7 +100,7 @@ Add to your Claude Desktop `settings.json`:
       "command": "uv",
       "args": [
         "--directory",
-        "/path/to/Jarvis/Pandas",
+        "/path/to/scientific-mcps/Pandas",
         "run", 
         "pandas-mcp"
       ]
@@ -124,7 +124,7 @@ python3 bin/wrp.py --conf=bin/confs/Gemini.yaml
 
 ### **Claude CLI Integration**
 ```bash
-claude add mcp pandas -- uv --directory ~/Jarvis/Pandas run pandas-mcp
+claude add mcp pandas -- uv --directory ~/path/to/scientific-mcps/Pandas run pandas-mcp
 ```
 
 ## Comprehensive Capabilities
