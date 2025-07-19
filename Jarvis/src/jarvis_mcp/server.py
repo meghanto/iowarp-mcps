@@ -5,6 +5,7 @@ This server implements the first three phases of the Jarvis MCP according to the
 - Phase 1: Discoverability tools for exploring the Jarvis ecosystem
 - Phase 2: Composition tools for planning and designing deployment workflows
 - Phase 3: Configuration tools for parameter optimization and environment management
+- Phase 4: Deployment tools for Pipeline execution, monitoring, and management
 
 Following MCP best practices, these tools are designed with a workflow-first approach
 rather than direct API mapping, providing intelligent, contextual assistance for
@@ -16,7 +17,7 @@ import os
 import sys
 import logging
 from dotenv import load_dotenv
-from typing import Optional
+from typing import Optional, Dict, Any, List
 
 # Load environment variables from .env file
 load_dotenv()
@@ -65,6 +66,23 @@ from jarvis_mcp.capabilities.configuration import (
     ConfigurationError
 )
 
+# Import Phase 4 deployment tools
+from jarvis_mcp.capabilities.deployment import (
+    run_pipeline,
+    stop_pipeline,
+    clean_pipeline,
+    get_pipeline_status,
+    run_pipeline_from_yaml,
+    execute_pipeline_test,
+    run_pipeline_from_index,
+    monitor_pipeline_execution,
+    analyze_execution_results,
+    manage_execution_logs,
+    handle_checkpoint_restart,
+    integrate_python_api,
+    DeploymentError
+)
+
 # Import data models
 from jarvis_mcp.capabilities.models import (
     PackageCatalog,
@@ -90,7 +108,17 @@ from jarvis_mcp.capabilities.models import (
     SCSSPkgIntegrationInfo,
     PipelineValidationResult,
     ConfigurationOperationResult,
-    ExecutionType
+    ExecutionType,
+    # Phase 4 models
+    PipelineExecutionInfo,
+    PipelineTestExecutionInfo,
+    DistributedExecutionStatus,
+    ExecutionOperationResult,
+    PipelineMonitoringData,
+    ExecutionAnalysisResult,
+    ExecutionLogsInfo,
+    CheckpointInfo,
+    PythonAPIInfo
 )
 
 # Set up logging
@@ -98,7 +126,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize FastMCP server instance
-mcp = FastMCP("Jarvis-MCP-Phases1-2-3-Discoverability-Composition-Configuration")
+mcp = FastMCP("Jarvis-MCP")
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # PHASE 1: DISCOVERABILITY TOOLS
@@ -2540,17 +2568,516 @@ async def integrate_scspkg_packages_tool(
         return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
 
 # ══════════════════════════════════════════════════════════════════════════
+# PHASE 4: DEPLOYMENT TOOLS
+# ══════════════════════════════════════════════════════════════════════════
+
+# Basic Execution Tools (4 tools)
+
+@mcp.tool()
+async def run_pipeline_tool(
+    pipeline_name: str = "",
+    execution_mode: str = "normal", 
+    background: bool = False,
+    dry_run: bool = False
+) -> dict:
+    """
+    Execute pipeline with specified configuration.
+    
+    Equivalent to 'jarvis ppl run'. Executes configured pipeline with
+    proper resource allocation, monitoring, and error handling.
+    
+    Args:
+        pipeline_name: Target pipeline (uses focused if empty)
+        execution_mode: Execution mode (normal, debug, profile, test)
+        background: Run in background mode
+        dry_run: Validate configuration without execution
+        
+    Returns:
+        PipelineExecutionInfo with execution status and details
+    """
+    try:
+        # Convert empty strings to None
+        actual_pipeline_name = pipeline_name if pipeline_name else None
+        
+        result = await run_pipeline(
+            pipeline_name=actual_pipeline_name,
+            execution_mode=execution_mode,
+            background=background,
+            dry_run=dry_run
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in run_pipeline: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in run_pipeline: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+@mcp.tool()
+async def stop_pipeline_tool(
+    execution_id: str = "",
+    pipeline_name: str = "",
+    force: bool = False,
+    cleanup: bool = True
+) -> dict:
+    """
+    Stop running pipeline execution.
+    
+    Equivalent to 'jarvis ppl stop'. Gracefully stops pipeline execution
+    with optional cleanup of temporary resources and intermediate files.
+    
+    Args:
+        execution_id: Specific execution to stop
+        pipeline_name: Pipeline to stop (if execution_id not provided)
+        force: Force immediate termination
+        cleanup: Clean up temporary resources
+        
+    Returns:
+        ExecutionOperationResult with stop operation details
+    """
+    try:
+        # Convert empty strings to None
+        actual_execution_id = execution_id if execution_id else None
+        actual_pipeline_name = pipeline_name if pipeline_name else None
+        
+        result = await stop_pipeline(
+            execution_id=actual_execution_id,
+            pipeline_name=actual_pipeline_name,
+            force=force,
+            cleanup=cleanup
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in stop_pipeline: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in stop_pipeline: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+@mcp.tool()
+async def clean_pipeline_tool(
+    pipeline_name: str = "",
+    clean_level: str = "standard",
+    preserve_logs: bool = True,
+    preserve_outputs: bool = True
+) -> dict:
+    """
+    Clean pipeline artifacts and temporary files.
+    
+    Equivalent to 'jarvis ppl clean'. Removes temporary files, intermediate
+    data, and execution artifacts while preserving important outputs.
+    
+    Args:
+        pipeline_name: Target pipeline (uses focused if empty)
+        clean_level: Cleaning level (minimal, standard, deep, complete)
+        preserve_logs: Keep execution logs
+        preserve_outputs: Keep final output files
+        
+    Returns:
+        ExecutionOperationResult with cleanup details
+    """
+    try:
+        # Convert empty strings to None
+        actual_pipeline_name = pipeline_name if pipeline_name else None
+        
+        result = await clean_pipeline(
+            pipeline_name=actual_pipeline_name,
+            clean_level=clean_level,
+            preserve_logs=preserve_logs,
+            preserve_outputs=preserve_outputs
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in clean_pipeline: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in clean_pipeline: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+@mcp.tool()
+async def get_pipeline_status_tool(
+    pipeline_name: str = "",
+    execution_id: str = "",
+    include_resource_usage: bool = True,
+    include_node_status: bool = False
+) -> dict:
+    """
+    Check pipeline execution status and progress.
+    
+    Equivalent to 'jarvis ppl status'. Provides comprehensive status
+    information including execution progress, resource usage, and health.
+    
+    Args:
+        pipeline_name: Target pipeline (uses focused if empty)
+        execution_id: Specific execution to check
+        include_resource_usage: Include resource utilization data
+        include_node_status: Include distributed node status
+        
+    Returns:
+        PipelineExecutionInfo with current execution status
+    """
+    try:
+        # Convert empty strings to None
+        actual_pipeline_name = pipeline_name if pipeline_name else None
+        actual_execution_id = execution_id if execution_id else None
+        
+        result = await get_pipeline_status(
+            pipeline_name=actual_pipeline_name,
+            execution_id=actual_execution_id,
+            include_resource_usage=include_resource_usage,
+            include_node_status=include_node_status
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in get_pipeline_status: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in get_pipeline_status: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+# Advanced Execution Tools (3 tools)
+
+@mcp.tool()
+async def run_pipeline_from_yaml_tool(
+    yaml_path: str,
+    execution_mode: str = "normal",
+    override_params: Optional[Dict[str, Any]] = None,
+    dry_run: bool = False
+) -> dict:
+    """
+    Execute pipeline directly from YAML configuration.
+    
+    Equivalent to 'jarvis ppl run yaml'. Loads and executes pipeline
+    configuration from YAML file with optional parameter overrides.
+    
+    Args:
+        yaml_path: Path to YAML pipeline configuration
+        execution_mode: Execution mode (normal, debug, profile)
+        override_params: Parameters to override in YAML
+        dry_run: Validate configuration without execution
+        
+    Returns:
+        PipelineExecutionInfo with execution status and details
+    """
+    try:
+        result = await run_pipeline_from_yaml(
+            yaml_path=yaml_path,
+            execution_mode=execution_mode,
+            override_params=override_params,
+            dry_run=dry_run
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in run_pipeline_from_yaml: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in run_pipeline_from_yaml: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+@mcp.tool()
+async def execute_pipeline_test_tool(
+    pipeline_name: str = "",
+    test_configuration: Optional[Dict[str, Any]] = None,
+    parameter_sweep: Optional[Dict[str, List[Any]]] = None,
+    max_parallel_runs: int = 4
+) -> dict:
+    """
+    Execute pipeline parameter sweep testing.
+    
+    Equivalent to 'jarvis ppl test'. Runs multiple pipeline executions
+    with different parameter combinations for optimization and validation.
+    
+    Args:
+        pipeline_name: Target pipeline (uses focused if empty)
+        test_configuration: Test execution configuration
+        parameter_sweep: Parameters and their value ranges
+        max_parallel_runs: Maximum parallel executions
+        
+    Returns:
+        PipelineTestExecutionInfo with test execution status
+    """
+    try:
+        # Convert empty strings to None
+        actual_pipeline_name = pipeline_name if pipeline_name else None
+        
+        result = await execute_pipeline_test(
+            pipeline_name=actual_pipeline_name,
+            test_configuration=test_configuration,
+            parameter_sweep=parameter_sweep,
+            max_parallel_runs=max_parallel_runs
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in execute_pipeline_test: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in execute_pipeline_test: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+@mcp.tool()
+async def run_pipeline_from_index_tool(
+    index_name: str,
+    repository: str = "",
+    execution_mode: str = "normal",
+    parameter_overrides: Optional[Dict[str, Any]] = None
+) -> dict:
+    """
+    Execute pipeline from repository index.
+    
+    Equivalent to 'jarvis ppl index run'. Executes pre-built pipeline
+    from repository index with optional parameter customization.
+    
+    Args:
+        index_name: Name of index pipeline to execute
+        repository: Source repository (uses default if empty)
+        execution_mode: Execution mode (normal, debug, profile)
+        parameter_overrides: Parameters to override in index pipeline
+        
+    Returns:
+        PipelineExecutionInfo with execution status and details
+    """
+    try:
+        # Convert empty strings to None
+        actual_repository = repository if repository else None
+        
+        result = await run_pipeline_from_index(
+            index_name=index_name,
+            repository=actual_repository,
+            execution_mode=execution_mode,
+            parameter_overrides=parameter_overrides
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in run_pipeline_from_index: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in run_pipeline_from_index: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+# Monitoring & Analysis Tools (3 tools)
+
+@mcp.tool()
+async def monitor_pipeline_execution_tool(
+    execution_id: str = "",
+    pipeline_name: str = "",
+    monitoring_interval: int = 5,
+    include_node_details: bool = True
+) -> dict:
+    """
+    Real-time monitoring of pipeline execution with distributed node tracking.
+    
+    Provides comprehensive real-time monitoring including resource usage,
+    node status, communication health, and performance metrics.
+    
+    Args:
+        execution_id: Specific execution to monitor
+        pipeline_name: Pipeline to monitor (if execution_id not provided)
+        monitoring_interval: Monitoring update interval in seconds
+        include_node_details: Include detailed node-level monitoring
+        
+    Returns:
+        PipelineMonitoringData with real-time execution metrics
+    """
+    try:
+        # Convert empty strings to None
+        actual_execution_id = execution_id if execution_id else None
+        actual_pipeline_name = pipeline_name if pipeline_name else None
+        
+        result = await monitor_pipeline_execution(
+            execution_id=actual_execution_id,
+            pipeline_name=actual_pipeline_name,
+            monitoring_interval=monitoring_interval,
+            include_node_details=include_node_details
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in monitor_pipeline_execution: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in monitor_pipeline_execution: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+@mcp.tool()
+async def analyze_execution_results_tool(
+    execution_id: str = "",
+    pipeline_name: str = "",
+    analysis_type: str = "comprehensive",
+    compare_with_baseline: bool = False
+) -> dict:
+    """
+    Post-execution analysis and optimization recommendations.
+    
+    Analyzes execution results, performance data, and resource utilization
+    to provide optimization recommendations and performance insights.
+    
+    Args:
+        execution_id: Specific execution to analyze
+        pipeline_name: Pipeline to analyze (latest execution if execution_id not provided)
+        analysis_type: Analysis depth (quick, standard, comprehensive, detailed)
+        compare_with_baseline: Compare against baseline execution
+        
+    Returns:
+        ExecutionAnalysisResult with analysis findings and recommendations
+    """
+    try:
+        # Convert empty strings to None
+        actual_execution_id = execution_id if execution_id else None
+        actual_pipeline_name = pipeline_name if pipeline_name else None
+        
+        result = await analyze_execution_results(
+            execution_id=actual_execution_id,
+            pipeline_name=actual_pipeline_name,
+            analysis_type=analysis_type,
+            compare_with_baseline=compare_with_baseline
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in analyze_execution_results: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in analyze_execution_results: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+@mcp.tool()
+async def manage_execution_logs_tool(
+    action: str,
+    execution_id: str = "",
+    pipeline_name: str = "",
+    log_level: str = "info",
+    output_format: str = "text"
+) -> dict:
+    """
+    Log collection, analysis, and management for pipeline executions.
+    
+    Manages execution logs including collection from distributed nodes,
+    filtering, analysis, and export capabilities.
+    
+    Args:
+        action: Action to perform (collect, analyze, export, clean, search)
+        execution_id: Specific execution for log operations
+        pipeline_name: Pipeline for log operations (if execution_id not provided)
+        log_level: Log level filter (debug, info, warning, error, critical)
+        output_format: Output format (text, json, xml, html)
+        
+    Returns:
+        ExecutionLogsInfo with log operation results and information
+    """
+    try:
+        # Convert empty strings to None
+        actual_execution_id = execution_id if execution_id else None
+        actual_pipeline_name = pipeline_name if pipeline_name else None
+        
+        result = await manage_execution_logs(
+            action=action,
+            execution_id=actual_execution_id,
+            pipeline_name=actual_pipeline_name,
+            log_level=log_level,
+            output_format=output_format
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in manage_execution_logs: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in manage_execution_logs: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+# Advanced Features Tools (2 tools)
+
+@mcp.tool()
+async def handle_checkpoint_restart_tool(
+    action: str,
+    execution_id: str = "",
+    checkpoint_id: str = "",
+    checkpoint_interval: int = 300
+) -> dict:
+    """
+    Checkpoint and restart management for long-running executions.
+    
+    Manages execution checkpointing for fault tolerance and restart
+    capabilities, supporting both automatic and manual checkpointing.
+    
+    Args:
+        action: Action to perform (create, restore, list, delete, configure)
+        execution_id: Target execution for checkpoint operations
+        checkpoint_id: Specific checkpoint for restore operations
+        checkpoint_interval: Automatic checkpoint interval in seconds
+        
+    Returns:
+        CheckpointInfo with checkpoint operation results and status
+    """
+    try:
+        # Convert empty strings to None
+        actual_execution_id = execution_id if execution_id else None
+        actual_checkpoint_id = checkpoint_id if checkpoint_id else None
+        
+        result = await handle_checkpoint_restart(
+            action=action,
+            execution_id=actual_execution_id,
+            checkpoint_id=actual_checkpoint_id,
+            checkpoint_interval=checkpoint_interval
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in handle_checkpoint_restart: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in handle_checkpoint_restart: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+@mcp.tool()
+async def integrate_python_api_tool(
+    api_action: str,
+    execution_id: str = "",
+    api_commands: Optional[List[str]] = None,
+    return_format: str = "json"
+) -> dict:
+    """
+    Python API access for programmatic pipeline control.
+    
+    Provides Python API interface for programmatic control of pipeline
+    execution, monitoring, and management operations.
+    
+    Args:
+        api_action: API action (execute, query, control, configure)
+        execution_id: Target execution for API operations
+        api_commands: List of API commands to execute
+        return_format: Return data format (json, dict, object)
+        
+    Returns:
+        PythonAPIInfo with API operation results and interface details
+    """
+    try:
+        # Convert empty strings to None
+        actual_execution_id = execution_id if execution_id else None
+        
+        result = await integrate_python_api(
+            api_action=api_action,
+            execution_id=actual_execution_id,
+            api_commands=api_commands,
+            return_format=return_format
+        )
+        return result.model_dump()
+    except DeploymentError as e:
+        logger.error(f"Deployment error in integrate_python_api: {e}")
+        return {"error": str(e), "type": "deployment_error"}
+    except Exception as e:
+        logger.error(f"Unexpected error in integrate_python_api: {e}")
+        return {"error": f"Unexpected error: {str(e)}", "type": "internal_error"}
+
+# ══════════════════════════════════════════════════════════════════════════
 # SERVER SUMMARY
 # ══════════════════════════════════════════════════════════════════════════
 
 # This Jarvis MCP server implements comprehensive HPC workflow management across
-# Phases 1, 2 & 3:
+# Phases 1, 2, 3 & 4:
 #
 # Phase 1: Discoverability (5 tools) - Package discovery and resource exploration
 # Phase 2: Composition (14 tools) - Pipeline design and package management  
 # Phase 3: Configuration (10 tools) - Parameter optimization and environment setup
+# Phase 4: Deployment (12 tools) - Pipeline execution, monitoring, and management
 #
-# Total: 29 tools across Phases 1 & 2 & 3 providing complete workflow lifecycle support
+# Total: 41 tools across Phases 1, 2, 3 & 4 providing complete workflow lifecycle support
 
 def main():
     """

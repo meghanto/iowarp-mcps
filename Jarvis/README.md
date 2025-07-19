@@ -7,7 +7,7 @@
 
 ## Overview
 
-**Jarvis-MCP** is a comprehensive Python package that implements **Phases 1, 2 & 3** of the Jarvis Model Context Protocol (MCP) server. These phases provide complete discovery, composition, and configuration capabilities for HPC workflow development.
+**Jarvis-MCP** is a comprehensive Python package that implements **all 4 phases** of the Jarvis Model Context Protocol (MCP) server. These phases provide complete end-to-end HPC workflow management from discovery through production deployment.
 
 **Phase 1: Discoverability** enables users to explore and understand the Jarvis ecosystem - available packages, repositories, capabilities, and system resources.
 
@@ -15,7 +15,9 @@
 
 **Phase 3: Configuration** offers advanced parameter optimization, environment management, and execution method configuration for production-ready HPC deployments.
 
-With **Jarvis-MCP Phases 1, 2 & 3**, you can:
+**Phase 4: Deployment** provides complete execution management, monitoring, and production lifecycle control for HPC workloads.
+
+With **Jarvis-MCP All 4 Phases**, you can:
 
 ### Phase 1 - Discoverability:
 * **Discover Packages**: Get comprehensive catalog of all available packages across repositories
@@ -39,6 +41,16 @@ With **Jarvis-MCP Phases 1, 2 & 3**, you can:
 * **Interceptor Management**: Set up monitoring and profiling tools with LD_PRELOAD coordination
 * **Resource Allocation**: Intelligent resource mapping and scheduling optimization across cluster nodes
 * **External Integration**: Seamlessly integrate SCSPKG/Spack packages with dependency management
+
+### Phase 4 - Deployment:
+* **Pipeline Execution**: Execute configured pipelines with comprehensive resource monitoring and error handling
+* **Advanced Execution**: Support for YAML-based execution, parameter sweeps, and repository template execution
+* **Real-time Monitoring**: Monitor pipeline execution with distributed node tracking and performance analysis
+* **Results Analysis**: Post-execution analysis with optimization recommendations and performance insights
+* **Log Management**: Comprehensive log collection, analysis, and management across distributed executions
+* **Fault Tolerance**: Checkpoint and restart capabilities for long-running simulations with state preservation
+* **Production Management**: Complete lifecycle management from execution through cleanup and archival
+* **API Integration**: Python API access for programmatic control and automation
 
 ---
 
@@ -98,6 +110,23 @@ With **Jarvis-MCP Phases 1, 2 & 3**, you can:
 | `manage_interceptors` | Advanced Configuration | Configure LD_PRELOAD interceptors and monitoring tools |
 | `optimize_resource_allocation` | Advanced Configuration | Intelligent resource mapping and scheduling optimization |
 | `integrate_scspkg_packages` | Advanced Configuration | Integrate SCSPKG (Spack-based) packages with Jarvis pipeline |
+
+### Phase 4: Deployment Tools
+
+| Tool | Category | Description |
+|---|---|---|
+| `run_pipeline` | Basic Execution | Execute pipeline with specified configuration and resource allocation |
+| `stop_pipeline` | Basic Execution | Stop running pipeline execution with graceful shutdown or force termination |
+| `clean_pipeline` | Basic Execution | Clean pipeline artifacts and temporary files with configurable preservation |
+| `get_pipeline_status` | Basic Execution | Check pipeline execution status with comprehensive progress information |
+| `run_pipeline_from_yaml` | Advanced Execution | Execute pipeline directly from YAML configuration with parameter overrides |
+| `execute_pipeline_test` | Advanced Execution | Execute parameter sweep testing for optimization and validation |
+| `run_pipeline_from_index` | Advanced Execution | Execute pre-built pipeline from repository index with customization |
+| `monitor_pipeline_execution` | Monitoring & Analysis | Real-time monitoring with distributed node tracking and performance analysis |
+| `analyze_execution_results` | Monitoring & Analysis | Post-execution analysis with optimization recommendations and performance insights |
+| `manage_execution_logs` | Monitoring & Analysis | Log collection, analysis, and management across distributed executions |
+| `handle_checkpoint_restart` | Advanced Features | Checkpoint and restart management for fault tolerance and long-running executions |
+| `integrate_python_api` | Advanced Features | Python API access for programmatic pipeline control and automation |
 
 ## Setup
 
@@ -570,6 +599,165 @@ integration = await integrate_scspkg_packages(
 
 ---
 
+### Phase 4 Operations
+
+##### 15. **Pipeline Execution and Management**
+
+Execute configured pipelines with comprehensive monitoring and control capabilities.
+
+```bash
+# Query to execute pipeline
+Query: Run my optimized HPC benchmark pipeline with real-time monitoring
+```
+
+**Example Usage:**
+```python
+# Execute pipeline with monitoring
+execution_info = await run_pipeline(
+    pipeline_name="hpc_benchmark",
+    execution_mode="production",
+    background=False
+)
+
+# Monitor execution in real-time
+monitoring_data = await monitor_pipeline_execution(
+    execution_id=execution_info.execution_id,
+    monitoring_interval=10,
+    include_node_details=True
+)
+
+# Get current status
+status = await get_pipeline_status(
+    execution_id=execution_info.execution_id,
+    include_resource_usage=True
+)
+```
+
+---
+
+##### 16. **Advanced Execution Methods**
+
+Execute pipelines from YAML files, run parameter sweeps, and use repository templates.
+
+```bash
+# Query for advanced execution
+Query: Execute the I/O benchmark template with custom parameters and run parameter sweep testing
+```
+
+**Example Usage:**
+```python
+# Execute from YAML with overrides
+execution_info = await run_pipeline_from_yaml(
+    yaml_path="./workflows/io_benchmark.yaml",
+    override_params={
+        "num_nodes": 8,
+        "data_size": "100GB",
+        "test_duration": "30min"
+    }
+)
+
+# Parameter sweep testing
+test_info = await execute_pipeline_test(
+    pipeline_name="benchmark_pipeline",
+    parameter_sweep={
+        "block_size": ["1MB", "4MB", "16MB"],
+        "num_processes": [16, 32, 64],
+        "stripe_count": [4, 8, 16]
+    },
+    max_parallel_runs=6
+)
+
+# Execute repository template
+execution_info = await run_pipeline_from_index(
+    index_name="hpc_io_benchmark",
+    repository="community_benchmarks",
+    parameter_overrides={"target_throughput": "10GB/s"}
+)
+```
+
+---
+
+##### 17. **Analysis and Log Management**
+
+Analyze execution results and manage comprehensive logging across distributed executions.
+
+```bash
+# Query for analysis and logs
+Query: Analyze my completed execution for bottlenecks and collect all logs from distributed nodes
+```
+
+**Example Usage:**
+```python
+# Comprehensive execution analysis
+analysis = await analyze_execution_results(
+    execution_id="exec_benchmark_456",
+    analysis_type="comprehensive",
+    compare_with_baseline=True
+)
+
+# Log collection and management
+logs_info = await manage_execution_logs(
+    action="collect",
+    execution_id="exec_benchmark_456",
+    log_level="info"
+)
+
+# Export logs for analysis
+logs_info = await manage_execution_logs(
+    action="export",
+    execution_id="exec_benchmark_456",
+    output_format="json"
+)
+```
+
+---
+
+##### 18. **Fault Tolerance and API Integration**
+
+Manage checkpoints for long-running executions and use Python API for automation.
+
+```bash
+# Query for checkpointing and automation
+Query: Set up automatic checkpointing for my simulation and configure Python API access
+```
+
+**Example Usage:**
+```python
+# Configure automatic checkpointing
+checkpoint_info = await handle_checkpoint_restart(
+    action="configure",
+    checkpoint_interval=600  # Every 10 minutes
+)
+
+# Create manual checkpoint
+checkpoint_info = await handle_checkpoint_restart(
+    action="create",
+    execution_id="exec_long_simulation_789"
+)
+
+# Python API integration for automation
+api_info = await integrate_python_api(
+    api_action="execute",
+    api_commands=[
+        "pipeline.run('benchmark_pipeline')",
+        "execution.monitor('exec_12345')",
+        "logs.collect(execution_id='exec_12345')"
+    ]
+)
+
+# Stop and clean pipeline
+await stop_pipeline(
+    execution_id="exec_completed_123",
+    cleanup=True
+)
+
+await clean_pipeline(
+    pipeline_name="benchmark_pipeline",
+    clean_level="standard",
+    preserve_logs=True
+)
+```
+
 
 
 ## Documentation
@@ -578,8 +766,9 @@ For detailed documentation about the implementation:
 
 - [COMPLETE_DESIGN_PLAN.md](./COMPLETE_DESIGN_PLAN.md) - Comprehensive design document for all phases
 - [PHASE1_README.md](./docs/PHASE1_README.md) - Complete Phase 1 documentation
-- [PHASE2_README.md](./docs/PHASE2_README.md) - Complete Phase 2 documentation
+- [PHASE2_README.md](./docs/PHASE2_README.md) - Complete Phase 2 documentation  
 - [PHASE3_README.md](./docs/PHASE3_README.md) - Complete Phase 3 documentation
+- [PHASE4_README.md](./docs/PHASE4_README.md) - Complete Phase 4 documentation
 
 
 ## Notes
@@ -588,6 +777,12 @@ For detailed documentation about the implementation:
 * Jarvis-CD is optional but recommended for full functionality
 * Use `uv pip install -e .` to enable development mode
 * The server supports both stdio and SSE transports
-* Phases 1, 2 & 3 provide complete discoverability, composition, and configuration capabilities
-* Phase 4 (Deployment) will add execution management and monitoring capabilities
-* **Total of 33 tools** implemented across three phases
+* **Complete 4-phase implementation** provides end-to-end HPC workflow management
+* All phases work together: Discovery → Composition → Configuration → Deployment
+* **Total of 41 tools** implemented across all four phases:
+  * **Phase 1**: 5 tools (Discoverability)
+  * **Phase 2**: 14 tools (Composition) 
+  * **Phase 3**: 10 tools (Configuration)
+  * **Phase 4**: 12 tools (Deployment)
+* Production-ready with comprehensive error handling, monitoring, and fault tolerance
+* Supports distributed execution across hundreds of nodes with real-time monitoring

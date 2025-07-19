@@ -261,3 +261,103 @@ class ConfigurationOperationResult(BaseModel):
     validation_results: Optional[PipelineValidationResult] = Field(None, description="Post-operation validation")
     recommendations: List[str] = Field(default_factory=list, description="Further recommendations")
     rollback_info: Optional[Dict[str, Any]] = Field(None, description="Information for rolling back changes")
+
+
+# Phase 4: Deployment Models
+
+class PipelineExecutionInfo(BaseModel):
+    execution_id: str = Field(..., description="Unique execution identifier")
+    pipeline_name: str = Field(..., description="Pipeline being executed")
+    status: str = Field(..., description="Execution status (running, completed, failed, stopped)")
+    start_time: datetime = Field(..., description="Execution start time")
+    current_package: Optional[str] = Field(None, description="Currently executing package")
+    completed_packages: List[str] = Field(default_factory=list, description="Completed packages")
+    execution_method: ExecutionType = Field(..., description="Execution method used")
+    resource_usage: Dict[str, Any] = Field(default_factory=dict, description="Current resource usage")
+    estimated_completion: Optional[datetime] = Field(None, description="Estimated completion time")
+
+class PipelineTestExecutionInfo(BaseModel):
+    test_id: str = Field(..., description="Test execution identifier")
+    test_configuration: Dict[str, Any] = Field(..., description="Test configuration parameters")
+    total_combinations: int = Field(..., description="Total parameter combinations to test")
+    completed_runs: int = Field(default=0, description="Number of completed test runs")
+    failed_runs: int = Field(default=0, description="Number of failed test runs")
+    current_parameters: Dict[str, Any] = Field(default_factory=dict, description="Current parameter set being tested")
+    results_location: str = Field(..., description="Results output directory")
+    estimated_total_time: Optional[float] = Field(None, description="Estimated total execution time in minutes")
+
+class DistributedExecutionStatus(BaseModel):
+    total_nodes: int = Field(..., description="Total nodes in distributed execution")
+    active_nodes: List[str] = Field(..., description="Currently active node names")
+    failed_nodes: List[str] = Field(default_factory=list, description="Failed or unreachable nodes")
+    node_status: Dict[str, str] = Field(default_factory=dict, description="Per-node execution status")
+    communication_health: str = Field(..., description="Inter-node communication status")
+    load_distribution: Dict[str, float] = Field(default_factory=dict, description="Load distribution across nodes (0.0-1.0)")
+    network_utilization: Dict[str, float] = Field(default_factory=dict, description="Network usage per node (0.0-1.0)")
+
+class ExecutionOperationResult(BaseModel):
+    operation: str = Field(..., description="Deployment operation performed")
+    target: str = Field(..., description="Target execution or pipeline")
+    success: bool = Field(..., description="Operation success status")
+    message: str = Field(..., description="Operation result message")
+    changes_made: List[str] = Field(default_factory=list, description="Changes made during operation")
+    recommendations: List[str] = Field(default_factory=list, description="Post-operation recommendations")
+    execution_time: Optional[float] = Field(None, description="Operation execution time in seconds")
+
+class PipelineMonitoringData(BaseModel):
+    monitor_id: str = Field(..., description="Monitoring session identifier")
+    execution_info: PipelineExecutionInfo = Field(..., description="Current execution information")
+    node_status: Optional[DistributedExecutionStatus] = Field(None, description="Distributed node status")
+    performance_metrics: Dict[str, Any] = Field(default_factory=dict, description="Real-time performance metrics")
+    resource_trends: Dict[str, str] = Field(default_factory=dict, description="Resource usage trends")
+    monitoring_interval: int = Field(..., description="Monitoring update interval in seconds")
+    last_update: datetime = Field(..., description="Last monitoring update timestamp")
+    alerts: List[str] = Field(default_factory=list, description="Active alerts and critical issues")
+    warnings: List[str] = Field(default_factory=list, description="Active warnings")
+
+class ExecutionAnalysisResult(BaseModel):
+    analysis_id: str = Field(..., description="Analysis session identifier")
+    target: str = Field(..., description="Analyzed execution or pipeline")
+    analysis_type: str = Field(..., description="Type of analysis performed")
+    analysis_timestamp: datetime = Field(..., description="Analysis completion time")
+    performance_summary: Dict[str, Any] = Field(default_factory=dict, description="Overall performance summary")
+    resource_analysis: Dict[str, Any] = Field(default_factory=dict, description="Resource utilization analysis")
+    bottlenecks: List[Dict[str, Any]] = Field(default_factory=list, description="Identified performance bottlenecks")
+    optimization_recommendations: List[str] = Field(default_factory=list, description="Performance optimization suggestions")
+    baseline_comparison: Optional[Dict[str, Any]] = Field(None, description="Comparison with baseline execution")
+    error_analysis: Dict[str, Any] = Field(default_factory=dict, description="Error and failure analysis")
+
+class ExecutionLogsInfo(BaseModel):
+    log_operation_id: str = Field(..., description="Log operation identifier")
+    target: str = Field(..., description="Target execution or pipeline")
+    action: str = Field(..., description="Log operation action performed")
+    log_level: str = Field(..., description="Log level filter applied")
+    output_format: str = Field(..., description="Log output format")
+    log_locations: List[str] = Field(default_factory=list, description="Available log file locations")
+    log_statistics: Dict[str, Any] = Field(default_factory=dict, description="Log file statistics and metadata")
+    operation_results: List[str] = Field(default_factory=list, description="Results of log operation")
+    log_quality: Dict[str, float] = Field(default_factory=dict, description="Log quality assessment metrics")
+    available_categories: List[str] = Field(default_factory=list, description="Available log categories")
+
+class CheckpointInfo(BaseModel):
+    operation_id: str = Field(..., description="Checkpoint operation identifier")
+    action: str = Field(..., description="Checkpoint action performed")
+    execution_id: Optional[str] = Field(None, description="Target execution identifier")
+    checkpoint_id: Optional[str] = Field(None, description="Checkpoint identifier")
+    checkpoint_location: str = Field(..., description="Checkpoint storage location")
+    available_checkpoints: List[Dict[str, Any]] = Field(default_factory=list, description="Available checkpoint information")
+    operation_results: List[str] = Field(default_factory=list, description="Checkpoint operation results")
+    checkpoint_config: Dict[str, Any] = Field(default_factory=dict, description="Checkpoint configuration settings")
+    system_status: Dict[str, Any] = Field(default_factory=dict, description="Checkpoint system status")
+
+class PythonAPIInfo(BaseModel):
+    api_session_id: str = Field(..., description="API session identifier")
+    api_action: str = Field(..., description="API action performed")
+    execution_id: Optional[str] = Field(None, description="Target execution for API operations")
+    return_format: str = Field(..., description="API response data format")
+    available_methods: List[str] = Field(default_factory=list, description="Available API methods")
+    operation_results: List[str] = Field(default_factory=list, description="API operation results")
+    api_response: Dict[str, Any] = Field(default_factory=dict, description="API response data")
+    api_documentation: Dict[str, Any] = Field(default_factory=dict, description="API usage documentation")
+    connection_info: Dict[str, Any] = Field(default_factory=dict, description="API connection information")
+    usage_statistics: Dict[str, Any] = Field(default_factory=dict, description="API usage statistics")
