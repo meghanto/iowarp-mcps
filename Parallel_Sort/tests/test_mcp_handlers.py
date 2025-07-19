@@ -4,7 +4,7 @@ Tests for MCP handlers.
 import pytest
 import tempfile
 import os
-from parallel_sort.mcp_handlers import sort_log_handler
+from mcp_handlers import sort_log_handler
 
 
 class TestMCPHandlers:
