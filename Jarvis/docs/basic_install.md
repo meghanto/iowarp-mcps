@@ -5,7 +5,7 @@ This guide provides the fastest path to interacting with Jarvis using the `wrp` 
 ### Step 1: Prerequisites
 Before you begin, make sure you have the following installed on your system:
 -   **Git:** To clone the repository. You can get it from [git-scm.com](https://git-scm.com/).
--   **Python:** Version 3.8 or newer. You can download it from [python.org](https://www.python.org/).
+-   **Python:** Version 3.10.12 or newer. You can download it from [python.org](https://www.python.org/).
 
 ### Step 2: Project Setup
 

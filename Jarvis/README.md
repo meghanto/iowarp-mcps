@@ -1,172 +1,134 @@
-# Jarvis MCP Server
 
-[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![UV](https://img.shields.io/badge/uv-package%20manager-green.svg)](https://docs.astral.sh/uv/)
-[![MCP](https://img.shields.io/badge/MCP-Model%20Context%20Protocol-orange.svg)](https://github.com/modelcontextprotocol)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+# Jarvis-MCP
 
-A comprehensive Model Context Protocol (MCP) server for the Jarvis HPC ecosystem. This server provides intelligent package discovery, repository management, and resource analysis capabilities through the Model Context Protocol, enabling users to explore the Jarvis ecosystem, manage HPC packages, and plan deployments with **intelligent analysis**, **beautiful output formatting**, and **workflow-first approach**.
+*A comprehensive MCP server for exploring, composing, and configuring HPC workflows*
 
-## Key Features
+---
 
-### 🔧 **Five Specialized Tools**
-Following MCP best practices, this server provides intelligent, contextual assistance for HPC package management and cluster resource planning:
+## Overview
 
-- **`get_all_packages`**: Comprehensive package discovery across all repositories with intelligent categorization
-- **`get_package_info`**: Detailed package information including configuration parameters and capabilities  
-- **`get_all_repos`**: Repository management with health status and priority ordering
-- **`modify_repo`**: Safe repository lifecycle management with validation and rollback
-- **`get_resource_status`**: Cluster resource analysis for deployment planning
+**Jarvis-MCP** is a comprehensive Python package that implements **Phases 1, 2 & 3** of the Jarvis Model Context Protocol (MCP) server. These phases provide complete discovery, composition, and configuration capabilities for HPC workflow development.
 
-### 🚀 **Workflow-First Design**
-- **Intelligent Package Discovery**: AI-powered package recommendations and common workflow combinations
-- **Advanced Repository Management**: Sophisticated repository prioritization with conflict resolution
-- **Resource-Aware Planning**: Comprehensive cluster analysis with deployment constraints and optimization
-- **Configuration Management**: Jarvis Manager integration for seamless system configuration
+**Phase 1: Discoverability** enables users to explore and understand the Jarvis ecosystem - available packages, repositories, capabilities, and system resources.
 
-### 🎨 **Beautiful Output Formatting**
-- **Structured Layout**: Rich formatting with comprehensive summaries and visual indicators
-- **Comprehensive Insights**: Actionable recommendations for package selection and deployment
-- **Metadata Tracking**: Detailed operation metadata and performance metrics
-- **Error Handling**: Helpful error messages with troubleshooting suggestions
+**Phase 2: Composition** provides intelligent workflow design tools for creating, managing, and optimizing HPC pipeline configurations.
 
-### 🌐 **Complete HPC Ecosystem Coverage**
-- **Package Discovery**: Comprehensive package catalog with type classification and popularity scoring
-- **Repository Management**: Health monitoring, priority management, and conflict resolution
-- **Resource Analysis**: Hardware inventory, network topology, and deployment constraint analysis
-- **Configuration Management**: Jarvis Manager integration with configuration validation
-- **Workflow Planning**: Intelligent package combinations and deployment optimization
+**Phase 3: Configuration** offers advanced parameter optimization, environment management, and execution method configuration for production-ready HPC deployments.
 
-### 🔒 **Enterprise Security**
-- **Configuration Validation**: Safe repository management with rollback capabilities
-- **Permission Management**: Minimal privilege access with comprehensive audit trails
-- **Dependency Analysis**: Package dependency tracking and conflict detection
-- **Version Management**: Package versioning and compatibility analysis
+With **Jarvis-MCP Phases 1, 2 & 3**, you can:
 
-## Capabilities
+### Phase 1 - Discoverability:
+* **Discover Packages**: Get comprehensive catalog of all available packages across repositories
+* **Explore Package Details**: Retrieve detailed information about specific packages including configuration, capabilities, and usage examples
+* **Manage Repositories**: List, add, remove, and prioritize package repositories
+* **Analyze Resources**: Get comprehensive cluster resource information for deployment planning
+* **Configure System**: Initialize Jarvis configuration, set hostfiles, and build resource graphs
 
-### Primary Tools
+### Phase 2 - Composition:
+* **Pipeline Management**: Create, load, update, and delete HPC workflow pipelines
+* **Package Composition**: Add, remove, and reorder packages within pipelines
+* **YAML Integration**: Import and export pipeline configurations in standard YAML format
+* **Workflow Templates**: Browse and utilize pre-built pipeline examples and templates
+* **Relationship Analysis**: Analyze package dependencies, conflicts, and optimization opportunities
+* **Focus Management**: Streamlined pipeline operations with focus-based workflow
 
-#### **1. `get_all_packages` - Package Discovery**
+### Phase 3 - Configuration:
+* **Environment Management**: Build optimized execution environments with automated dependency resolution
+* **Parameter Optimization**: AI-assisted package parameter tuning for performance and resource efficiency
+* **Execution Configuration**: Configure distributed execution methods (MPI, SSH, PSSH) with intelligent optimization
+* **Interceptor Management**: Set up monitoring and profiling tools with LD_PRELOAD coordination
+* **Resource Allocation**: Intelligent resource mapping and scheduling optimization across cluster nodes
+* **External Integration**: Seamlessly integrate SCSPKG/Spack packages with dependency management
 
-**Comprehensive package discovery across all Jarvis repositories with intelligent categorization.**
-
-This powerful tool provides complete package ecosystem visibility by scanning all registered repositories and providing intelligent categorization, filtering, and recommendations.
-
-**Key Features:**
-- **Repository Scanning**: Automatically discovers packages across all registered repositories
-- **Intelligent Categorization**: Classifies packages by type (service, application, interceptor)
-- **Smart Filtering**: Apply sophisticated filtering by type, repository, or popularity
-- **Package Relationships**: Identifies common package combinations and workflows
-- **Usage Analytics**: Popularity scoring based on common usage patterns
-
-#### **2. `get_package_info` - Package Details**
-
-**Detailed package information including configuration parameters, capabilities, and usage examples.**
-
-This comprehensive tool retrieves extensive package details by analyzing README files, configuration schemas, and dependency information.
-
-**Key Features:**
-- **Configuration Analysis**: Detailed parameter information with types and defaults
-- **Capability Discovery**: Package features and supported operations
-- **Documentation Extraction**: README content and usage examples
-- **Dependency Mapping**: Package dependencies and compatibility requirements
-- **Performance Insights**: Performance characteristics and optimization notes
-
-#### **3. `get_all_repos` - Repository Management**
-
-**Repository management with health status, priority ordering, and package inventory.**
-
-This tool provides comprehensive repository management capabilities with health monitoring and priority configuration.
-
-**Key Features:**
-- **Health Monitoring**: Repository accessibility and status verification
-- **Priority Management**: Repository search order and conflict resolution
-- **Package Inventory**: Package counts and featured package listings
-- **Status Tracking**: Last update times and error condition monitoring
-- **Type Classification**: Built-in vs custom repository identification
-
-#### **4. `modify_repo` - Repository Lifecycle**
-
-**Safe repository lifecycle management with validation, backup, and rollback capabilities.**
-
-This enterprise-grade tool handles repository add/remove/promote operations with comprehensive safety controls.
-
-**Key Features:**
-- **Structure Validation**: Repository format and compatibility verification
-- **Conflict Detection**: Package name conflicts and shadowing analysis
-- **Backup Management**: Configuration backup before destructive operations
-- **Impact Analysis**: Dependency analysis and affected pipeline identification
-- **Rollback Support**: Complete rollback instructions for failed operations
-
-#### **5. `get_resource_status` - Resource Analysis**
-
-**Cluster resource analysis for deployment planning and optimization.**
-
-This intelligent tool provides comprehensive cluster resource information through Jarvis resource graph integration.
-
-**Key Features:**
-- **Hardware Inventory**: CPU, memory, storage, and network analysis
-- **Resource Utilization**: Current usage patterns and availability
-- **Deployment Constraints**: Resource requirements and compatibility analysis
-- **Optimization Recommendations**: Performance tuning and resource allocation guidance
-- **Bottleneck Identification**: Resource limitations and scaling recommendations
-
-### Configuration Tools
-
-- **`jm_create_config`**: Initialize Jarvis Manager configuration directories
-- **`jm_load_config`**: Load existing Jarvis Manager configuration
-- **`jm_set_hostfile`**: Configure hostfile for multi-node deployments
-- **`jm_graph_build`**: Build or rebuild the resource graph
+---
 
 ## Prerequisites
 
-- Python 3.10 or higher
+- Python 3.10.12 or higher
 - [uv](https://docs.astral.sh/uv/) package manager
 - Linux/macOS environment (for optimal compatibility)
 - Jarvis-CD (optional, for full functionality)
 
-## Installation and Setup
+## Implemented Tools
 
-### Quick Start
+### Phase 1: Discoverability Tools
+
+| Tool | Type | Description |
+|---|---|---|
+| `get_all_packages` | Discovery | Retrieve comprehensive catalog of all available packages from all repositories |
+| `get_package_info` | Discovery | Get detailed information about specific packages including README, configuration, and capabilities |
+| `get_all_repos` | Repository Management | List all registered repositories with status, package counts, and metadata |
+| `modify_repo` | Repository Management | Add, remove, or promote repositories with safety controls |
+| `get_resource_status` | Resource Planning | Provide cluster resource information for deployment planning |
+| `jm_create_config` | Configuration | Initialize JarvisManager configuration directories |
+| `jm_load_config` | Configuration | Load existing JarvisManager configuration |
+| `jm_set_hostfile` | Configuration | Set hostfile path for multi-node deployments |
+| `jm_graph_build` | Configuration | Build or rebuild the resource graph |
+
+### Phase 2: Composition Tools
+
+| Tool | Category | Description |
+|---|---|---|
+| `create_pipeline` | Pipeline CRUD | Create new empty pipeline for HPC workflow composition |
+| `load_pipeline` | Pipeline CRUD | Load existing pipeline for editing and modification |
+| `list_pipelines` | Pipeline CRUD | List all available pipelines with status and metadata |
+| `switch_pipeline_focus` | Pipeline CRUD | Switch the currently focused pipeline for operations |
+| `delete_pipeline` | Pipeline CRUD | Delete pipeline permanently from the system |
+| `update_pipeline` | Pipeline CRUD | Update pipeline metadata and configuration settings |
+| `add_package_to_pipeline` | Package Management | Add packages to pipelines with optional configuration |
+| `remove_package_from_pipeline` | Package Management | Remove packages from specified pipeline |
+| `reorder_pipeline_packages` | Package Management | Reorder packages within pipeline to change execution sequence |
+| `get_pipeline_composition` | Package Management | Get detailed information about pipeline structure and packages |
+| `import_pipeline_from_yaml` | YAML Integration | Import pipeline configuration from YAML script |
+| `export_pipeline_to_yaml` | YAML Integration | Export pipeline configuration to YAML format |
+| `browse_pipeline_indexes` | Templates | Browse available pipeline examples and templates from repositories |
+| `analyze_package_relationships` | Advanced | Analyze relationships and compatibility between packages in pipeline |
+
+### Phase 3: Configuration Tools
+
+| Tool | Category | Description |
+|---|---|---|
+| `build_pipeline_environment` | Environment Management | Build optimized execution environment with automated dependency resolution |
+| `copy_environment_to_pipeline` | Environment Management | Copy named environment configuration to pipeline for execution |
+| `configure_pipeline_environment` | Environment Management | Configure deployment environment settings for pipeline execution |
+| `configure_package_parameters` | Package Configuration | Configure package parameters within pipeline with intelligent guidance |
+| `optimize_package_configuration` | Package Configuration | AI-assisted parameter optimization for package configuration |
+| `validate_pipeline_configuration` | Package Configuration | Comprehensive validation of complete pipeline configuration |
+| `configure_execution_method` | Advanced Configuration | Configure distributed execution method (MPI/SSH/PSSH) with optimization |
+| `manage_interceptors` | Advanced Configuration | Configure LD_PRELOAD interceptors and monitoring tools |
+| `optimize_resource_allocation` | Advanced Configuration | Intelligent resource mapping and scheduling optimization |
+| `integrate_scspkg_packages` | Advanced Configuration | Integrate SCSPKG (Spack-based) packages with Jarvis pipeline |
+
+## Setup
+
+### Method 1: Direct UV Run (Recommended for Development)
 ```bash
-# Navigate to Jarvis directory
-cd /path/to/scientific-mcps/Jarvis
-
-# Install and run with UV (recommended)
-uv sync && uv run jarvis-mcp
-```
-
-### Installation Methods
-
-#### Method 1: UV Package Manager (Recommended)
-```bash
-# Install dependencies
-uv sync
-
-# Run the server
+# From the Jarvis directory
 uv run jarvis-mcp
 ```
+This will create a `.venv/` folder, install all required packages, and run the server directly.
 
-#### Method 2: Traditional pip
+### Method 2: Installation and CLI
 ```bash
 # Install in development mode
-pip install -e .
+uv pip install -e .
 
-# Run the server directly
-cd src && python server.py
+# Run the server
+jarvis-mcp
 ```
 
-#### Method 3: Direct Execution
+### Method 3: Python Module Execution
 ```bash
-# Run without installation (creates .venv automatically)
-uv run jarvis-mcp
+# Run with stdio transport (default)
+python -m jarvis_mcp.server
 
-# Or run server directly from source
-cd src && python server.py
+# Run with SSE transport
+MCP_TRANSPORT=sse python -m jarvis_mcp.server
 ```
 
-## Running the Server with Different Types of Clients:
+--- 
+
+## Running the Server with different types of Clients:
 
 ### Running the Server with the WARP Client
 To interact with the Jarvis MCP server, use the main `wrp.py` client. You will need to configure it to point to the Jarvis server.
@@ -176,460 +138,456 @@ To interact with the Jarvis MCP server, use the main `wrp.py` client. You will n
     # In bin/confs/Gemini.yaml
     MCP:
       - Jarvis
+      
     ```
 
 2.  **Run:** Start the client from the repository root with your desired configuration:
     ```bash
     # Example using the Gemini configuration 
+    
     python3 bin/wrp.py --conf=bin/confs/Gemini.yaml
     ```
+    For quick setup with Gemini, see our [Quick Start Guide](docs/basic_install.md).
+    
+    
+    For detailed setup with local LLMs and other providers, see the [Complete Installation Guide](../bin/docs/Installation.md).
 
-### Running the Server with Claude Desktop
-Add to your Claude Desktop `settings.json`:
-```json
-{
-  "mcpServers": {
-    "jarvis-mcp": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "/path/to/scientific-mcps/Jarvis",
-        "run", 
-        "jarvis-mcp"
-      ]
-    }
-  }
-}
-```
+### Running the Server on Claude Command Line Interface Tool
 
-### **Claude CLI Integration**
+1. Install the Claude Code using NPM:
 ```bash
-claude add mcp jarvis -- uv --directory ~/path/to/scientific-mcps/Jarvis run jarvis-mcp
+npm install -g @anthropic-ai/claude-code
 ```
 
-### Example Output Structure
+2. Running the server:
+```bash
+claude add mcp jarvis -- uv --directory ~/scientific-mcps/Jarvis run jarvis-mcp
+```
+
+### Running the Server on open source LLM client (Claude, Copilot, etc.)
+
+**Put the following in settings.json of any open source LLMs like Claude or Microsoft Co-pilot:**
 
 ```json
-{
-  "🤖 Operation": "Get All Packages",
-  "✅ Status": "Success",
-  "⏰ Timestamp": "2024-01-01 12:00:00",
-  "📦 Jarvis Data": {
-    "📦 Packages": [
-      {
-        "📦 Package Name": "incompact3d",
-        "🏷️ Package Type": "application",
-        "🗂️ Repository": "builtin",
-        "📝 Description": "High-performance CFD solver for incompressible flows",
-        "⭐ Capabilities": ["simulation", "parallel", "mpi"],
-        "📊 Popularity Score": 0.8
-      },
-      {
-        "📦 Package Name": "ior",
-        "🏷️ Package Type": "application", 
-        "🗂️ Repository": "builtin",
-        "📝 Description": "Parallel I/O benchmark for HPC storage systems",
-        "⭐ Capabilities": ["benchmark", "io", "parallel"],
-        "📊 Popularity Score": 0.9
-      }
-    ],
-    "🔗 Common Combinations": {
-      "🔗 Storage Benchmark": ["ior", "orangefs"],
-      "🔗 Simulation Analysis": ["incompact3d", "paraview"]
-    },
-    "🎯 Quick Start Recommendations": [
-      "Try storage performance testing: orangefs + ior",
-      "Start with CFD simulation: incompact3d package"
+"jarvis-mcp": {
+    "command": "uv",
+    "args": [
+        "--directory",
+        "path/to/scientific-mcps/Jarvis",
+        "run",
+        "jarvis-mcp"
     ]
-  },
-  "📊 Summary": {
-    "📈 Total Packages": 25,
-    "🗂️ Repositories": 3,
-    "🏷️ Package Type Filter": "all",
-    "📊 Sort By": "priority"
-  },
-  "🔍 Metadata": {
-    "🔍 Filters Applied": false,
-    "✅ Has Recommendations": true
-  },
-  "💡 Insights": [
-    "✅ Found 25 packages across 3 repositories",
-    "🎯 Try storage performance testing: orangefs + ior",
-    "🚀 Start with CFD simulation: incompact3d package"
-  ]
 }
 ```
 
-### Package Information Example Output
+---
 
-```json
-{
-  "🤖 Operation": "Get Package Info",
-  "✅ Status": "Success", 
-  "⏰ Timestamp": "2024-01-01 12:00:00",
-  "📦 Jarvis Data": {
-    "📦 Package Name": "incompact3d",
-    "🏷️ Package Type": "application",
-    "🗂️ Repository": "builtin",
-    "📝 Description": "High-performance CFD solver for incompressible flows using finite differences",
-    "⚙️ Configuration Parameters": {
-      "⚙️ Mesh Resolution": {
-        "🏷️ Type": "integer",
-        "📋 Default": 256,
-        "📝 Description": "Grid resolution for simulation domain"
-      },
-      "⚙️ Time Steps": {
-        "🏷️ Type": "integer", 
-        "📋 Default": 1000,
-        "📝 Description": "Number of simulation time steps"
-      }
-    },
-    "⭐ Capabilities": ["mpi", "openmp", "gpu", "checkpoint"],
-    "🔗 Related Packages": ["paraview", "hdf5", "mpi"]
-  },
-  "📊 Summary": {
-    "📦 Package Name": "incompact3d",
-    "🏷️ Package Type": "application",
-    "🗂️ Repository": "builtin",
-    "✅ Has Config Params": true,
-    "💡 Has Examples": false,
-    "🔗 Dependencies Count": 3
-  },
-  "💡 Insights": [
-    "🚀 Package 'incompact3d' is a application from builtin repository",
-    "⚙️ Has 2 configuration parameters",
-    "🔗 Related packages: paraview, hdf5, mpi"
-  ]
-}
+## Operations and Usage Examples
+
+### Phase 1 Operations
+
+##### 1. **Initialize Jarvis Configuration**
+
+The first step is to initialize Jarvis configuration directories. This prepares the system for interaction.
+
+```bash
+# Query to initialize Jarvis
+Query: Initialize Jarvis configuration with config dir './config', private dir './private', and shared dir './shared'
 ```
 
-## Usage Examples
-
-### Package Discovery (`get_all_packages`)
-
+**Example Usage:**
 ```python
-# Get all packages with comprehensive analysis
-get_all_packages()
+# Initialize configuration
+await jm_create_config(
+    config_dir="./config",
+    private_dir="./private", 
+    shared_dir="./shared"
+)
+```
 
-# Get only application packages
-get_all_packages(package_type="application")
+---
 
-# Filter by specific repository
-get_all_packages(repository_filter="custom_repo")
+##### 2. **Discover Available Packages**
+
+Explore the complete catalog of available packages across all repositories.
+
+```bash
+# Query to get all packages
+Query: What packages are available in the Jarvis ecosystem?
+```
+
+**Example Usage:**
+```python
+# Get all packages
+catalog = await get_all_packages()
+
+# Filter by package type
+applications = await get_all_packages(package_type="application")
 
 # Sort by popularity
-get_all_packages(sort_by="popularity")
-
-# Get packages with descriptions
-get_all_packages(include_descriptions=True, sort_by="name")
+popular = await get_all_packages(sort_by="popularity")
 ```
 
-### Package Information (`get_package_info`)
+---
 
+##### 3. **Get Detailed Package Information**
+
+Learn about specific packages including their configuration parameters and capabilities.
+
+```bash
+# Query to get package details
+Query: What is the Incompact3D package and how do I configure it?
+```
+
+**Example Usage:**
 ```python
-# Get basic package information
-get_package_info("incompact3d")
+# Get basic package info
+info = await get_package_info("incompact3d")
 
-# Get detailed configuration information
-get_package_info(
+# Get configuration parameters
+config_info = await get_package_info(
     "incompact3d",
-    return_config_params=True,
-    return_examples=True,
-    return_dependencies=True
-)
-
-# Get comprehensive package analysis
-get_package_info(
-    "ior",
-    return_description=True,
-    return_outputs=True,
-    return_performance_notes=True,
-    summary_level="comprehensive"
-)
-
-# Focus on specific aspects
-get_package_info(
-    "paraview",
     return_config_params=True,
     return_examples=True
 )
 ```
 
-### Repository Management (`get_all_repos`, `modify_repo`)
+---
 
+##### 4. **Manage Package Repositories**
+
+List, add, or manage package repositories in the system.
+
+```bash
+# Query to list repositories
+Query: What repositories are currently configured?
+```
+
+**Example Usage:**
 ```python
-# List all repositories with health status
-get_all_repos(include_health_status=True, include_package_counts=True)
-
-# Get repository priority order
-get_all_repos(show_priority_order=True)
+# List all repositories
+repos = await get_all_repos()
 
 # Add a new repository
-modify_repo(
-    repo_name="custom_tools",
+result = await modify_repo(
+    repo_name="myorg_tools",
     operation="add",
-    repo_path="/path/to/custom_tools"
+    repo_path="/path/to/myorg_tools"
 )
 
 # Promote repository to highest priority
-modify_repo(
-    repo_name="custom_tools", 
+result = await modify_repo(
+    repo_name="myorg_tools",
     operation="promote"
 )
-
-# Remove repository with safety checks
-modify_repo(
-    repo_name="old_repo",
-    operation="delete",
-    backup_config=True
-)
 ```
-
-### Resource Analysis (`get_resource_status`)
-
-```python
-# Get comprehensive resource status
-get_resource_status()
-
-# Focus on specific resource types
-get_resource_status(
-    include_hardware=True,
-    include_network=False,
-    include_storage=True
-)
-
-# Detailed resource analysis
-get_resource_status(
-    detail_level="comprehensive",
-    include_utilization=True
-)
-
-# Quick resource overview
-get_resource_status(detail_level="summary")
-```
-
-### Configuration Management
-
-```python
-# Initialize Jarvis configuration
-jm_create_config(
-    config_dir="./config",
-    private_dir="./private",
-    shared_dir="./shared"
-)
-
-# Load existing configuration
-jm_load_config()
-
-# Set hostfile for multi-node deployments
-jm_set_hostfile("/path/to/hostfile")
-
-# Build resource graph
-jm_graph_build(net_sleep=1.0)
-```
-
-### Jarvis Configuration
-
-For Jarvis functionality, ensure:
-
-1. **Jarvis-CD Installation**: Install jarvis-cd for full functionality
-2. **Configuration**: Initialize Jarvis configuration with `jm_create_config`
-3. **Resource Graph**: Build resource graph with `jm_graph_build` for resource analysis
-4. **Hostfile**: Configure hostfile for multi-node deployments
-
-
-### Development Guidelines
-
-```bash
-# Format code
-uv run black src tests
-
-# Sort imports
-uv run isort src tests
-
-# Type checking
-uv run mypy src
-
-# Linting
-uv run ruff check src tests
-```
-
-### Running the Server Standalone
-For testing and development:
-
-```bash
-# Start the server (recommended)
-uv run jarvis-mcp
-
-# Alternative method - run server directly
-cd src && python server.py
-```
-
-## Error Handling and Troubleshooting
-
-The server provides comprehensive error handling with:
-
-- **Detailed Error Messages**: Clear descriptions of what went wrong
-- **Error Classifications**: Categorized error types for better understanding
-- **Suggestions**: Actionable recommendations for resolving issues
-- **Graceful Degradation**: Partial results when some components fail
-- **Intelligent Troubleshooting**: Context-aware troubleshooting guidance
-
-### Common Issues and Solutions:
-
-1. **Jarvis-CD Not Available**:
-   - Install jarvis-cd: `pip install jarvis-cd`
-   - Initialize configuration with `jm_create_config`
-   - Verify installation with available tools
-
-2. **Repository Access Errors**:
-   - Check repository paths are accessible
-   - Verify file system permissions
-   - Use `get_all_repos` to check repository health
-
-3. **Configuration Issues**:
-   - Initialize Jarvis with `jm_create_config`
-   - Load existing config with `jm_load_config`
-   - Check configuration file permissions
-
-4. **Resource Graph Errors**:
-   - Build resource graph with `jm_graph_build`
-   - Ensure system permissions for hardware access
-   - Check hostfile configuration for multi-node setups
-
-## Testing
-
-```bash
-# Run all tests
-pytest tests/ -v
-uv run pytest tests/ -v
-
-# Run quick test
-python tests/quick_test.py
-```
-
-## Performance Considerations
-
-- **Package Operations**: Typically complete in under 2 seconds with intelligent caching
-- **Repository Management**: Depend on repository size and network access
-- **Resource Analysis**: Requires resource graph build for optimal performance
-- **Intelligent Filtering**: Significantly reduces response time for focused queries
-- **Configuration Caching**: Smart caching for frequently accessed configuration
-
-## Security Notes
-
-- **Repository Management**: Use validation and backup features for safe operations
-- **Configuration**: Store sensitive configuration in secure directories
-- **Permissions**: Run with minimal required privileges
-- **Audit Trails**: Built-in logging for repository and configuration changes
-
-## Architecture
-
-### Project Structure
-```
-Jarvis/
-├── src/
-│   ├── __init__.py              # Package initialization
-│   ├── server.py                # Main MCP server with tools and entry point
-│   └── implementation/          # Core implementation modules
-│       ├── __init__.py
-│       ├── output_formatter.py  # Beautiful response formatting
-│       ├── discoverability.py   # Package and repository discovery
-│       └── models.py            # Pydantic data models
-├── tests/
-│   ├── __init__.py
-│   ├── conftest.py              # Test configuration
-│   ├── quick_test.py            # Quick integration test
-│   ├── run_all_tests.py         # Test runner
-│   ├── test_discoverability.py  # Discovery tests
-│   ├── test_imports.py          # Import validation tests
-│   ├── test_integration.py      # Integration tests
-│   └── test_server.py           # Server tests
-├── docs/                        # Documentation and guides
-│   ├── GUIDE.md                 # Usage guide
-│   ├── PHASE1_README.md         # Phase 1 documentation
-│   ├── basic_install.md         # Installation guide
-│   └── assets/                  # Screenshots and assets
-├── pyproject.toml               # Project configuration
-├── pytest.ini                  # Test configuration
-└── README.md                    # This file
-```
-
-### Architecture Design
-
-This implementation follows a **clean, direct architecture** that eliminates unnecessary complexity:
-
-- **Direct FastMCP Integration**: Tools are defined directly in `server.py` using FastMCP decorators, eliminating the need for wrapper handlers
-- **Standard Python Entry Point**: Uses the standard `if __name__ == "__main__"` pattern in `server.py` instead of a separate `__main__.py` file
-- **Streamlined Dependencies**: Removed intermediate handler layers for better performance and maintainability
-- **Single Responsibility**: Each module has a clear, focused purpose without redundant abstraction layers
-
-**Benefits of This Design:**
-- **Simpler Maintenance**: Fewer files and layers to manage
-- **Better Performance**: Direct function calls without handler indirection
-- **Standard Practices**: Follows Python packaging conventions
-- **Easier Testing**: Direct access to tool functions for comprehensive testing
-- **Cleaner Imports**: Straightforward import structure without complex path manipulation
-
-### Design Philosophy
-
-Following MCP best practices, this server implements:
-
-1. **Workflow-First Approach**: Tools designed for real-world HPC package management workflows
-2. **Intelligent Analysis**: AI-powered insights and package recommendations  
-3. **Beautiful Formatting**: Structured, readable output with comprehensive metadata
-4. **Enterprise Security**: Safe repository management with validation and rollback
-5. **Performance Optimization**: Efficient discovery with intelligent caching and filtering
-
-### Available Tools
-
-The server provides 9 specialized tools:
-
-**Discovery Tools:**
-- `get_all_packages` - Comprehensive package discovery
-- `get_package_info` - Detailed package information
-- `get_all_repos` - Repository management and health
-- `modify_repo` - Safe repository lifecycle operations
-- `get_resource_status` - Cluster resource analysis
-
-**Configuration Tools:**
-- `jm_create_config` - Initialize Jarvis configuration
-- `jm_load_config` - Load existing configuration
-- `jm_set_hostfile` - Configure multi-node hostfile
-- `jm_graph_build` - Build resource graph
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Install development dependencies (`uv sync --dev`)
-4. Make your changes following the existing patterns
-5. Add tests for new functionality
-6. Run tests and ensure they pass (`uv run pytest`)
-7. Run formatting and linting (`uv run black . && uv run ruff check .`)
-8. Commit your changes (`git commit -m 'Add amazing feature'`)
-9. Push to the branch (`git push origin feature/amazing-feature`)
-10. Submit a pull request
-
-### Development Guidelines
-
-- Follow the existing code style and patterns
-- Add comprehensive tests for new features
-- Update documentation for any API changes
-- Use type hints for better code clarity
-- Follow the workflow-first design philosophy
-
-## License
-
-MIT License - This project is part of the Scientific MCPs collection.
 
 ---
 
-## Support
+##### 5. **Analyze Cluster Resources**
 
-For issues, questions, or contributions:
-- Create an issue in the repository
-- Follow the contributing guidelines
-- Ensure all tests pass before submitting PRs
+Get comprehensive information about available cluster resources for deployment planning.
 
-**Part of the IoWarp Scientific MCPs Collection** 🔬
+```bash
+# Query to get resource status
+Query: What resources are available on this cluster?
+```
+
+**Example Usage:**
+```python
+# Get complete resource status
+resources = await get_resource_status()
+
+# Focus on hardware information
+hardware = await get_resource_status(
+    include_network=False,
+    include_storage=False,
+    detail_level="comprehensive"
+)
+```
+
+---
+
+##### 6. **Build Resource Graph**
+
+Build the resource graph for resource-aware deployment planning.
+
+```bash
+# Query to build resource graph
+Query: Build the resource graph for the cluster
+```
+
+**Example Usage:**
+```python
+# Build resource graph
+await jm_graph_build(net_sleep=1.0)
+```
+
+---
+
+### Phase 2 Operations
+
+##### 7. **Create and Manage Pipelines**
+
+Create new HPC workflow pipelines for organizing and executing packages.
+
+```bash
+# Query to create a new pipeline
+Query: Create a new pipeline called 'hpc_benchmark' for I/O testing
+```
+
+**Example Usage:**
+```python
+# Create a new pipeline
+result = await create_pipeline(
+    pipeline_name="hpc_benchmark",
+    description="I/O benchmarking pipeline with storage system",
+    switch_focus=True
+)
+
+# List all available pipelines
+pipelines = await list_pipelines()
+
+# Switch focus to specific pipeline
+await switch_pipeline_focus("hpc_benchmark")
+```
+
+---
+
+##### 8. **Build Pipeline Composition**
+
+Add packages to pipelines and create complex HPC workflows.
+
+```bash
+# Query to build a workflow
+Query: Add orangefs storage and ior benchmark to my pipeline
+```
+
+**Example Usage:**
+```python
+# Add storage service to pipeline
+await add_package_to_pipeline(
+    package_name="orangefs",
+    configuration={"num_servers": 4, "storage_path": "/scratch/orangefs"}
+)
+
+# Add I/O benchmark application
+await add_package_to_pipeline(
+    package_name="ior",
+    configuration={"size": "1g", "num_procs": 16, "transfer_size": "1m"}
+)
+
+# Get current pipeline composition
+composition = await get_pipeline_composition()
+```
+
+---
+
+##### 9. **YAML Pipeline Management**
+
+Import and export pipelines using YAML format for reproducibility.
+
+```bash
+# Query to export pipeline
+Query: Export my current pipeline to YAML format
+```
+
+**Example Usage:**
+```python
+# Export pipeline to YAML
+yaml_script = await export_pipeline_to_yaml(
+    output_path="./hpc_benchmark.yaml"
+)
+
+# Import pipeline from YAML
+result = await import_pipeline_from_yaml(
+    yaml_path="./existing_workflow.yaml",
+    pipeline_name="imported_workflow"
+)
+```
+
+---
+
+##### 10. **Advanced Pipeline Operations**
+
+Reorder packages and analyze relationships for optimization.
+
+```bash
+# Query to optimize pipeline
+Query: Analyze my pipeline for package conflicts and optimization opportunities
+```
+
+**Example Usage:**
+```python
+# Reorder packages for optimal execution
+await reorder_pipeline_packages(
+    new_order=["orangefs", "darshan", "ior", "orangefs_stop"]
+)
+
+# Analyze package relationships
+analysis = await analyze_package_relationships(
+    include_suggested_packages=True
+)
+
+# Browse available templates
+templates = await browse_pipeline_indexes(
+    category_filter="benchmark"
+)
+```
+
+---
+
+### Phase 3 Operations
+
+##### 11. **Environment Management and Optimization**
+
+Build optimized execution environments and manage configurations for production deployment.
+
+```bash
+# Query to build optimized environment
+Query: Build an optimized environment for my pipeline with aggressive optimizations
+```
+
+**Example Usage:**
+```python
+# Build optimized environment
+environment = await build_pipeline_environment(
+    optimization_level="aggressive",
+    include_development_tools=True
+)
+
+# Copy proven environment to new pipeline
+await copy_environment_to_pipeline(
+    source_environment="production_env_v2",
+    pipeline_name="new_simulation"
+)
+
+# Configure custom environment settings
+await configure_pipeline_environment(
+    environment_variables={"OMP_NUM_THREADS": "16", "CUDA_VISIBLE_DEVICES": "0,1"},
+    modules_to_load=["gcc/11.0", "openmpi/4.1", "cuda/11.8"],
+    optimization_settings={"CFLAGS": "-O3 -march=native"}
+)
+```
+
+---
+
+##### 12. **Package Parameter Configuration and Optimization**
+
+Configure and optimize package parameters for maximum performance and efficiency.
+
+```bash
+# Query to configure and optimize packages
+Query: Configure IOR benchmark parameters and optimize for our cluster hardware
+```
+
+**Example Usage:**
+```python
+# Configure package parameters
+config_info = await configure_package_parameters(
+    package_name="ior",
+    configuration_params={
+        "size": "10g",
+        "num_procs": 32,
+        "transfer_size": "4m",
+        "block_size": "1g"
+    }
+)
+
+# AI-assisted optimization
+optimization = await optimize_package_configuration(
+    package_name="ior",
+    optimization_target="performance",
+    resource_constraints={"max_memory": "256GB", "max_nodes": 8}
+)
+
+# Comprehensive validation
+validation = await validate_pipeline_configuration(
+    check_environment=True,
+    check_resources=True,
+    check_dependencies=True
+)
+```
+
+---
+
+##### 13. **Execution Method and Resource Configuration**
+
+Configure distributed execution methods and optimize resource allocation across cluster nodes.
+
+```bash
+# Query to set up distributed execution
+Query: Configure MPI execution with 4 nodes and 16 processes per node, optimize resource allocation
+```
+
+**Example Usage:**
+```python
+# Configure MPI execution
+execution_config = await configure_execution_method(
+    execution_type="mpi",
+    hostfile_path="/etc/hosts.cluster",
+    node_count=4,
+    processes_per_node=16,
+    additional_settings={"mpi_implementation": "openmpi"}
+)
+
+# Optimize resource allocation
+resource_config = await optimize_resource_allocation(
+    optimization_strategy="balanced",
+    resource_constraints={"max_memory_per_node": "64GB"},
+    node_preferences={"orangefs": ["node01", "node02"]}
+)
+```
+
+---
+
+##### 14. **Advanced Configuration and Integration**
+
+Set up monitoring tools and integrate external packages for comprehensive HPC workflows.
+
+```bash
+# Query to add monitoring and integrate external packages
+Query: Add Darshan I/O monitoring and integrate HDF5 from Spack
+```
+
+**Example Usage:**
+```python
+# Configure interceptors for monitoring
+interceptors = await manage_interceptors(
+    action="add",
+    interceptor_name="darshan",
+    target_packages=["ior", "incompact3d"],
+    configuration={"log_path": "/scratch/darshan_logs"}
+)
+
+# Integrate Spack packages
+integration = await integrate_scspkg_packages(
+    package_name="hdf5",
+    spack_spec="hdf5@1.12+mpi+fortran",
+    build_options={"compiler": "gcc@11.0", "mpi": "openmpi"}
+)
+```
+
+---
+
+
+
+## Documentation
+
+For detailed documentation about the implementation:
+
+- [COMPLETE_DESIGN_PLAN.md](./COMPLETE_DESIGN_PLAN.md) - Comprehensive design document for all phases
+- [PHASE1_README.md](./docs/PHASE1_README.md) - Complete Phase 1 documentation
+- [PHASE2_README.md](./docs/PHASE2_README.md) - Complete Phase 2 documentation
+- [PHASE3_README.md](./docs/PHASE3_README.md) - Complete Phase 3 documentation
+
+
+## Notes
+
+* Ensure your environment is set up with Python 3.10.12+
+* Jarvis-CD is optional but recommended for full functionality
+* Use `uv pip install -e .` to enable development mode
+* The server supports both stdio and SSE transports
+* Phases 1, 2 & 3 provide complete discoverability, composition, and configuration capabilities
+* Phase 4 (Deployment) will add execution management and monitoring capabilities
+* **Total of 33 tools** implemented across three phases

@@ -6,7 +6,7 @@
 
 Before you start, ensure that you have the following:
 
-* **Python 3.10+** installed on your system
+* **Python 3.10.12+** installed on your system
 * A **Git** installation to clone the repository
 * An environment to install and run Python packages (virtual environment is recommended)
 
