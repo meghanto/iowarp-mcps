@@ -19,20 +19,22 @@ from .sensor_info import get_sensor_info
 
 def get_node_info(
     include_filters: Optional[List[str]] = None,
-    exclude_filters: Optional[List[str]] = None
+    exclude_filters: Optional[List[str]] = None,
+    max_response_size: Optional[int] = None
 ) -> Dict:
     """
-    Get comprehensive local node information with optional filtering.
+    Get comprehensive local node information with optional filtering and size control.
     
     Args:
         include_filters: List of components to include (e.g., ['cpu', 'memory', 'disk'])
         exclude_filters: List of components to exclude
+        max_response_size: Maximum response size in bytes (for token limit control)
         
     Returns:
         Dictionary with filtered node information
     """
     try:
-        # Available components
+        # Available components with their estimated sizes
         available_components = {
             'system': get_system_info,
             'cpu': get_cpu_info,
@@ -45,22 +47,76 @@ def get_node_info(
             'sensors': get_sensor_info
         }
         
+        # Component size estimates (in bytes) for token limit control
+        component_size_estimates = {
+            'system': 2000,
+            'cpu': 3000,
+            'memory': 1500,
+            'disk': 8000,
+            'network': 5000,
+            'processes': 15000,
+            'hardware_summary': 4000,
+            'gpu': 2000,
+            'sensors': 3000
+        }
+        
         # Apply filters
         components_to_include = set(available_components.keys())
         
         if include_filters:
-            components_to_include = set(include_filters) & set(available_components.keys())
+            # Validate include filters
+            valid_components = set(available_components.keys())
+            invalid_components = set(include_filters) - valid_components
+            if invalid_components:
+                return {
+                    'error': f"Invalid components specified: {list(invalid_components)}. Valid components: {list(valid_components)}",
+                    'error_type': 'InvalidComponentError',
+                    'valid_components': list(valid_components)
+                }
+            components_to_include = set(include_filters) & valid_components
             
         if exclude_filters:
+            # Validate exclude filters
+            valid_components = set(available_components.keys())
+            invalid_components = set(exclude_filters) - valid_components
+            if invalid_components:
+                return {
+                    'error': f"Invalid components specified for exclusion: {list(invalid_components)}. Valid components: {list(valid_components)}",
+                    'error_type': 'InvalidComponentError',
+                    'valid_components': list(valid_components)
+                }
             components_to_include = components_to_include - set(exclude_filters)
+        
+        # Size control: if max_response_size is specified, limit components
+        if max_response_size:
+            estimated_size = sum(component_size_estimates.get(comp, 1000) for comp in components_to_include)
+            if estimated_size > max_response_size:
+                # Prioritize components by importance
+                priority_order = ['system', 'cpu', 'memory', 'hardware_summary', 'disk', 'network', 'gpu', 'sensors', 'processes']
+                limited_components = []
+                current_size = 0
+                
+                for comp in priority_order:
+                    if comp in components_to_include:
+                        comp_size = component_size_estimates.get(comp, 1000)
+                        if current_size + comp_size <= max_response_size:
+                            limited_components.append(comp)
+                            current_size += comp_size
+                        else:
+                            break
+                
+                components_to_include = set(limited_components)
         
         # Collect information
         node_info = {}
         errors = []
+        collected_components = []
         
         for component in components_to_include:
             try:
-                node_info[component] = available_components[component]()
+                result = available_components[component]()
+                node_info[component] = result
+                collected_components.append(component)
             except Exception as e:
                 errors.append(f"Error getting {component}: {str(e)}")
         
@@ -69,8 +125,10 @@ def get_node_info(
             'hostname': os.uname().nodename,
             'collection_method': 'local',
             'components_requested': list(components_to_include),
-            'components_collected': list(node_info.keys()),
-            'errors': errors
+            'components_collected': collected_components,
+            'errors': errors,
+            'response_size_controlled': max_response_size is not None,
+            'total_components_available': len(available_components)
         }
         
         return node_info

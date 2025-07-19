@@ -516,20 +516,68 @@ def sensor_info_handler() -> dict:
 
 def get_node_info_handler(
     include_filters: Optional[List[str]] = None,
-    exclude_filters: Optional[List[str]] = None
+    exclude_filters: Optional[List[str]] = None,
+    max_response_size: Optional[int] = None
 ) -> dict:
     """
-    Handler for comprehensive local node information with filtering.
+    Handler for comprehensive local node information with filtering and size control.
     
     Args:
         include_filters: List of components to include
         exclude_filters: List of components to exclude
+        max_response_size: Maximum response size in bytes (for token limit control)
         
     Returns:
         MCP-compliant response dictionary
     """
     try:
-        result = get_node_info(include_filters, exclude_filters)
+        # Validate input parameters
+        if include_filters is not None and not isinstance(include_filters, list):
+            return create_beautiful_response(
+                operation="get_node_info",
+                success=False,
+                error_message=f"include_filters must be a list, got {type(include_filters).__name__}",
+                error_type="InvalidParameterType",
+                suggestions=[
+                    "Pass components as a list, e.g., ['cpu', 'memory']",
+                    "Do not pass components as a string",
+                    "Use valid component names: cpu, memory, disk, network, system, processes, gpu, sensors, hardware_summary"
+                ]
+            )
+        
+        if exclude_filters is not None and not isinstance(exclude_filters, list):
+            return create_beautiful_response(
+                operation="get_node_info",
+                success=False,
+                error_message=f"exclude_filters must be a list, got {type(exclude_filters).__name__}",
+                error_type="InvalidParameterType",
+                suggestions=[
+                    "Pass exclude_components as a list, e.g., ['processes', 'sensors']",
+                    "Do not pass exclude_components as a string",
+                    "Use valid component names: cpu, memory, disk, network, system, processes, gpu, sensors, hardware_summary"
+                ]
+            )
+        
+        # Set default max response size if not specified (to prevent token limit issues)
+        if max_response_size is None:
+            max_response_size = 15000  # Conservative limit to stay under 25k tokens
+        
+        result = get_node_info(include_filters, exclude_filters, max_response_size)
+        
+        # Check if there was an error in the underlying function
+        if 'error' in result:
+            return create_beautiful_response(
+                operation="get_node_info",
+                success=False,
+                error_message=result['error'],
+                error_type=result.get('error_type', 'UnknownError'),
+                suggestions=[
+                    "Check if the system supports the requested components",
+                    "Verify system permissions for hardware access",
+                    "Try with different component combinations",
+                    "Use fewer components to reduce response size"
+                ]
+            )
         
         # Generate summary
         metadata = result.get("_metadata", {})
@@ -538,7 +586,8 @@ def get_node_info_handler(
             "components_requested": len(metadata.get("components_requested", [])),
             "components_collected": len(metadata.get("components_collected", [])),
             "collection_method": metadata.get("collection_method", "unknown"),
-            "errors": len(metadata.get("errors", []))
+            "errors": len(metadata.get("errors", [])),
+            "response_size_controlled": metadata.get("response_size_controlled", False)
         }
         
         # Generate insights
@@ -553,6 +602,15 @@ def get_node_info_handler(
         if exclude_filters:
             insights.append(f"Applied exclude filters: {', '.join(exclude_filters)}")
         
+        if metadata.get("response_size_controlled"):
+            insights.append("Response size was controlled to prevent token limit issues")
+        
+        # Add helpful suggestions for token limit issues
+        suggestions = []
+        if len(metadata.get("components_collected", [])) < len(metadata.get("components_requested", [])):
+            suggestions.append("Some components were excluded due to response size limits")
+            suggestions.append("Try requesting fewer components or use specific component filters")
+        
         return create_beautiful_response(
             operation="get_node_info",
             success=True,
@@ -561,7 +619,9 @@ def get_node_info_handler(
             insights=insights,
             metadata={
                 "filters_applied": bool(include_filters or exclude_filters),
-                "total_components": len(metadata.get("components_requested", []))
+                "total_components": len(metadata.get("components_requested", [])),
+                "max_response_size": max_response_size,
+                "valid_components": ["cpu", "memory", "disk", "network", "system", "processes", "gpu", "sensors", "hardware_summary"]
             }
         )
         
@@ -575,7 +635,8 @@ def get_node_info_handler(
                 "Check if the system supports node information retrieval",
                 "Verify system permissions for hardware access",
                 "Ensure all required libraries are properly installed",
-                "Try with different filter combinations"
+                "Try with different filter combinations",
+                "Use specific component filters to reduce response size"
             ]
         )
 

@@ -49,141 +49,358 @@ class NodeHardwareMCPError(Exception):
     pass
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# LOCAL NODE HARDWARE MONITORING
+# INDIVIDUAL HARDWARE COMPONENT TOOLS
 # ═══════════════════════════════════════════════════════════════════════════════
 
 @mcp.tool(
-    name="get_node_info",
-    description="""Get comprehensive local node hardware and system information with advanced filtering and intelligent analysis.
+    name="get_cpu_info",
+    description="""Get comprehensive CPU information including specifications, core configuration, frequency analysis, and performance metrics.
 
-This powerful tool provides complete local system analysis by collecting information from all hardware 
-and system components with sophisticated filtering capabilities. It delivers comprehensive 
-specifications with intelligent data organization, performance analysis, and optimization recommendations.
+This tool provides detailed CPU analysis including:
+- **CPU Model**: Manufacturer, model name, and architecture details
+- **Core Configuration**: Physical and logical core counts with hyperthreading detection
+- **Frequency Analysis**: Current, minimum, and maximum CPU frequencies
+- **Performance Metrics**: Real-time CPU usage across all cores
+- **Cache Information**: L1, L2, and L3 cache sizes and hierarchy
+- **Thermal Status**: CPU temperature monitoring (if available)
+- **Load Analysis**: System load averages and performance indicators
 
-**Local Hardware Collection Strategy**:
-1. **Comprehensive Discovery**: Automatically detects and analyzes all available local hardware components
-2. **Intelligent Filtering**: Applies sophisticated filtering to focus on specific components or exclude unwanted data
-3. **Cross-Component Analysis**: Provides integrated analysis across all system subsystems for holistic insights
-4. **Performance Optimization**: Delivers organized hardware information with metadata and collection statistics
-5. **Predictive Intelligence**: Generates comprehensive insights and optimization recommendations based on collected data
+**Use Cases**:
+- Performance monitoring and bottleneck identification
+- System capacity planning and resource allocation
+- CPU-intensive workload analysis
+- Thermal monitoring and cooling assessment
+- Hardware upgrade planning and compatibility checking
 
-**Available Hardware Components**:
-- **cpu**: CPU specifications, core configuration, frequency analysis, cache hierarchy, performance metrics, thermal status
-- **memory**: Memory capacity, usage patterns, swap configuration, performance characteristics, health indicators, efficiency analysis
-- **disk**: Storage devices, usage analysis, I/O performance, health monitoring, file systems, predictive maintenance
-- **network**: Network interfaces, bandwidth analysis, connection details, protocol statistics, security monitoring, performance optimization
-- **system**: Operating system details, uptime analysis, user management, configuration, platform information, security status
-- **processes**: Running processes, resource consumption, process hierarchy, performance metrics, system load analysis
-- **gpu**: GPU specifications, memory analysis, thermal monitoring, performance metrics, driver information, compute capabilities
-- **sensors**: Temperature sensors, fan control, voltage monitoring, hardware health, thermal management, predictive maintenance
-- **performance**: Real-time performance monitoring, bottleneck analysis, optimization recommendations, trend analysis
-- **summary**: Integrated hardware overview with cross-subsystem analysis and comprehensive health assessment
-
-**Advanced Local Filtering Capabilities**:
-- **Include Filters**: Specify exactly which components to collect for focused analysis and reduced overhead
-- **Exclude Filters**: Remove specific components from collection for streamlined results and improved performance
-- **Component Selection**: Choose from comprehensive list of hardware and system components with intelligent organization
-- **Intelligent Organization**: Automatically organize collected data for optimal readability and analysis workflow
-- **Metadata Tracking**: Track collection process, success rates, error handling, and performance metrics
-
-**Performance Analysis Features**:
-- **Bottleneck Detection**: Automated identification of performance bottlenecks with resolution strategies
-- **Resource Optimization**: Analysis of resource utilization patterns with efficiency improvement recommendations
-- **Predictive Maintenance**: Sensor-based predictive maintenance and failure prediction with trend analysis
-- **Capacity Planning**: Growth trend analysis with capacity recommendations and scaling strategies
-- **Health Assessment**: Comprehensive health monitoring with trend analysis and predictive insights
-
-**Intelligence and Insights**:
-- **Automated Analysis**: AI-powered analysis of hardware configurations and performance patterns
-- **Optimization Recommendations**: Intelligent recommendations for system optimization and performance improvement
-- **Trend Analysis**: Historical trend analysis and predictive insights for capacity planning
-- **Anomaly Detection**: Automated detection of unusual patterns and potential issues
-- **Best Practice Guidance**: Industry best practices and configuration recommendations
-
-**Prerequisites**: Local system access with hardware information retrieval capabilities
-**Tools to use before this**: health_check() to verify system capabilities and compatibility
-**Tools to use after this**: get_remote_node_info() for distributed system analysis, or optimization tools based on results
-
-Use this tool when:
-- Getting complete local system overview with selective focus ("Show me local CPU and memory info with performance analysis")
-- Collecting comprehensive local hardware information for analysis, reporting, or infrastructure documentation
-- Performing local system audits with customizable scope, depth, and intelligent analysis
-- Monitoring local system health and performance characteristics with predictive maintenance insights
-- Planning local system upgrades and capacity requirements with trend analysis and recommendations
-- Troubleshooting local hardware and performance issues with intelligent diagnostic capabilities
-- Conducting local infrastructure assessments with comprehensive analysis and optimization guidance"""
+**Returns**: Structured CPU information with performance insights and optimization recommendations."""
 )
-async def get_node_info_tool(
-    components: Optional[List[str]] = None,
-    exclude_components: Optional[List[str]] = None,
-    include_performance: bool = True,
-    include_health: bool = True
-) -> dict:
-    """
-    Get comprehensive local node hardware and system information with intelligent filtering and advanced analysis.
-    
-    Args:
-        components: List of specific components to include in collection for focused analysis
-                   Available: ['cpu', 'memory', 'disk', 'network', 'system', 'processes', 'gpu', 'sensors', 'performance', 'summary']
-                   Examples: 
-                   - ['cpu', 'memory'] - Focus on processor and memory analysis with performance metrics
-                   - ['system', 'summary'] - Basic system overview with integrated analysis
-                   - ['gpu', 'sensors'] - Graphics and thermal monitoring for gaming/compute systems
-                   - ['cpu', 'memory', 'disk', 'performance'] - Core system performance analysis
-        exclude_components: List of specific components to exclude from collection for streamlined results
-                           Examples: 
-                           - ['processes', 'sensors'] - Skip resource-intensive collections for faster results
-                           - ['gpu'] - Exclude GPU information for server environments
-                           - ['sensors'] - Skip sensor data for systems without thermal monitoring
-        include_performance: Whether to include real-time performance analysis and optimization recommendations
-                           - True: Comprehensive performance metrics with bottleneck analysis
-                           - False: Basic hardware information without performance overhead
-        include_health: Whether to include health assessment and predictive maintenance insights
-                       - True: Full health monitoring with predictive analytics
-                       - False: Basic information without health analysis overhead
-    
-    Returns:
-        Dictionary containing comprehensive local hardware and system analysis:
-        - **hardware_data**: Complete hardware and system information organized by component type
-        - **collection_metadata**: Detailed metadata including requested vs collected components and success rates
-        - **performance_analysis**: Real-time performance metrics with bottleneck identification and optimization recommendations
-        - **health_assessment**: Comprehensive health monitoring with predictive maintenance insights and failure prediction
-        - **error_information**: Detailed error information for any failed component collections with troubleshooting suggestions
-        - **intelligent_insights**: AI-powered insights and recommendations based on collected data and analysis
-        - **optimization_recommendations**: System optimization suggestions with implementation guidance
-        - **beautiful_formatting**: Structured, readable output with rich formatting and comprehensive summaries
-        
-    Component Selection Examples:
-        - components=['cpu', 'memory'] - Processor and memory analysis for performance tuning
-        - components=['system', 'summary'] - Basic system overview for inventory and documentation
-        - components=['gpu', 'sensors'] - Graphics and thermal monitoring for gaming/AI workloads
-        - components=['disk', 'network'] - Storage and network analysis for I/O performance optimization
-        - exclude_components=['processes'] - Skip process information for faster collection in production
-        - exclude_components=['sensors', 'gpu'] - Exclude specialized components for server environments
-        - No filters - Comprehensive information collection from all available components
-        
-    Advanced Usage Examples:
-        - Performance Analysis: components=['cpu', 'memory', 'disk', 'performance'], include_performance=True
-        - Health Monitoring: components=['sensors', 'disk', 'gpu'], include_health=True
-        - Quick Overview: components=['summary'], include_performance=False, include_health=False
-        - Infrastructure Audit: No filters, include_performance=True, include_health=True
-        - Focused Analysis: components=['cpu', 'memory'], include_performance=True, include_health=False
-    """
+async def get_cpu_info_tool() -> dict:
+    """Get CPU information with beautiful formatting."""
     try:
-        logger.info(f"Collecting comprehensive local hardware information: components={components}, exclude={exclude_components}")
-        
-        return mcp_handlers.get_node_info_handler(
-            include_filters=components,
-            exclude_filters=exclude_components
-        )
+        logger.info("Collecting CPU information")
+        return mcp_handlers.cpu_info_handler()
     except Exception as e:
-        logger.error(f"Local hardware information collection error: {e}")
+        logger.error(f"CPU information collection error: {e}")
         return {
-            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "LocalHardwareCollectionError", "troubleshooting": "Check system permissions and component availability"}}'}],
-            "_meta": {"tool": "get_node_info", "error": "LocalHardwareCollectionError"},
+            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "CPUCollectionError"}}'}],
+            "_meta": {"tool": "get_cpu_info", "error": "CPUCollectionError"},
             "isError": True
         }
 
+@mcp.tool(
+    name="get_memory_info",
+    description="""Get comprehensive memory information including capacity, usage patterns, and performance characteristics.
+
+This tool provides detailed memory analysis including:
+- **Memory Capacity**: Total, available, and used memory in bytes and human-readable format
+- **Usage Patterns**: Memory utilization percentages and trends
+- **Swap Configuration**: Swap space allocation, usage, and performance impact
+- **Memory Types**: RAM specifications, speeds, and configurations
+- **Performance Metrics**: Memory bandwidth and latency indicators
+- **Health Indicators**: Memory error detection and health status
+- **Efficiency Analysis**: Memory optimization recommendations
+
+**Use Cases**:
+- Memory usage monitoring and optimization
+- Application memory requirement analysis
+- System performance tuning and bottleneck identification
+- Memory upgrade planning and capacity assessment
+- Memory-intensive workload analysis
+
+**Returns**: Structured memory information with usage insights and optimization recommendations."""
+)
+async def get_memory_info_tool() -> dict:
+    """Get memory information with beautiful formatting."""
+    try:
+        logger.info("Collecting memory information")
+        return mcp_handlers.memory_info_handler()
+    except Exception as e:
+        logger.error(f"Memory information collection error: {e}")
+        return {
+            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "MemoryCollectionError"}}'}],
+            "_meta": {"tool": "get_memory_info", "error": "MemoryCollectionError"},
+            "isError": True
+        }
+
+@mcp.tool(
+    name="get_system_info",
+    description="""Get comprehensive system information including operating system details, platform configuration, and system status.
+
+This tool provides detailed system analysis including:
+- **Operating System**: OS name, version, distribution, and kernel information
+- **Platform Details**: Architecture, machine type, and processor information
+- **System Status**: Hostname, uptime, boot time, and system load
+- **User Management**: Active users, user sessions, and authentication status
+- **Configuration**: System configuration files and environment variables
+- **Security Status**: Security patches, updates, and vulnerability assessment
+- **Platform Information**: Hardware platform, virtualization status, and cloud environment detection
+
+**Use Cases**:
+- System inventory and asset management
+- OS compatibility checking and upgrade planning
+- Security assessment and patch management
+- System configuration documentation
+- Platform-specific optimization and tuning
+
+**Returns**: Structured system information with configuration insights and security recommendations."""
+)
+async def get_system_info_tool() -> dict:
+    """Get system information with beautiful formatting."""
+    try:
+        logger.info("Collecting system information")
+        return mcp_handlers.system_info_handler()
+    except Exception as e:
+        logger.error(f"System information collection error: {e}")
+        return {
+            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "SystemCollectionError"}}'}],
+            "_meta": {"tool": "get_system_info", "error": "SystemCollectionError"},
+            "isError": True
+        }
+
+@mcp.tool(
+    name="get_disk_info",
+    description="""Get comprehensive disk information including storage devices, partitions, and I/O performance metrics.
+
+This tool provides detailed disk analysis including:
+- **Storage Devices**: Physical disk drives, SSDs, and storage controllers
+- **Partition Information**: File system types, mount points, and partition layouts
+- **Usage Analysis**: Disk space utilization, free space, and growth trends
+- **I/O Performance**: Read/write speeds, IOPS, and latency measurements
+- **Health Monitoring**: SMART status, error rates, and predictive maintenance
+- **File Systems**: File system types, mount options, and performance characteristics
+- **Predictive Maintenance**: Disk health indicators and failure prediction
+
+**Use Cases**:
+- Storage capacity planning and management
+- Disk performance optimization and bottleneck identification
+- Storage upgrade planning and RAID configuration
+- Backup strategy development and storage allocation
+- Disk health monitoring and predictive maintenance
+
+**Returns**: Structured disk information with performance insights and maintenance recommendations."""
+)
+async def get_disk_info_tool() -> dict:
+    """Get disk information with beautiful formatting."""
+    try:
+        logger.info("Collecting disk information")
+        return mcp_handlers.disk_info_handler()
+    except Exception as e:
+        logger.error(f"Disk information collection error: {e}")
+        return {
+            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "DiskCollectionError"}}'}],
+            "_meta": {"tool": "get_disk_info", "error": "DiskCollectionError"},
+            "isError": True
+        }
+
+@mcp.tool(
+    name="get_network_info",
+    description="""Get comprehensive network information including interfaces, connections, and bandwidth analysis.
+
+This tool provides detailed network analysis including:
+- **Network Interfaces**: Physical and virtual network interfaces with status
+- **IP Configuration**: IP addresses, subnet masks, and routing information
+- **Connection Details**: Active connections, protocols, and port usage
+- **Bandwidth Analysis**: Network throughput, packet statistics, and performance metrics
+- **Protocol Statistics**: TCP/UDP statistics, error rates, and connection states
+- **Security Monitoring**: Network security status, firewall rules, and intrusion detection
+- **Performance Optimization**: Network optimization recommendations and bottleneck identification
+
+**Use Cases**:
+- Network performance monitoring and troubleshooting
+- Network capacity planning and bandwidth optimization
+- Network security assessment and monitoring
+- Network configuration documentation and management
+- Network-intensive application analysis
+
+**Returns**: Structured network information with performance insights and security recommendations."""
+)
+async def get_network_info_tool() -> dict:
+    """Get network information with beautiful formatting."""
+    try:
+        logger.info("Collecting network information")
+        return mcp_handlers.network_info_handler()
+    except Exception as e:
+        logger.error(f"Network information collection error: {e}")
+        return {
+            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "NetworkCollectionError"}}'}],
+            "_meta": {"tool": "get_network_info", "error": "NetworkCollectionError"},
+            "isError": True
+        }
+
+@mcp.tool(
+    name="get_gpu_info",
+    description="""Get comprehensive GPU information including specifications, memory, and compute capabilities.
+
+This tool provides detailed GPU analysis including:
+- **GPU Specifications**: GPU model, architecture, and compute capabilities
+- **Memory Analysis**: GPU memory capacity, usage, and bandwidth
+- **Thermal Monitoring**: GPU temperature, fan speeds, and thermal management
+- **Performance Metrics**: GPU utilization, compute performance, and benchmark scores
+- **Driver Information**: GPU driver versions, compatibility, and optimization status
+- **Compute Capabilities**: CUDA, OpenCL, and other compute framework support
+- **Multi-GPU Configuration**: SLI/CrossFire setups and GPU coordination
+
+**Use Cases**:
+- GPU-intensive workload analysis and optimization
+- Machine learning and AI workload planning
+- Gaming performance assessment and optimization
+- GPU upgrade planning and compatibility checking
+- GPU health monitoring and thermal management
+
+**Returns**: Structured GPU information with performance insights and optimization recommendations."""
+)
+async def get_gpu_info_tool() -> dict:
+    """Get GPU information with beautiful formatting."""
+    try:
+        logger.info("Collecting GPU information")
+        return mcp_handlers.gpu_info_handler()
+    except Exception as e:
+        logger.error(f"GPU information collection error: {e}")
+        return {
+            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "GPUCollectionError"}}'}],
+            "_meta": {"tool": "get_gpu_info", "error": "GPUCollectionError"},
+            "isError": True
+        }
+
+# @mcp.tool(
+#     name="get_hardware_summary",
+#     description="""Get a concise hardware summary with key system specifications and overview.
+
+# This tool provides a comprehensive hardware overview including:
+# - **System Overview**: Hostname, platform, and basic system information
+# - **CPU Summary**: Processor model, core count, and basic performance metrics
+# - **Memory Summary**: Total memory capacity and basic usage statistics
+# - **Storage Summary**: Total storage capacity and basic disk information
+# - **Network Summary**: Basic network configuration and connectivity status
+# - **GPU Summary**: GPU presence and basic specifications
+# - **System Health**: Overall system health indicators and status
+
+# **Use Cases**:
+# - Quick system overview and inventory
+# - Hardware specification documentation
+# - System comparison and compatibility checking
+# - Asset management and hardware tracking
+# - Initial system assessment and planning
+
+# **Returns**: Concise hardware summary with key specifications and system status."""
+# )
+# async def get_hardware_summary_tool() -> dict:
+#     """Get hardware summary with beautiful formatting."""
+#     try:
+#         logger.info("Collecting hardware summary")
+#         return mcp_handlers.hardware_summary_handler()
+#     except Exception as e:
+#         logger.error(f"Hardware summary collection error: {e}")
+#         return {
+#             "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "SummaryCollectionError"}}'}],
+#             "_meta": {"tool": "get_hardware_summary", "error": "SummaryCollectionError"},
+#             "isError": True
+#         }
+
+@mcp.tool(
+    name="get_sensor_info",
+    description="""Get sensor information including temperature, fan speeds, and thermal data.
+
+This tool provides detailed sensor analysis including:
+- **Temperature Sensors**: CPU, GPU, motherboard, and ambient temperature readings
+- **Fan Control**: Fan speeds, RPM monitoring, and cooling system status
+- **Voltage Monitoring**: Power supply voltages, stability, and efficiency metrics
+- **Hardware Health**: Component health indicators and thermal management
+- **Thermal Management**: Cooling system performance and thermal throttling status
+- **Predictive Maintenance**: Temperature trends and failure prediction
+- **Environmental Monitoring**: Ambient conditions and environmental factors
+
+**Use Cases**:
+- Thermal monitoring and cooling system optimization
+- Hardware health monitoring and predictive maintenance
+- Overclocking and performance tuning
+- Environmental monitoring and data center management
+- Thermal throttling analysis and optimization
+
+**Returns**: Structured sensor information with thermal insights and health recommendations."""
+)
+async def get_sensor_info_tool() -> dict:
+    """Get sensor information with beautiful formatting."""
+    try:
+        logger.info("Collecting sensor information")
+        return mcp_handlers.sensor_info_handler()
+    except Exception as e:
+        logger.error(f"Sensor information collection error: {e}")
+        return {
+            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "SensorCollectionError"}}'}],
+            "_meta": {"tool": "get_sensor_info", "error": "SensorCollectionError"},
+            "isError": True
+        }
+
+@mcp.tool(
+    name="get_process_info",
+    description="""Get process information including running processes and resource usage.
+
+This tool provides detailed process analysis including:
+- **Process List**: All running processes with PIDs and basic information
+- **Resource Consumption**: CPU, memory, and I/O usage per process
+- **Process Hierarchy**: Parent-child relationships and process trees
+- **Performance Metrics**: Process performance indicators and resource utilization
+- **System Load Analysis**: Overall system load and process distribution
+- **Process States**: Running, sleeping, stopped, and zombie processes
+- **Resource Monitoring**: Real-time resource usage tracking and trends
+
+**Use Cases**:
+- Process monitoring and resource optimization
+- Performance troubleshooting and bottleneck identification
+- System load analysis and capacity planning
+- Process management and optimization
+- Resource-intensive application analysis
+
+**Returns**: Structured process information with resource insights and optimization recommendations."""
+)
+async def get_process_info_tool() -> dict:
+    """Get process information with beautiful formatting."""
+    try:
+        logger.info("Collecting process information")
+        return mcp_handlers.process_info_handler()
+    except Exception as e:
+        logger.error(f"Process information collection error: {e}")
+        return {
+            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "ProcessCollectionError"}}'}],
+            "_meta": {"tool": "get_process_info", "error": "ProcessCollectionError"},
+            "isError": True
+        }
+
+@mcp.tool(
+    name="get_performance_info",
+    description="""Get real-time performance metrics including CPU, memory, and disk usage.
+
+This tool provides comprehensive performance analysis including:
+- **CPU Performance**: Real-time CPU usage, load averages, and performance metrics
+- **Memory Performance**: Memory usage, swap activity, and memory pressure indicators
+- **Disk Performance**: Disk I/O rates, latency, and throughput measurements
+- **Network Performance**: Network throughput, packet rates, and connection statistics
+- **System Load**: Overall system load and performance indicators
+- **Bottleneck Analysis**: Performance bottleneck identification and analysis
+- **Optimization Recommendations**: Performance optimization suggestions and tuning advice
+
+**Use Cases**:
+- Real-time performance monitoring and alerting
+- Performance bottleneck identification and resolution
+- System optimization and tuning
+- Capacity planning and resource allocation
+- Performance benchmarking and comparison
+
+**Returns**: Structured performance information with bottleneck analysis and optimization recommendations."""
+)
+async def get_performance_info_tool() -> dict:
+    """Get performance information with beautiful formatting."""
+    try:
+        logger.info("Collecting performance information")
+        return mcp_handlers.performance_monitor_handler()
+    except Exception as e:
+        logger.error(f"Performance information collection error: {e}")
+        return {
+            "content": [{"text": f'{{"success": false, "error": "{str(e)}", "error_type": "PerformanceCollectionError"}}'}],
+            "_meta": {"tool": "get_performance_info", "error": "PerformanceCollectionError"},
+            "isError": True
+        }
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # REMOTE NODE HARDWARE MONITORING VIA SSH
