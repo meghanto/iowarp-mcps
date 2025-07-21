@@ -8,7 +8,7 @@ import click
 # Determine if we're running from development or installed package
 MODULE_DIR = Path(__file__).parent
 DEV_SERVERS_PATH = MODULE_DIR.parent.parent / "mcps"  # ../../mcps from module
-INSTALLED_SERVERS_PATH = MODULE_DIR / "servers"  # within installed package
+INSTALLED_SERVERS_PATH = MODULE_DIR.parent.parent / "mcps"  # ../../mcps from installed package
 
 def get_servers_path():
     """Get the path to servers directory (dev or installed)"""
