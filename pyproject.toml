@@ -34,13 +34,13 @@ packages = ["src/iowarp_mcps"]
 packages = ["src/iowarp_mcps"]
 
 # Include all server directories in the wheel for uvx execution
-[tool.hatch.build.targets.wheel.force-include]
+[tool.hatch.build.targets.wheel.shared-data]
 "mcps" = "mcps"
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/src",
-    "/mcps",
-    "/README.md",
-    "/pyproject.toml"
+    "src/",
+    "mcps/",
+    "README.md",
+    "pyproject.toml"
 ]
