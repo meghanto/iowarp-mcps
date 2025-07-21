@@ -1,11 +1,10 @@
 name: Publish to PyPI
 
-# Disabled for fork - publishing should happen from main repo
-# on:
-#   push:
-#     tags:
-#       - 'v*'  # Trigger on version tags
-#   workflow_dispatch:  # Allow manual trigger
+on:
+  push:
+    branches:
+      - main  # Trigger on push to main branch
+  workflow_dispatch:  # Allow manual trigger
 
 permissions:
   contents: read
