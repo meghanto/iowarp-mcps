@@ -1,15 +1,16 @@
-# Parallel Sort MCP - High-Performance Parallel Sorting for LLMs
+# Parallel Sort MCP - High-Performance Log File Processing for LLMs
  
  
 ## Description
  
-Parallel Sort MCP is a comprehensive Model Context Protocol (MCP) server that enables Language Learning Models (LLMs) to perform high-performance parallel sorting operations on large datasets. This server provides advanced sorting algorithms, performance optimization tools, and scalable data processing capabilities with seamless integration with AI coding assistants.
+Parallel Sort MCP is a comprehensive Model Context Protocol (MCP) server that enables Language Learning Models (LLMs) to perform high-performance log file processing and analysis operations. This server provides advanced log sorting, filtering, analysis tools, and scalable data processing capabilities with seamless integration with AI coding assistants.
 **Key Features:**
-- **High-Performance Sorting**: Parallel merge sort, quick sort, and radix sort algorithms with multi-threading support
-- **Scalable Data Processing**: Handle large datasets with memory-efficient algorithms and chunked processing
-- **Multiple Data Formats**: Support for CSV, JSON, binary files, and in-memory data structures
-- **Performance Analytics**: Execution time analysis, memory usage tracking, and algorithm comparison
-- **Customizable Parameters**: Thread count, chunk size, and algorithm selection for optimal performance
+- **Log File Sorting**: Timestamp-based sorting with parallel processing for large log files
+- **Advanced Filtering**: Multi-condition filtering by time range, log level, keywords, and custom patterns
+- **Pattern Detection**: Anomaly detection, error clustering, and trend analysis
+- **Statistical Analysis**: Comprehensive log statistics, temporal patterns, and quality metrics
+- **Multiple Export Formats**: Support for JSON, CSV, and text output with metadata
+- **Scalable Processing**: Handle large log files with memory-efficient chunked processing
 - **MCP Integration**: Full Model Context Protocol compliance for seamless LLM integration
  
  
@@ -116,159 +117,238 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Parallel_Sort run parallel-sort-m
  
 ## Available Actions
 
-### `parallel_merge_sort`
-**Description**: Perform parallel merge sort on large datasets with configurable thread count and memory optimization.
+### `sort_log_by_timestamp`
+**Description**: Sort log files by timestamp in chronological order with support for standard log formats.
 
 **Parameters**:
-- `data_file` (str): Path to input data file (CSV, JSON, or binary)
+- `log_file` (str): Path to input log file
+- `output_file` (str, optional): Path for sorted output file
+- `reverse` (bool, optional): Sort in descending order (default: False)
+
+**Returns**: Dictionary with sorting results, processed line count, and execution time.
+
+### `parallel_sort_large_file`
+**Description**: Sort large log files using parallel processing with chunked approach for memory efficiency.
+
+**Parameters**:
+- `log_file` (str): Path to large log file
 - `output_file` (str): Path for sorted output file
-- `num_threads` (int, optional): Number of parallel threads (default: CPU count)
-- `chunk_size` (int, optional): Size of data chunks for processing (default: auto)
+- `chunk_size_mb` (int, optional): Chunk size in MB (default: 100)
+- `num_workers` (int, optional): Number of worker processes (default: CPU count)
 
-**Returns**: Dictionary with sorting results, execution time, and performance metrics.
+**Returns**: Dictionary with sorting results, performance metrics, and memory usage.
 
-### `parallel_quick_sort`
-**Description**: Execute parallel quicksort algorithm with pivot optimization and load balancing.
-
-**Parameters**:
-- `data_file` (str): Path to input data file
-- `output_file` (str): Path for sorted output file
-- `pivot_strategy` (str, optional): Pivot selection strategy ('median', 'random', 'first')
-- `num_threads` (int, optional): Number of parallel threads
-
-**Returns**: Dictionary with sorting results and algorithm performance analysis.
-
-### `radix_sort`
-**Description**: Perform high-speed radix sort for integer and string data with parallel bucket processing.
+### `analyze_log_statistics`
+**Description**: Perform comprehensive statistical analysis of log files including temporal patterns and log levels.
 
 **Parameters**:
-- `data_file` (str): Path to input data file
-- `output_file` (str): Path for sorted output file
-- `data_type` (str): Data type ('int', 'string', 'float')
-- `radix_base` (int, optional): Radix base for sorting (default: 10)
+- `log_file` (str): Path to log file
+- `include_patterns` (bool, optional): Include pattern analysis (default: True)
 
-**Returns**: Dictionary with sorting results and radix-specific performance metrics.
+**Returns**: Dictionary with statistics, temporal analysis, log level distribution, and quality metrics.
 
-### `compare_algorithms`
-**Description**: Compare performance of different sorting algorithms on the same dataset.
+### `detect_log_patterns`
+**Description**: Detect patterns, anomalies, and trends in log files for proactive issue identification.
 
 **Parameters**:
-- `data_file` (str): Path to input data file
-- `algorithms` (list): List of algorithms to compare ['merge_sort', 'quick_sort', 'radix_sort']
-- `num_threads` (int, optional): Number of threads for parallel algorithms
+- `log_file` (str): Path to log file
+- `pattern_types` (list, optional): Types of patterns to detect
+- `sensitivity` (str, optional): Detection sensitivity ('low', 'medium', 'high')
 
-**Returns**: Dictionary with comparative performance analysis and recommendations.
+**Returns**: Dictionary with detected patterns, anomalies, error clusters, and trend analysis.
 
-### `sort_memory_analysis`
-**Description**: Analyze memory usage patterns during sorting operations with profiling data.
-
-**Parameters**:
-- `data_file` (str): Path to input data file
-- `algorithm` (str): Sorting algorithm to analyze
-- `profile_detail` (str, optional): Profiling detail level ('basic', 'detailed')
-
-**Returns**: Dictionary with memory usage statistics and optimization recommendations.
-
-### `benchmark_performance`
-**Description**: Run comprehensive performance benchmarks across multiple data sizes and types.
+### `filter_logs`
+**Description**: Apply multiple filter conditions to log files with complex logical operations.
 
 **Parameters**:
-- `data_sizes` (list): List of data sizes to benchmark
-- `data_types` (list): List of data types to test
-- `algorithms` (list): Algorithms to benchmark
+- `log_file` (str): Path to log file
+- `filters` (list): List of filter conditions
+- `logical_operator` (str, optional): Logical operator between filters ('AND', 'OR')
+- `output_file` (str, optional): Path for filtered output
 
-**Returns**: Dictionary with comprehensive benchmark results and scaling analysis.
+**Returns**: Dictionary with filtered results and applied filter summary.
+
+### `filter_by_time_range`
+**Description**: Filter log entries within a specific time range.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `start_time` (str): Start timestamp (YYYY-MM-DD HH:MM:SS)
+- `end_time` (str): End timestamp (YYYY-MM-DD HH:MM:SS)
+- `output_file` (str, optional): Path for filtered output
+
+**Returns**: Dictionary with filtered entries and time range statistics.
+
+### `filter_by_log_level`
+**Description**: Filter log entries by log level (ERROR, WARN, INFO, DEBUG, etc.).
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `log_levels` (list): List of log levels to include
+- `output_file` (str, optional): Path for filtered output
+
+**Returns**: Dictionary with filtered entries and log level distribution.
+
+### `filter_by_keyword`
+**Description**: Filter log entries containing specific keywords with advanced matching options.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `keywords` (list): List of keywords to search for
+- `case_sensitive` (bool, optional): Case sensitive matching (default: False)
+- `logical_operator` (str, optional): Operator between keywords ('AND', 'OR')
+- `output_file` (str, optional): Path for filtered output
+
+**Returns**: Dictionary with filtered entries and keyword match statistics.
+
+### `apply_filter_preset`
+**Description**: Apply predefined filter presets for common log analysis scenarios.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `preset_name` (str): Preset name ('errors_only', 'warnings_and_errors', 'connection_issues', etc.)
+- `output_file` (str, optional): Path for filtered output
+
+**Returns**: Dictionary with filtered results and preset configuration details.
+
+### `export_to_json`
+**Description**: Export log processing results to JSON format with optional metadata.
+
+**Parameters**:
+- `data` (dict): Data to export
+- `output_file` (str): Path for JSON output file
+- `include_metadata` (bool, optional): Include processing metadata (default: True)
+
+**Returns**: Dictionary with export results and file information.
+
+### `export_to_csv`
+**Description**: Export log data to CSV format with structured columns.
+
+**Parameters**:
+- `log_entries` (list): List of log entries to export
+- `output_file` (str): Path for CSV output file
+- `columns` (list, optional): Column names to include
+
+**Returns**: Dictionary with export results and CSV structure information.
+
+### `export_to_text`
+**Description**: Export log data to plain text format with optional processing summary.
+
+**Parameters**:
+- `log_entries` (list): List of log entries to export
+- `output_file` (str): Path for text output file
+- `include_summary` (bool, optional): Include processing summary (default: False)
+
+**Returns**: Dictionary with export results and file statistics.
+
+### `generate_summary_report`
+**Description**: Generate comprehensive summary reports with statistics and analysis.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `output_file` (str): Path for report output
+- `report_format` (str, optional): Report format ('text', 'json', 'html')
+- `include_charts` (bool, optional): Include visual charts (default: False)
+
+**Returns**: Dictionary with report generation results and summary statistics.
 
 ## Examples
  
-### 1. Large Dataset Parallel Sorting
+### 1. Large Log File Sorting and Analysis
 ```
-I have a large CSV file at /data/customer_records.csv with 10 million records. Sort this data efficiently using parallel merge sort and analyze the performance.
-```
-
-**Tools called:**
-- `parallel_merge_sort` - Sort the large dataset using parallel algorithms
-- `sort_memory_analysis` - Analyze memory usage during sorting
-
-This prompt will:
-- Use `parallel_merge_sort` to efficiently sort the large dataset with optimal thread usage
-- Analyze memory consumption using `sort_memory_analysis`
-- Provide performance metrics and optimization recommendations
-- Generate sorted output with execution statistics
-
-### 2. Algorithm Performance Comparison
-```
-Compare the performance of parallel merge sort, quick sort, and radix sort on my dataset /data/numerical_data.csv to determine the best algorithm for my use case.
+I have a large application log file at /var/logs/app.log with millions of entries. Sort this log chronologically and analyze the error patterns.
 ```
 
 **Tools called:**
-- `compare_algorithms` - Compare sorting algorithm performance
-- `benchmark_performance` - Run comprehensive benchmarks
+- `parallel_sort_large_file` - Sort the large log file using parallel processing
+- `analyze_log_statistics` - Analyze log statistics and patterns
+- `detect_log_patterns` - Detect error patterns and anomalies
 
 This prompt will:
-- Execute multiple sorting algorithms using `compare_algorithms`
-- Generate comprehensive benchmarks using `benchmark_performance`
-- Provide detailed performance analysis and recommendations
-- Compare execution times, memory usage, and scalability
+- Use `parallel_sort_large_file` to efficiently sort the large log file with optimal chunk processing
+- Analyze log statistics using `analyze_log_statistics` for comprehensive metrics
+- Detect patterns using `detect_log_patterns` to identify issues and trends
+- Generate sorted output with detailed analysis reports
 
-### 3. High-Performance Integer Sorting
+### 2. Error Log Filtering and Export
 ```
-Sort the integer data in /data/sensor_readings.csv using radix sort for optimal performance, and analyze the memory efficiency.
+Filter all ERROR and WARN level entries from /var/logs/system.log from the last 24 hours and export to CSV for analysis.
 ```
 
 **Tools called:**
-- `radix_sort` - Perform high-speed radix sort on integer data
-- `sort_memory_analysis` - Analyze memory usage patterns
+- `filter_by_time_range` - Filter logs by time range
+- `filter_by_log_level` - Filter by ERROR and WARN levels
+- `export_to_csv` - Export filtered results to CSV
 
 This prompt will:
-- Use `radix_sort` to efficiently sort integer data with parallel bucket processing
-- Analyze memory efficiency using `sort_memory_analysis`
-- Provide radix-specific performance metrics
-- Generate optimized sorted output
+- Filter logs by time range using `filter_by_time_range` for the last 24 hours
+- Apply log level filtering using `filter_by_log_level` for ERROR and WARN entries
+- Export results using `export_to_csv` with structured columns
+- Provide filtered dataset ready for analysis
 
-### 4. Multi-Threaded Quicksort Optimization
+### 3. Connection Issue Pattern Detection
 ```
-Sort /data/mixed_dataset.json using parallel quicksort with median pivot strategy and 8 threads, then analyze the load balancing efficiency.
+Analyze /var/logs/network.log for connection timeout patterns and generate a comprehensive report with trend analysis.
 ```
 
 **Tools called:**
-- `parallel_quick_sort` - Execute parallel quicksort with optimization
-- `benchmark_performance` - Analyze thread utilization and performance
+- `filter_by_keyword` - Filter for connection-related entries
+- `detect_log_patterns` - Detect timeout patterns and trends
+- `generate_summary_report` - Create comprehensive analysis report
 
 This prompt will:
-- Execute parallel quicksort using `parallel_quick_sort` with median pivot strategy
-- Analyze thread utilization using `benchmark_performance`
-- Provide load balancing efficiency metrics
-- Generate performance optimization recommendations
+- Filter connection-related entries using `filter_by_keyword` with timeout keywords
+- Analyze patterns using `detect_log_patterns` for anomaly detection
+- Generate comprehensive report using `generate_summary_report`
+- Provide trend analysis and proactive issue identification
 
-### 5. Comprehensive Sorting Benchmark Suite
+### 4. Multi-Condition Log Analysis
 ```
-Run a complete performance analysis on /data/test_dataset.csv testing all available algorithms across different thread counts and data sizes.
+Find all database connection errors in /var/logs/db.log that occurred during business hours (9 AM - 5 PM) and contain "timeout" or "refused".
 ```
 
 **Tools called:**
-- `benchmark_performance` - Run comprehensive sorting benchmarks
-- `compare_algorithms` - Compare all available algorithms
-- `sort_memory_analysis` - Analyze memory usage across algorithms
+- `filter_by_time_range` - Filter for business hours
+- `filter_by_keyword` - Filter for timeout and connection refused
+- `filter_logs` - Apply complex multi-condition filtering
+- `analyze_log_statistics` - Analyze filtered results
 
 This prompt will:
-- Execute comprehensive benchmarks using `benchmark_performance`
-- Compare all algorithms using `compare_algorithms`
-- Analyze memory patterns using `sort_memory_analysis`
-- Generate detailed performance reports with scaling analysis
+- Apply time-based filtering using `filter_by_time_range` for business hours
+- Filter by keywords using `filter_by_keyword` for timeout and refused conditions
+- Combine filters using `filter_logs` with logical operators
+- Analyze results using `analyze_log_statistics` for comprehensive insights
 
-### 6. Memory-Optimized Large File Sorting
+### 5. Log Quality Assessment and Cleanup
 ```
-Sort the large file /data/big_data.csv (50GB) using memory-efficient chunked processing and provide detailed memory usage analysis.
+Analyze the quality of /var/logs/application.log, identify malformed entries, and generate a clean sorted version with quality metrics.
 ```
 
 **Tools called:**
-- `parallel_merge_sort` - Sort with chunked processing
-- `sort_memory_analysis` - Monitor memory usage during operation
+- `analyze_log_statistics` - Assess log quality and identify issues
+- `sort_log_by_timestamp` - Sort logs chronologically
+- `generate_summary_report` - Create quality assessment report
 
 This prompt will:
-- Use `parallel_merge_sort` with optimized chunk sizes for large files
-- Monitor memory usage using `sort_memory_analysis`
-- Provide memory optimization strategies
-- Generate efficient sorted output with minimal memory footprint
+- Assess log quality using `analyze_log_statistics` with quality metrics
+- Sort logs using `sort_log_by_timestamp` for chronological order
+- Generate quality report using `generate_summary_report`
+- Provide clean dataset with quality improvement recommendations
+
+### 6. Historical Log Trend Analysis
+```
+Analyze error trends in /var/logs/historic.log over the past month, detect anomalies, and export findings to JSON for dashboard integration.
+```
+
+**Tools called:**
+- `filter_by_time_range` - Filter for past month
+- `detect_log_patterns` - Detect trends and anomalies
+- `analyze_log_statistics` - Generate temporal analysis
+- `export_to_json` - Export results for dashboard
+
+This prompt will:
+- Filter historical data using `filter_by_time_range` for the past month
+- Detect trends using `detect_log_patterns` with anomaly detection
+- Analyze temporal patterns using `analyze_log_statistics`
+- Export findings using `export_to_json` for dashboard integration
  
