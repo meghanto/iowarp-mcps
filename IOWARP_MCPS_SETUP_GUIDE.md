@@ -1,19 +1,20 @@
-# Transforming iowarp-mcps to Use mcp.science Architecture
+# IOWarp MCPs: Auto-Discovery Architecture
 
-This guide explains how to transform your `iowarp-mcps` repository to use the same elegant `uvx iowarp-mcps <server-name>` execution pattern as `mcp.science`.
+This repository uses an auto-discovery system that eliminates the need for manual server mapping. New MCP servers are automatically detected from the `mcps/` folder.
 
-## Current vs Target Architecture
+## Auto-Discovery Architecture
 
-### Current Structure
-- Individual servers in directories with inconsistent naming (Adios, HDF5, Node_Hardware, etc.)
-- A root pyproject.toml that installs all servers as dependencies
-- Direct entry points for each server (e.g., `adios-mcp`, `hdf5-mcp`)
+### Key Features
+- **Zero Configuration**: New MCPs are automatically discovered from `mcps/` folder
+- **No Manual Mapping**: No need to update hardcoded lists when adding servers
+- **Consistent Interface**: `uvx iowarp-mcps <server-name>` works for all servers
+- **Automatic Entry Points**: Extracts entry points from each server's `pyproject.toml`
 
-### Target Structure
-- Keep individual servers but add a launcher package
-- Enable `uvx iowarp-mcps <server-name>` execution
-- Maintain backward compatibility with direct commands
-- Support isolated dependencies per server
+### How It Works
+1. **Scans `mcps/` folder** for directories containing `pyproject.toml`
+2. **Extracts entry points** automatically (e.g., `server-mcp = "module:main"`)
+3. **Creates server names** by removing `-mcp` suffix from entry points
+4. **Maps to directories** using actual folder names
 
 ## Step-by-Step Transformation
 

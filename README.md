@@ -205,19 +205,24 @@ claude add mcp jarvis -- uv --directory ~/scientific-mcps/Jarvis run jarvis-mcp
 ## Project Structure
 
 ```
-scientific-mcps/
-├── Adios/
-├── Arxiv/
-├── Chronolog/
-├── Compression/
-├── HDF5/
-├── Jarvis/
-├── Node_Hardware/
-├── Pandas/
-├── Parallel_Sort/
-├── parquet/
-├── Plot/
-├── Slurm/
+iowarp-mcps/
+├── mcps/                    # Auto-discovered MCP servers
+│   ├── Adios/
+│   ├── Arxiv/
+│   ├── Chronolog/
+│   ├── Compression/
+│   ├── HDF5/
+│   ├── Jarvis/
+│   ├── Node_Hardware/
+│   ├── Pandas/
+│   ├── Parallel_Sort/
+│   ├── parquet/
+│   ├── Plot/
+│   ├── Slurm/
+│   └── lmod/
+├── src/
+│   └── iowarp_mcps/         # Unified launcher
+│       └── __init__.py
 ├── bin/
 │   ├── wrp.py
 │   ├── README.md
@@ -225,6 +230,16 @@ scientific-mcps/
 │   └── ...
 └── ...
 ```
+
+### Adding New MCPs
+
+To add a new MCP server:
+
+1. **Create directory**: Add your server to `mcps/YourNewServer/`
+2. **Add pyproject.toml**: Include entry point like `your-server-mcp = "module:main"`
+3. **That's it!** The launcher will auto-discover it
+
+No manual mapping required - the system automatically finds all servers in the `mcps/` folder.
 
 ## Development Progress
 

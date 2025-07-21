@@ -16,26 +16,26 @@ authors = [
 # Keep all existing server dependencies for backward compatibility
 dependencies = [
   "click>=8.1.0",
-  "adios-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Adios",
-  "arxiv-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Arxiv",
-  "chronolog-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Chronolog",
-  "compression-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Compression",
-  "darshan-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Darshan",
-  "hdf5-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=HDF5",
-  "jarvis-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Jarvis",
-  "lmod-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=lmod",
-  "node-hardware-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Node_Hardware",
-  "pandas-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Pandas",
-  "parallel-sort-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Parallel_Sort",
-  "parquet-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=parquet",
-  "plot-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Plot",
-  "slurm-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Slurm"
+  "adios-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Adios",
+  "arxiv-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Arxiv",
+  "chronolog-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Chronolog",
+  "compression-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Compression",
+  "darshan-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Darshan",
+  "hdf5-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/HDF5",
+  "jarvis-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Jarvis",
+  "lmod-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/lmod",
+  "node-hardware-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Node_Hardware",
+  "pandas-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Pandas",
+  "parallel-sort-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Parallel_Sort",
+  "parquet-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/parquet",
+  "plot-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Plot",
+  "slurm-mcp @ git+https://github.com/JaimeCernuda/iowarp-mcps.git@main#subdirectory=mcps/Slurm"
 ]
 
 [project.urls]
-Homepage = "https://github.com/iowarp/scientific-mcps"
-Repository = "https://github.com/iowarp/scientific-mcps"
-Issues = "https://github.com/iowarp/scientific-mcps/issues"
+Homepage = "https://github.com/JaimeCernuda/iowarp-mcps"
+Repository = "https://github.com/JaimeCernuda/iowarp-mcps"
+Issues = "https://github.com/JaimeCernuda/iowarp-mcps/issues"
 
 [project.scripts]
 # New launcher entry point
@@ -65,38 +65,25 @@ packages = ["src/iowarp_mcps"]
 
 # Include all server directories in the wheel for uvx execution
 [tool.hatch.build.targets.wheel.force-include]
-"Adios" = "iowarp_mcps/servers/Adios"
-"Arxiv" = "iowarp_mcps/servers/Arxiv"
-"Chronolog" = "iowarp_mcps/servers/Chronolog"
-"Compression" = "iowarp_mcps/servers/Compression"
-"Darshan" = "iowarp_mcps/servers/Darshan"
-"HDF5" = "iowarp_mcps/servers/HDF5"
-"Jarvis" = "iowarp_mcps/servers/Jarvis"
-"lmod" = "iowarp_mcps/servers/lmod"
-"Node_Hardware" = "iowarp_mcps/servers/Node_Hardware"
-"Pandas" = "iowarp_mcps/servers/Pandas"
-"Parallel_Sort" = "iowarp_mcps/servers/Parallel_Sort"
-"parquet" = "iowarp_mcps/servers/parquet"
-"Plot" = "iowarp_mcps/servers/Plot"
-"Slurm" = "iowarp_mcps/servers/Slurm"
+"mcps/Adios" = "iowarp_mcps/servers/Adios"
+"mcps/Arxiv" = "iowarp_mcps/servers/Arxiv"
+"mcps/Chronolog" = "iowarp_mcps/servers/Chronolog"
+"mcps/Compression" = "iowarp_mcps/servers/Compression"
+"mcps/Darshan" = "iowarp_mcps/servers/Darshan"
+"mcps/HDF5" = "iowarp_mcps/servers/HDF5"
+"mcps/Jarvis" = "iowarp_mcps/servers/Jarvis"
+"mcps/lmod" = "iowarp_mcps/servers/lmod"
+"mcps/Node_Hardware" = "iowarp_mcps/servers/Node_Hardware"
+"mcps/Pandas" = "iowarp_mcps/servers/Pandas"
+"mcps/Parallel_Sort" = "iowarp_mcps/servers/Parallel_Sort"
+"mcps/parquet" = "iowarp_mcps/servers/parquet"
+"mcps/Plot" = "iowarp_mcps/servers/Plot"
+"mcps/Slurm" = "iowarp_mcps/servers/Slurm"
 
 [tool.hatch.build.targets.sdist]
 include = [
     "/src",
-    "/Adios",
-    "/Arxiv",
-    "/Chronolog",
-    "/Compression",
-    "/Darshan",
-    "/HDF5",
-    "/Jarvis",
-    "/lmod",
-    "/Node_Hardware",
-    "/Pandas",
-    "/Parallel_Sort",
-    "/parquet",
-    "/Plot",
-    "/Slurm",
+    "/mcps",
     "/README.md",
     "/pyproject.toml"
 ]

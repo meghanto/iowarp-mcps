@@ -7,55 +7,66 @@ import click
 
 # Determine if we're running from development or installed package
 MODULE_DIR = Path(__file__).parent
-DEV_SERVERS_PATH = MODULE_DIR.parent.parent  # ../../ from module (points to repo root)
+DEV_SERVERS_PATH = MODULE_DIR.parent.parent / "mcps"  # ../../mcps from module
 INSTALLED_SERVERS_PATH = MODULE_DIR / "servers"  # within installed package
-
-# Map server names to their entry point commands (from existing pyproject.toml)
-SERVER_COMMAND_MAP = {
-    "adios": "adios-mcp",
-    "arxiv": "arxiv-mcp",
-    "chronolog": "chronolog-mcp",
-    "compression": "compression-mcp",
-    "darshan": "darshan-mcp",
-    "hdf5": "hdf5-mcp",
-    "jarvis": "jarvis-mcp",
-    "lmod": "lmod-mcp",
-    "node-hardware": "node-hardware-mcp",
-    "pandas": "pandas-mcp",
-    "parallel-sort": "parallel-sort-mcp",
-    "parquet": "parquet-mcp",
-    "plot": "plot-mcp",
-    "slurm": "slurm-mcp"
-}
-
-# Map server names to actual directory names (for case sensitivity)
-DIR_NAME_MAP = {
-    "adios": "Adios",
-    "arxiv": "Arxiv",
-    "chronolog": "Chronolog",
-    "compression": "Compression",
-    "darshan": "Darshan",
-    "hdf5": "HDF5",
-    "jarvis": "Jarvis",
-    "lmod": "lmod",
-    "node-hardware": "Node_Hardware",
-    "pandas": "Pandas",
-    "parallel-sort": "Parallel_Sort",
-    "parquet": "parquet",
-    "plot": "Plot",
-    "slurm": "Slurm"
-}
 
 def get_servers_path():
     """Get the path to servers directory (dev or installed)"""
     if DEV_SERVERS_PATH.exists():
-        # In development, servers are at repo root
+        # In development, servers are in mcps/ folder
         return DEV_SERVERS_PATH
     return INSTALLED_SERVERS_PATH
 
+def auto_discover_mcps():
+    """Auto-discover MCP servers from the mcps directory"""
+    servers_path = get_servers_path()
+    if not servers_path.exists():
+        return {}, {}
+    
+    server_command_map = {}
+    dir_name_map = {}
+    
+    # Scan for directories containing pyproject.toml
+    for item in servers_path.iterdir():
+        if item.is_dir() and not item.name.startswith('.'):
+            pyproject_file = item / "pyproject.toml"
+            if pyproject_file.exists():
+                # Read pyproject.toml to extract entry point
+                try:
+                    with open(pyproject_file, 'r') as f:
+                        content = f.read()
+                    
+                    # Simple parsing to find the entry point
+                    # Look for lines like: server-name-mcp = "module:main"
+                    entry_point = None
+                    for line in content.split('\n'):
+                        line = line.strip()
+                        if '-mcp =' in line and '=' in line:
+                            entry_point = line.split('=')[0].strip().strip('"\'')
+                            break
+                    
+                    if entry_point:
+                        # Create server name by removing -mcp suffix
+                        server_name = entry_point.replace('-mcp', '').lower()
+                        # Handle special cases for naming
+                        if server_name == 'node-hardware':
+                            server_name = 'node-hardware'
+                        elif server_name == 'parallel-sort':
+                            server_name = 'parallel-sort'
+                        
+                        server_command_map[server_name] = entry_point
+                        dir_name_map[server_name] = item.name
+                        
+                except Exception as e:
+                    # Skip directories that can't be processed
+                    continue
+    
+    return server_command_map, dir_name_map
+
 def list_available_servers():
     """List all available servers"""
-    return sorted(SERVER_COMMAND_MAP.keys())
+    server_command_map, _ = auto_discover_mcps()
+    return sorted(server_command_map.keys())
 
 @click.command()
 @click.argument('server', required=False)
@@ -64,9 +75,11 @@ def list_available_servers():
 def main(server, branch, args):
     """Launch IOWarp MCP servers with isolated dependencies using uvx"""
     
+    server_command_map, dir_name_map = auto_discover_mcps()
+    
     if not server:
         click.echo("Available servers:")
-        for s in list_available_servers():
+        for s in sorted(server_command_map.keys()):
             click.echo(f"  - {s}")
         click.echo("\nUsage: uvx iowarp-mcps <server-name>")
         click.echo("   or: iowarp-mcps <server-name> (if installed)")
@@ -75,28 +88,27 @@ def main(server, branch, args):
     # Normalize server name to lowercase
     server_lower = server.lower()
     
-    if server_lower not in SERVER_COMMAND_MAP:
+    if server_lower not in server_command_map:
         click.echo(f"Error: Unknown server '{server}'")
-        click.echo(f"Available servers: {', '.join(list_available_servers())}")
+        click.echo(f"Available servers: {', '.join(sorted(server_command_map.keys()))}")
         sys.exit(1)
     
-    # Get the entry point command
-    entry_command = SERVER_COMMAND_MAP[server_lower]
+    # Get the entry point command and directory name
+    entry_command = server_command_map[server_lower]
+    actual_dir = dir_name_map[server_lower]
     
     # Build uvx command
     if branch:
         # Run from git branch
-        actual_dir = DIR_NAME_MAP[server_lower]
         cmd = [
             "uvx",
             "--from",
-            f"git+https://github.com/iowarp/iowarp-mcps.git@{branch}#subdirectory={actual_dir}",
+            f"git+https://github.com/JaimeCernuda/iowarp-mcps.git@{branch}#subdirectory=mcps/{actual_dir}",
             entry_command
         ]
     else:
         # Run from local path in development mode
         servers_path = get_servers_path()
-        actual_dir = DIR_NAME_MAP[server_lower]
         server_path = servers_path / actual_dir
         
         if server_path.exists():
