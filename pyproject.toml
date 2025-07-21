@@ -1,14 +1,21 @@
 [build-system]
-requires = ["setuptools>=64.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-name = "scientific-mcps"
-version = "0.1.0"
-description = "Install all sub-MCP packages together."
-requires-python = ">=3.12.0"
+name = "iowarp-mcps"
+version = "0.2.0"
+description = "Open Source MCP Servers for Scientific Computing"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "IOWarp Team", email = "team@iowarp.com"}
+]
 
+# Keep all existing server dependencies for backward compatibility
 dependencies = [
+  "click>=8.1.0",
   "adios-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Adios",
   "arxiv-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Arxiv",
   "chronolog-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Chronolog",
@@ -25,11 +32,20 @@ dependencies = [
   "slurm-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Slurm"
 ]
 
+[project.urls]
+Homepage = "https://github.com/iowarp/scientific-mcps"
+Repository = "https://github.com/iowarp/scientific-mcps"
+Issues = "https://github.com/iowarp/scientific-mcps/issues"
+
 [project.scripts]
+# New launcher entry point
+iowarp-mcps = "iowarp_mcps:main"
+
+# Keep all existing entry points for backward compatibility
 adios-mcp = "adiosmcp.server:main"
 arxiv-mcp = "arxiv_mcp.server:main"
 chronolog-mcp = "chronomcp.server:main"
-compression-mcp = "server:main"
+compression-mcp = "compression_mcp.server:main"
 darshan-mcp = "darshan_mcp.server:main"
 hdf5-mcp = "mcp_server.server:main"
 jarvis-mcp = "src.server:main"
@@ -41,5 +57,46 @@ parquet-mcp = "server:main"
 plot-mcp = "src.server:main"
 slurm-mcp = "src.server:main"
 
-[tool.setuptools]
-packages = []
+[tool.hatch.build]
+packages = ["src/iowarp_mcps"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/iowarp_mcps"]
+
+# Include all server directories in the wheel for uvx execution
+[tool.hatch.build.targets.wheel.force-include]
+"Adios" = "iowarp_mcps/servers/Adios"
+"Arxiv" = "iowarp_mcps/servers/Arxiv"
+"Chronolog" = "iowarp_mcps/servers/Chronolog"
+"Compression" = "iowarp_mcps/servers/Compression"
+"Darshan" = "iowarp_mcps/servers/Darshan"
+"HDF5" = "iowarp_mcps/servers/HDF5"
+"Jarvis" = "iowarp_mcps/servers/Jarvis"
+"lmod" = "iowarp_mcps/servers/lmod"
+"Node_Hardware" = "iowarp_mcps/servers/Node_Hardware"
+"Pandas" = "iowarp_mcps/servers/Pandas"
+"Parallel_Sort" = "iowarp_mcps/servers/Parallel_Sort"
+"parquet" = "iowarp_mcps/servers/parquet"
+"Plot" = "iowarp_mcps/servers/Plot"
+"Slurm" = "iowarp_mcps/servers/Slurm"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/Adios",
+    "/Arxiv",
+    "/Chronolog",
+    "/Compression",
+    "/Darshan",
+    "/HDF5",
+    "/Jarvis",
+    "/lmod",
+    "/Node_Hardware",
+    "/Pandas",
+    "/Parallel_Sort",
+    "/parquet",
+    "/Plot",
+    "/Slurm",
+    "/README.md",
+    "/pyproject.toml"
+]
