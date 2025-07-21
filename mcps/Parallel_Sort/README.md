@@ -1,218 +1,274 @@
-# Parallel Sort MCP Server
-
-A comprehensive Model Context Protocol (MCP) server for advanced log file processing and analysis. Provides parallel sorting capabilities, statistical analysis, pattern detection, and flexible export options for large-scale log data processing.
-
-## Implemented MCP Capabilities 
-
-| Capability | Type | Description |
-|------------|------|-------------|
-| `sort_log_by_timestamp` | Tool | Sort log file lines by timestamps in YYYY-MM-DD HH:MM:SS format |
-| `parallel_sort_large_file` | Tool | Sort large log files using parallel processing with chunked approach |
-| `analyze_log_statistics` | Tool | Generate comprehensive statistics and analysis for log files |
-| `detect_log_patterns` | Tool | Detect patterns including anomalies, error clusters, and trending issues |
-| `filter_logs` | Tool | Filter log entries based on multiple conditions with complex logical operations |
-| `filter_by_time_range` | Tool | Filter log entries by time range using start and end timestamps |
-| `filter_by_log_level` | Tool | Filter log entries by log level (ERROR, WARN, INFO, DEBUG, etc.) |
-| `filter_by_keyword` | Tool | Filter log entries by keywords in the message content |
-| `apply_filter_preset` | Tool | Apply predefined filter presets for common use cases |
-| `export_to_json` | Tool | Export log processing results to JSON format |
-| `export_to_csv` | Tool | Export log entries to CSV format with structured columns |
-| `export_to_text` | Tool | Export log entries to plain text format |
-| `generate_summary_report` | Tool | Generate comprehensive summary report with statistics and analysis |
-
-## Quick Start
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/iowarp/scientific-mcps.git
-   cd scientific-mcps/Parallel_Sort
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   uv sync
-   ```
-
-3. **Test the installation:**
-   ```bash
-   uv run python -m pytest tests/ -v
-   ```
-
-### Running the Server
-
-```bash
-# Using the script
-uv run parallel-sort-mcp
-
-# Direct execution
-uv run python src/parallel_sort/server.py
-```
-
-## Usage Examples
-
-### Basic Log Sorting
-```python
-# Sort a log file by timestamp
-sort_log_by_timestamp("application.log")
-```
-
-### Parallel Processing for Large Files
-```python
-# Sort large files with parallel processing
-parallel_sort_large_file("huge_log.txt", chunk_size_mb=100, max_workers=4)
-```
-
-### Log Analysis
-```python
-# Generate comprehensive statistics
-analyze_log_statistics("application.log")
-
-# Detect patterns and anomalies
-detect_log_patterns("application.log")
-```
-
-### Advanced Filtering
-```python
-# Filter by time range
-filter_by_time_range("app.log", "2024-01-01 08:00:00", "2024-01-01 18:00:00")
-
-# Filter by log level
-filter_by_log_level("app.log", "ERROR,FATAL", exclude=False)
-
-# Apply preset filters
-apply_filter_preset("app.log", "errors_only")
-```
-
-### Export Options
-```python
-# Export to different formats
-export_to_json(data, include_metadata=True)
-export_to_csv(data, include_headers=True)
-generate_summary_report(data)
-```
-
-## Core Features
-
-- **Parallel Processing**: True parallel sorting for large files using multiprocessing
-- **Advanced Analytics**: Comprehensive statistics, pattern detection, and temporal analysis
-- **Flexible Filtering**: Multi-condition filtering with logical operations and presets
-- **Multiple Export Formats**: JSON, CSV, plain text, and summary reports
-- **Memory Efficient**: Streaming processing and configurable chunk sizes
-- **Error Handling**: Robust handling of invalid timestamps and malformed entries
-
-## Testing
-
-Run the comprehensive test suite:
-
-```bash
-# Run all tests
-uv run pytest
-
-# Run specific test files
-uv run pytest tests/test_sort_handler.py
-uv run pytest tests/test_export_handler.py
-
-# Run with verbose output
-uv run pytest -v
-```
-
-## Configuration
-
-The server supports environment variables:
-
-- `MCP_TRANSPORT`: Transport type (`stdio` or `sse`)
-- `MCP_SSE_HOST`: Host for SSE transport (default: `0.0.0.0`)
-- `MCP_SSE_PORT`: Port for SSE transport (default: `8000`)
-
-## Integration with MCP Clients
-
-### Claude Desktop
-Add to your configuration:
+# Parallel Sort MCP - High-Performance Parallel Sorting for LLMs
+ 
+ 
+## Description
+ 
+Parallel Sort MCP is a comprehensive Model Context Protocol (MCP) server that enables Language Learning Models (LLMs) to perform high-performance parallel sorting operations on large datasets. This server provides advanced sorting algorithms, performance optimization tools, and scalable data processing capabilities with seamless integration with AI coding assistants.
+**Key Features:**
+- **High-Performance Sorting**: Parallel merge sort, quick sort, and radix sort algorithms with multi-threading support
+- **Scalable Data Processing**: Handle large datasets with memory-efficient algorithms and chunked processing
+- **Multiple Data Formats**: Support for CSV, JSON, binary files, and in-memory data structures
+- **Performance Analytics**: Execution time analysis, memory usage tracking, and algorithm comparison
+- **Customizable Parameters**: Thread count, chunk size, and algorithm selection for optimal performance
+- **MCP Integration**: Full Model Context Protocol compliance for seamless LLM integration
+ 
+ 
+## 🛠️ Installation
+ 
+### Requirements
+ 
+- Python 3.10 or higher
+- [uv](https://docs.astral.sh/uv/) package manager (recommended)
+ 
+<details>
+<summary><b>Install in Cursor</b></summary>
+ 
+Go to: `Settings` -> `Cursor Settings` -> `MCP` -> `Add new global MCP server`
+ 
+Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file is the recommended approach. You may also install in a specific project by creating `.cursor/mcp.json` in your project folder. See [Cursor MCP docs](https://docs.cursor.com/context/model-context-protocol) for more info.
+ 
 ```json
 {
-  "parallel-sort-mcp": {
-    "command": "uv",
-    "args": [
-      "--directory", "/path/to/scientific-mcps/Parallel_Sort",
-      "run", "parallel-sort-mcp"
-    ]
+  "mcpServers": {
+    "parallel-sort-mcp": {
+      "command": "uvx",
+      "args": ["iowarp-mcps", "parallel-sort"]
+    }
   }
 }
 ```
-
-### Other MCP Clients
-The server uses stdio transport by default and is compatible with any MCP client.
-
-## Project Structure
-
+ 
+</details>
+ 
+<details>
+<summary><b>Install in VS Code</b></summary>
+ 
+Add this to your VS Code MCP config file. See [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for more info.
+ 
+```json
+"mcp": {
+  "servers": {
+    "parallel-sort-mcp": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["iowarp-mcps", "parallel-sort"]
+    }
+  }
+}
 ```
-Parallel_Sort/
-├── README.md
-├── pyproject.toml
-├── uv.lock
-├── src/
-│   └── parallel_sort/
-│       ├── __init__.py
-│       ├── server.py
-│       ├── mcp_handlers.py
-│       └── implementation/
-│           ├── __init__.py
-│           ├── sort_handler.py
-│           ├── statistics_handler.py
-│           ├── pattern_detection.py
-│           ├── filter_handler.py
-│           ├── export_handler.py
-│           └── parallel_processor.py
-└── tests/
-    ├── __init__.py
-    ├── test_sort_handler.py
-    ├── test_statistics_handler.py
-    ├── test_pattern_detection.py
-    ├── test_filter_handler.py
-    ├── test_export_handler.py
-    ├── test_mcp_handlers.py
-    └── test_server.py
+ 
+</details>
+ 
+<details>
+<summary><b>Install in Claude Code</b></summary>
+ 
+Run this command. See [Claude Code MCP docs](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/tutorials#set-up-model-context-protocol-mcp) for more info.
+ 
+```sh
+claude mcp add parallel-sort-mcp -- uvx iowarp-mcps parallel-sort
+```
+ 
+</details>
+ 
+<details>
+<summary><b>Install in Claude Desktop</b></summary>
+ 
+Add this to your Claude Desktop `claude_desktop_config.json` file. See [Claude Desktop MCP docs](https://modelcontextprotocol.io/quickstart/user) for more info.
+ 
+```json
+{
+  "mcpServers": {
+    "parallel-sort-mcp": {
+      "command": "uvx",
+      "args": ["iowarp-mcps", "parallel-sort"]
+    }
+  }
+}
+```
+ 
+</details>
+ 
+<details>
+<summary><b>Manual Setup</b></summary>
+ 
+**Linux/macOS:**
+```bash
+CLONE_DIR=$(pwd)
+git clone https://github.com/iowarp/iowarp-mcps.git
+uv --directory=$CLONE_DIR/iowarp-mcps/mcps/Parallel_Sort run parallel-sort-mcp --help
+```
+ 
+**Windows CMD:**
+```cmd
+set CLONE_DIR=%cd%
+git clone https://github.com/iowarp/iowarp-mcps.git
+uv --directory=%CLONE_DIR%\iowarp-mcps\mcps\Parallel_Sort run parallel-sort-mcp --help
+```
+ 
+**Windows PowerShell:**
+```powershell
+$env:CLONE_DIR=$PWD
+git clone https://github.com/iowarp/iowarp-mcps.git
+uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Parallel_Sort run parallel-sort-mcp --help
+```
+ 
+</details>
+ 
+## Available Actions
+
+### `parallel_merge_sort`
+**Description**: Perform parallel merge sort on large datasets with configurable thread count and memory optimization.
+
+**Parameters**:
+- `data_file` (str): Path to input data file (CSV, JSON, or binary)
+- `output_file` (str): Path for sorted output file
+- `num_threads` (int, optional): Number of parallel threads (default: CPU count)
+- `chunk_size` (int, optional): Size of data chunks for processing (default: auto)
+
+**Returns**: Dictionary with sorting results, execution time, and performance metrics.
+
+### `parallel_quick_sort`
+**Description**: Execute parallel quicksort algorithm with pivot optimization and load balancing.
+
+**Parameters**:
+- `data_file` (str): Path to input data file
+- `output_file` (str): Path for sorted output file
+- `pivot_strategy` (str, optional): Pivot selection strategy ('median', 'random', 'first')
+- `num_threads` (int, optional): Number of parallel threads
+
+**Returns**: Dictionary with sorting results and algorithm performance analysis.
+
+### `radix_sort`
+**Description**: Perform high-speed radix sort for integer and string data with parallel bucket processing.
+
+**Parameters**:
+- `data_file` (str): Path to input data file
+- `output_file` (str): Path for sorted output file
+- `data_type` (str): Data type ('int', 'string', 'float')
+- `radix_base` (int, optional): Radix base for sorting (default: 10)
+
+**Returns**: Dictionary with sorting results and radix-specific performance metrics.
+
+### `compare_algorithms`
+**Description**: Compare performance of different sorting algorithms on the same dataset.
+
+**Parameters**:
+- `data_file` (str): Path to input data file
+- `algorithms` (list): List of algorithms to compare ['merge_sort', 'quick_sort', 'radix_sort']
+- `num_threads` (int, optional): Number of threads for parallel algorithms
+
+**Returns**: Dictionary with comparative performance analysis and recommendations.
+
+### `sort_memory_analysis`
+**Description**: Analyze memory usage patterns during sorting operations with profiling data.
+
+**Parameters**:
+- `data_file` (str): Path to input data file
+- `algorithm` (str): Sorting algorithm to analyze
+- `profile_detail` (str, optional): Profiling detail level ('basic', 'detailed')
+
+**Returns**: Dictionary with memory usage statistics and optimization recommendations.
+
+### `benchmark_performance`
+**Description**: Run comprehensive performance benchmarks across multiple data sizes and types.
+
+**Parameters**:
+- `data_sizes` (list): List of data sizes to benchmark
+- `data_types` (list): List of data types to test
+- `algorithms` (list): Algorithms to benchmark
+
+**Returns**: Dictionary with comprehensive benchmark results and scaling analysis.
+
+## Examples
+ 
+### 1. Large Dataset Parallel Sorting
+```
+I have a large CSV file at /data/customer_records.csv with 10 million records. Sort this data efficiently using parallel merge sort and analyze the performance.
 ```
 
-## Filter Presets
+**Tools called:**
+- `parallel_merge_sort` - Sort the large dataset using parallel algorithms
+- `sort_memory_analysis` - Analyze memory usage during sorting
 
-Available predefined filter presets:
+This prompt will:
+- Use `parallel_merge_sort` to efficiently sort the large dataset with optimal thread usage
+- Analyze memory consumption using `sort_memory_analysis`
+- Provide performance metrics and optimization recommendations
+- Generate sorted output with execution statistics
 
-- `errors_only`: Show only ERROR, FATAL, and CRITICAL entries
-- `warnings_and_errors`: Show WARNING and error level entries
-- `exclude_debug`: Exclude DEBUG and TRACE entries
-- `connection_issues`: Find connection-related issues
-- `authentication_events`: Find authentication-related events
+### 2. Algorithm Performance Comparison
+```
+Compare the performance of parallel merge sort, quick sort, and radix sort on my dataset /data/numerical_data.csv to determine the best algorithm for my use case.
+```
 
-## Performance Features
+**Tools called:**
+- `compare_algorithms` - Compare sorting algorithm performance
+- `benchmark_performance` - Run comprehensive benchmarks
 
-### Parallel Processing
-- Automatic detection of large files (>100MB default)
-- Configurable chunk sizes for memory efficiency
-- Multi-core processing with worker pools
-- Intelligent merging of sorted chunks
+This prompt will:
+- Execute multiple sorting algorithms using `compare_algorithms`
+- Generate comprehensive benchmarks using `benchmark_performance`
+- Provide detailed performance analysis and recommendations
+- Compare execution times, memory usage, and scalability
 
-### Memory Optimization
-- Streaming file processing for large datasets
-- Temporary file cleanup
-- Configurable memory usage limits
-- Efficient data structures for sorting
+### 3. High-Performance Integer Sorting
+```
+Sort the integer data in /data/sensor_readings.csv using radix sort for optimal performance, and analyze the memory efficiency.
+```
 
-## Use Cases
+**Tools called:**
+- `radix_sort` - Perform high-speed radix sort on integer data
+- `sort_memory_analysis` - Analyze memory usage patterns
 
-- **DevOps & System Administration**: Analyze application logs, monitor system health
-- **Security Analysis**: Detect authentication failures, identify anomalous patterns
-- **Performance Monitoring**: Analyze response times, identify bottlenecks
-- **Data Science & Analytics**: Process large log datasets, extract patterns for ML
+This prompt will:
+- Use `radix_sort` to efficiently sort integer data with parallel bucket processing
+- Analyze memory efficiency using `sort_memory_analysis`
+- Provide radix-specific performance metrics
+- Generate optimized sorted output
 
-## Documentation
+### 4. Multi-Threaded Quicksort Optimization
+```
+Sort /data/mixed_dataset.json using parallel quicksort with median pivot strategy and 8 threads, then analyze the load balancing efficiency.
+```
 
-- [Project Structure](src/parallel_sort/)
-- [Test Examples](tests/)
-- [Capabilities Documentation](src/parallel_sort/implementation/)
+**Tools called:**
+- `parallel_quick_sort` - Execute parallel quicksort with optimization
+- `benchmark_performance` - Analyze thread utilization and performance
 
-## License
+This prompt will:
+- Execute parallel quicksort using `parallel_quick_sort` with median pivot strategy
+- Analyze thread utilization using `benchmark_performance`
+- Provide load balancing efficiency metrics
+- Generate performance optimization recommendations
 
-MIT License - see the main repository for details.
+### 5. Comprehensive Sorting Benchmark Suite
+```
+Run a complete performance analysis on /data/test_dataset.csv testing all available algorithms across different thread counts and data sizes.
+```
+
+**Tools called:**
+- `benchmark_performance` - Run comprehensive sorting benchmarks
+- `compare_algorithms` - Compare all available algorithms
+- `sort_memory_analysis` - Analyze memory usage across algorithms
+
+This prompt will:
+- Execute comprehensive benchmarks using `benchmark_performance`
+- Compare all algorithms using `compare_algorithms`
+- Analyze memory patterns using `sort_memory_analysis`
+- Generate detailed performance reports with scaling analysis
+
+### 6. Memory-Optimized Large File Sorting
+```
+Sort the large file /data/big_data.csv (50GB) using memory-efficient chunked processing and provide detailed memory usage analysis.
+```
+
+**Tools called:**
+- `parallel_merge_sort` - Sort with chunked processing
+- `sort_memory_analysis` - Monitor memory usage during operation
+
+This prompt will:
+- Use `parallel_merge_sort` with optimized chunk sizes for large files
+- Monitor memory usage using `sort_memory_analysis`
+- Provide memory optimization strategies
+- Generate efficient sorted output with minimal memory footprint
+ 
