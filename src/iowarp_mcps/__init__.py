@@ -138,5 +138,9 @@ def main(server, branch, args):
             click.echo(f"Error: {entry_command} not found. Please install the server package.")
         sys.exit(1)
 
+def cli():
+    """Entry point for the CLI"""
+    main()
+
 if __name__ == "__main__":
     main()
