@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "iowarp-mcps"
-version = "0.2.1"
+version = "0.2.3"
 description = "Open Source MCP Servers for Scientific Computing"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -28,10 +28,7 @@ Issues = "https://github.com/JaimeCernuda/iowarp-mcps/issues"
 iowarp-mcps = "iowarp_mcps:cli"
 
 [tool.hatch.build]
-packages = ["src/iowarp_mcps"]
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/iowarp_mcps"]
+sources = ["src"]
 
 # Include all server directories in the wheel for uvx execution
 [tool.hatch.build.targets.wheel.shared-data]
