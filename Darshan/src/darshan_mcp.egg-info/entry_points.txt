@@ -1,2 +1,0 @@
-[console_scripts]
-darshan-mcp = darshan_mcp.server:main

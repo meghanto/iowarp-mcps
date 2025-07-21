@@ -1,8 +1,0 @@
-name: test_pipeline
-description: A simple test pipeline for demonstration
-pkgs:
-  - pkg_type: ior
-    pkg_name: io_benchmark
-    size: 100m
-    num_procs: 4
-    transfer_size: 1m 

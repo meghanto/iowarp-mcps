@@ -33,9 +33,28 @@ The following capabilities have been implemented:
 - Linux/macOS environment (for optimal compatibility)
 
 
+## Quick Start (Recommended)
+
+The easiest way to use any MCP server is with the unified launcher:
+
+```bash
+# Run any server directly with uvx (no installation required)
+uvx iowarp-mcps adios
+uvx iowarp-mcps hdf5
+uvx iowarp-mcps slurm
+
+# List all available servers
+uvx iowarp-mcps
+
+# Run with additional arguments
+uvx iowarp-mcps pandas --help
+```
+
+This approach automatically manages dependencies for each server in isolation.
+
 ## Installation
 
-The Scientific Mcps supports three installation methods:
+The Scientific Mcps supports multiple installation methods:
 
 1. Global Installation of all mcps together -
 
@@ -186,19 +205,24 @@ claude add mcp jarvis -- uv --directory ~/scientific-mcps/Jarvis run jarvis-mcp
 ## Project Structure
 
 ```
-scientific-mcps/
-├── Adios/
-├── Arxiv/
-├── Chronolog/
-├── Compression/
-├── HDF5/
-├── Jarvis/
-├── Node_Hardware/
-├── Pandas/
-├── Parallel_Sort/
-├── parquet/
-├── Plot/
-├── Slurm/
+iowarp-mcps/
+├── mcps/                    # Auto-discovered MCP servers
+│   ├── Adios/
+│   ├── Arxiv/
+│   ├── Chronolog/
+│   ├── Compression/
+│   ├── HDF5/
+│   ├── Jarvis/
+│   ├── Node_Hardware/
+│   ├── Pandas/
+│   ├── Parallel_Sort/
+│   ├── parquet/
+│   ├── Plot/
+│   ├── Slurm/
+│   └── lmod/
+├── src/
+│   └── iowarp_mcps/         # Unified launcher
+│       └── __init__.py
 ├── bin/
 │   ├── wrp.py
 │   ├── README.md
@@ -206,6 +230,16 @@ scientific-mcps/
 │   └── ...
 └── ...
 ```
+
+### Adding New MCPs
+
+To add a new MCP server:
+
+1. **Create directory**: Add your server to `mcps/YourNewServer/`
+2. **Add pyproject.toml**: Include entry point like `your-server-mcp = "module:main"`
+3. **That's it!** The launcher will auto-discover it
+
+No manual mapping required - the system automatically finds all servers in the `mcps/` folder.
 
 ## Development Progress
 
@@ -235,5 +269,24 @@ Current development status of all MCP implementations:
 ---
 
 ## Usage
+
+### Unified Launcher (Recommended)
+
+Use the unified launcher for the simplest experience:
+
+```bash
+# Run any server directly
+uvx iowarp-mcps <server-name>
+
+# Examples:
+uvx iowarp-mcps adios
+uvx iowarp-mcps hdf5
+uvx iowarp-mcps slurm
+
+# List available servers
+uvx iowarp-mcps
+```
+
+### Individual Server Usage
 
 To run any MCP server directly or learn more about its specific capabilities, navigate into its directory and follow the instructions in its local `README.md`.

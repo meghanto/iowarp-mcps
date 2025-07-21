@@ -1,45 +1,46 @@
 [build-system]
-requires = ["setuptools>=64.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-name = "scientific-mcps"
-version = "0.1.0"
-description = "Install all sub-MCP packages together."
-requires-python = ">=3.12.0"
-
-dependencies = [
-  "adios-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Adios",
-  "arxiv-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Arxiv",
-  "chronolog-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Chronolog",
-  "compression-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Compression",
-  "darshan-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Darshan",
-  "hdf5-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=HDF5",
-  "jarvis-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Jarvis",
-  "lmod-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=lmod",
-  "node-hardware-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Node_Hardware",
-  "pandas-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Pandas",
-  "parallel-sort-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Parallel_Sort",
-  "parquet-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=parquet",
-  "plot-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Plot",
-  "slurm-mcp @ git+https://github.com/iowarp/scientific-mcps.git@main#subdirectory=Slurm"
+name = "iowarp-mcps"
+version = "0.2.0"
+description = "Open Source MCP Servers for Scientific Computing"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "IOWarp Team", email = "team@iowarp.com"}
 ]
 
-[project.scripts]
-adios-mcp = "adiosmcp.server:main"
-arxiv-mcp = "arxiv_mcp.server:main"
-chronolog-mcp = "chronomcp.server:main"
-compression-mcp = "server:main"
-darshan-mcp = "darshan_mcp.server:main"
-hdf5-mcp = "mcp_server.server:main"
-jarvis-mcp = "src.server:main"
-lmod-mcp = "lmod_mcp.server:main"
-node-hardware-mcp = "src.server:main"
-pandas-mcp = "src.server:main"
-parallel-sort-mcp = "server:main"
-parquet-mcp = "server:main"
-plot-mcp = "src.server:main"
-slurm-mcp = "src.server:main"
+# Only dependencies needed for the launcher
+dependencies = [
+  "click>=8.1.0",
+]
 
-[tool.setuptools]
-packages = []
+[project.urls]
+Homepage = "https://github.com/JaimeCernuda/iowarp-mcps"
+Repository = "https://github.com/JaimeCernuda/iowarp-mcps"
+Issues = "https://github.com/JaimeCernuda/iowarp-mcps/issues"
+
+[project.scripts]
+# Only the unified launcher entry point
+iowarp-mcps = "iowarp_mcps:main"
+
+[tool.hatch.build]
+packages = ["src/iowarp_mcps"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/iowarp_mcps"]
+
+# Include all server directories in the wheel for uvx execution
+[tool.hatch.build.targets.wheel.force-include]
+"mcps" = "mcps"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/mcps",
+    "/README.md",
+    "/pyproject.toml"
+]
