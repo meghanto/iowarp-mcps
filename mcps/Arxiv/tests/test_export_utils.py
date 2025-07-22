@@ -7,7 +7,7 @@ import sys
 import os
 
 # Add src to path for testing
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src', 'arxiv_mcp'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from capabilities.export_utils import export_to_bibtex, format_paper_summary, format_search_results
 from capabilities.arxiv_base import generate_bibtex
