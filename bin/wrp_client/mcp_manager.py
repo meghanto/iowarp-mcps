@@ -16,7 +16,7 @@ def find_server_py(server_name: str) -> str:
     Locates the main server.py script for a given MCP server name.
     """
     repo_root = Path(__file__).resolve().parent.parent.parent
-    for search_path in [repo_root / server_name / "src", repo_root / server_name]:
+    for search_path in [repo_root / "mcps" / server_name / "src", repo_root / server_name]:
         if search_path.exists():
             matches = list(search_path.rglob("server.py"))
             if matches:
