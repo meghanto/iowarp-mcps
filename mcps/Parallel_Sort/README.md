@@ -1,218 +1,354 @@
-# Parallel Sort MCP Server
-
-A comprehensive Model Context Protocol (MCP) server for advanced log file processing and analysis. Provides parallel sorting capabilities, statistical analysis, pattern detection, and flexible export options for large-scale log data processing.
-
-## Implemented MCP Capabilities 
-
-| Capability | Type | Description |
-|------------|------|-------------|
-| `sort_log_by_timestamp` | Tool | Sort log file lines by timestamps in YYYY-MM-DD HH:MM:SS format |
-| `parallel_sort_large_file` | Tool | Sort large log files using parallel processing with chunked approach |
-| `analyze_log_statistics` | Tool | Generate comprehensive statistics and analysis for log files |
-| `detect_log_patterns` | Tool | Detect patterns including anomalies, error clusters, and trending issues |
-| `filter_logs` | Tool | Filter log entries based on multiple conditions with complex logical operations |
-| `filter_by_time_range` | Tool | Filter log entries by time range using start and end timestamps |
-| `filter_by_log_level` | Tool | Filter log entries by log level (ERROR, WARN, INFO, DEBUG, etc.) |
-| `filter_by_keyword` | Tool | Filter log entries by keywords in the message content |
-| `apply_filter_preset` | Tool | Apply predefined filter presets for common use cases |
-| `export_to_json` | Tool | Export log processing results to JSON format |
-| `export_to_csv` | Tool | Export log entries to CSV format with structured columns |
-| `export_to_text` | Tool | Export log entries to plain text format |
-| `generate_summary_report` | Tool | Generate comprehensive summary report with statistics and analysis |
-
-## Quick Start
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/iowarp/scientific-mcps.git
-   cd scientific-mcps/Parallel_Sort
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   uv sync
-   ```
-
-3. **Test the installation:**
-   ```bash
-   uv run python -m pytest tests/ -v
-   ```
-
-### Running the Server
-
-```bash
-# Using the script
-uv run parallel-sort-mcp
-
-# Direct execution
-uv run python src/parallel_sort/server.py
-```
-
-## Usage Examples
-
-### Basic Log Sorting
-```python
-# Sort a log file by timestamp
-sort_log_by_timestamp("application.log")
-```
-
-### Parallel Processing for Large Files
-```python
-# Sort large files with parallel processing
-parallel_sort_large_file("huge_log.txt", chunk_size_mb=100, max_workers=4)
-```
-
-### Log Analysis
-```python
-# Generate comprehensive statistics
-analyze_log_statistics("application.log")
-
-# Detect patterns and anomalies
-detect_log_patterns("application.log")
-```
-
-### Advanced Filtering
-```python
-# Filter by time range
-filter_by_time_range("app.log", "2024-01-01 08:00:00", "2024-01-01 18:00:00")
-
-# Filter by log level
-filter_by_log_level("app.log", "ERROR,FATAL", exclude=False)
-
-# Apply preset filters
-apply_filter_preset("app.log", "errors_only")
-```
-
-### Export Options
-```python
-# Export to different formats
-export_to_json(data, include_metadata=True)
-export_to_csv(data, include_headers=True)
-generate_summary_report(data)
-```
-
-## Core Features
-
-- **Parallel Processing**: True parallel sorting for large files using multiprocessing
-- **Advanced Analytics**: Comprehensive statistics, pattern detection, and temporal analysis
-- **Flexible Filtering**: Multi-condition filtering with logical operations and presets
-- **Multiple Export Formats**: JSON, CSV, plain text, and summary reports
-- **Memory Efficient**: Streaming processing and configurable chunk sizes
-- **Error Handling**: Robust handling of invalid timestamps and malformed entries
-
-## Testing
-
-Run the comprehensive test suite:
-
-```bash
-# Run all tests
-uv run pytest
-
-# Run specific test files
-uv run pytest tests/test_sort_handler.py
-uv run pytest tests/test_export_handler.py
-
-# Run with verbose output
-uv run pytest -v
-```
-
-## Configuration
-
-The server supports environment variables:
-
-- `MCP_TRANSPORT`: Transport type (`stdio` or `sse`)
-- `MCP_SSE_HOST`: Host for SSE transport (default: `0.0.0.0`)
-- `MCP_SSE_PORT`: Port for SSE transport (default: `8000`)
-
-## Integration with MCP Clients
-
-### Claude Desktop
-Add to your configuration:
+# Parallel Sort MCP - High-Performance Log File Processing for LLMs
+ 
+ 
+## Description
+ 
+Parallel Sort MCP is a comprehensive Model Context Protocol (MCP) server that enables Language Learning Models (LLMs) to perform high-performance log file processing and analysis operations. This server provides advanced log sorting, filtering, analysis tools, and scalable data processing capabilities with seamless integration with AI coding assistants.
+**Key Features:**
+- **Log File Sorting**: Timestamp-based sorting with parallel processing for large log files
+- **Advanced Filtering**: Multi-condition filtering by time range, log level, keywords, and custom patterns
+- **Pattern Detection**: Anomaly detection, error clustering, and trend analysis
+- **Statistical Analysis**: Comprehensive log statistics, temporal patterns, and quality metrics
+- **Multiple Export Formats**: Support for JSON, CSV, and text output with metadata
+- **Scalable Processing**: Handle large log files with memory-efficient chunked processing
+- **MCP Integration**: Full Model Context Protocol compliance for seamless LLM integration
+ 
+ 
+## 🛠️ Installation
+ 
+### Requirements
+ 
+- Python 3.10 or higher
+- [uv](https://docs.astral.sh/uv/) package manager (recommended)
+ 
+<details>
+<summary><b>Install in Cursor</b></summary>
+ 
+Go to: `Settings` -> `Cursor Settings` -> `MCP` -> `Add new global MCP server`
+ 
+Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file is the recommended approach. You may also install in a specific project by creating `.cursor/mcp.json` in your project folder. See [Cursor MCP docs](https://docs.cursor.com/context/model-context-protocol) for more info.
+ 
 ```json
 {
-  "parallel-sort-mcp": {
-    "command": "uv",
-    "args": [
-      "--directory", "/path/to/scientific-mcps/Parallel_Sort",
-      "run", "parallel-sort-mcp"
-    ]
+  "mcpServers": {
+    "parallel-sort-mcp": {
+      "command": "uvx",
+      "args": ["iowarp-mcps", "parallel-sort"]
+    }
   }
 }
 ```
-
-### Other MCP Clients
-The server uses stdio transport by default and is compatible with any MCP client.
-
-## Project Structure
-
+ 
+</details>
+ 
+<details>
+<summary><b>Install in VS Code</b></summary>
+ 
+Add this to your VS Code MCP config file. See [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) for more info.
+ 
+```json
+"mcp": {
+  "servers": {
+    "parallel-sort-mcp": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["iowarp-mcps", "parallel-sort"]
+    }
+  }
+}
 ```
-Parallel_Sort/
-├── README.md
-├── pyproject.toml
-├── uv.lock
-├── src/
-│   └── parallel_sort/
-│       ├── __init__.py
-│       ├── server.py
-│       ├── mcp_handlers.py
-│       └── implementation/
-│           ├── __init__.py
-│           ├── sort_handler.py
-│           ├── statistics_handler.py
-│           ├── pattern_detection.py
-│           ├── filter_handler.py
-│           ├── export_handler.py
-│           └── parallel_processor.py
-└── tests/
-    ├── __init__.py
-    ├── test_sort_handler.py
-    ├── test_statistics_handler.py
-    ├── test_pattern_detection.py
-    ├── test_filter_handler.py
-    ├── test_export_handler.py
-    ├── test_mcp_handlers.py
-    └── test_server.py
+ 
+</details>
+ 
+<details>
+<summary><b>Install in Claude Code</b></summary>
+ 
+Run this command. See [Claude Code MCP docs](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/tutorials#set-up-model-context-protocol-mcp) for more info.
+ 
+```sh
+claude mcp add parallel-sort-mcp -- uvx iowarp-mcps parallel-sort
+```
+ 
+</details>
+ 
+<details>
+<summary><b>Install in Claude Desktop</b></summary>
+ 
+Add this to your Claude Desktop `claude_desktop_config.json` file. See [Claude Desktop MCP docs](https://modelcontextprotocol.io/quickstart/user) for more info.
+ 
+```json
+{
+  "mcpServers": {
+    "parallel-sort-mcp": {
+      "command": "uvx",
+      "args": ["iowarp-mcps", "parallel-sort"]
+    }
+  }
+}
+```
+ 
+</details>
+ 
+<details>
+<summary><b>Manual Setup</b></summary>
+ 
+**Linux/macOS:**
+```bash
+CLONE_DIR=$(pwd)
+git clone https://github.com/iowarp/iowarp-mcps.git
+uv --directory=$CLONE_DIR/iowarp-mcps/mcps/Parallel_Sort run parallel-sort-mcp --help
+```
+ 
+**Windows CMD:**
+```cmd
+set CLONE_DIR=%cd%
+git clone https://github.com/iowarp/iowarp-mcps.git
+uv --directory=%CLONE_DIR%\iowarp-mcps\mcps\Parallel_Sort run parallel-sort-mcp --help
+```
+ 
+**Windows PowerShell:**
+```powershell
+$env:CLONE_DIR=$PWD
+git clone https://github.com/iowarp/iowarp-mcps.git
+uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Parallel_Sort run parallel-sort-mcp --help
+```
+ 
+</details>
+ 
+## Capabilities
+
+### `sort_log_by_timestamp`
+**Description**: Sort log files by timestamp in chronological order with support for standard log formats.
+
+**Parameters**:
+- `log_file` (str): Path to input log file
+- `output_file` (str, optional): Path for sorted output file
+- `reverse` (bool, optional): Sort in descending order (default: False)
+
+**Returns**: Dictionary with sorting results, processed line count, and execution time.
+
+### `parallel_sort_large_file`
+**Description**: Sort large log files using parallel processing with chunked approach for memory efficiency.
+
+**Parameters**:
+- `log_file` (str): Path to large log file
+- `output_file` (str): Path for sorted output file
+- `chunk_size_mb` (int, optional): Chunk size in MB (default: 100)
+- `num_workers` (int, optional): Number of worker processes (default: CPU count)
+
+**Returns**: Dictionary with sorting results, performance metrics, and memory usage.
+
+### `analyze_log_statistics`
+**Description**: Perform comprehensive statistical analysis of log files including temporal patterns and log levels.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `include_patterns` (bool, optional): Include pattern analysis (default: True)
+
+**Returns**: Dictionary with statistics, temporal analysis, log level distribution, and quality metrics.
+
+### `detect_log_patterns`
+**Description**: Detect patterns, anomalies, and trends in log files for proactive issue identification.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `pattern_types` (list, optional): Types of patterns to detect
+- `sensitivity` (str, optional): Detection sensitivity ('low', 'medium', 'high')
+
+**Returns**: Dictionary with detected patterns, anomalies, error clusters, and trend analysis.
+
+### `filter_logs`
+**Description**: Apply multiple filter conditions to log files with complex logical operations.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `filters` (list): List of filter conditions
+- `logical_operator` (str, optional): Logical operator between filters ('AND', 'OR')
+- `output_file` (str, optional): Path for filtered output
+
+**Returns**: Dictionary with filtered results and applied filter summary.
+
+### `filter_by_time_range`
+**Description**: Filter log entries within a specific time range.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `start_time` (str): Start timestamp (YYYY-MM-DD HH:MM:SS)
+- `end_time` (str): End timestamp (YYYY-MM-DD HH:MM:SS)
+- `output_file` (str, optional): Path for filtered output
+
+**Returns**: Dictionary with filtered entries and time range statistics.
+
+### `filter_by_log_level`
+**Description**: Filter log entries by log level (ERROR, WARN, INFO, DEBUG, etc.).
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `log_levels` (list): List of log levels to include
+- `output_file` (str, optional): Path for filtered output
+
+**Returns**: Dictionary with filtered entries and log level distribution.
+
+### `filter_by_keyword`
+**Description**: Filter log entries containing specific keywords with advanced matching options.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `keywords` (list): List of keywords to search for
+- `case_sensitive` (bool, optional): Case sensitive matching (default: False)
+- `logical_operator` (str, optional): Operator between keywords ('AND', 'OR')
+- `output_file` (str, optional): Path for filtered output
+
+**Returns**: Dictionary with filtered entries and keyword match statistics.
+
+### `apply_filter_preset`
+**Description**: Apply predefined filter presets for common log analysis scenarios.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `preset_name` (str): Preset name ('errors_only', 'warnings_and_errors', 'connection_issues', etc.)
+- `output_file` (str, optional): Path for filtered output
+
+**Returns**: Dictionary with filtered results and preset configuration details.
+
+### `export_to_json`
+**Description**: Export log processing results to JSON format with optional metadata.
+
+**Parameters**:
+- `data` (dict): Data to export
+- `output_file` (str): Path for JSON output file
+- `include_metadata` (bool, optional): Include processing metadata (default: True)
+
+**Returns**: Dictionary with export results and file information.
+
+### `export_to_csv`
+**Description**: Export log data to CSV format with structured columns.
+
+**Parameters**:
+- `log_entries` (list): List of log entries to export
+- `output_file` (str): Path for CSV output file
+- `columns` (list, optional): Column names to include
+
+**Returns**: Dictionary with export results and CSV structure information.
+
+### `export_to_text`
+**Description**: Export log data to plain text format with optional processing summary.
+
+**Parameters**:
+- `log_entries` (list): List of log entries to export
+- `output_file` (str): Path for text output file
+- `include_summary` (bool, optional): Include processing summary (default: False)
+
+**Returns**: Dictionary with export results and file statistics.
+
+### `generate_summary_report`
+**Description**: Generate comprehensive summary reports with statistics and analysis.
+
+**Parameters**:
+- `log_file` (str): Path to log file
+- `output_file` (str): Path for report output
+- `report_format` (str, optional): Report format ('text', 'json', 'html')
+- `include_charts` (bool, optional): Include visual charts (default: False)
+
+**Returns**: Dictionary with report generation results and summary statistics.
+
+## Examples
+ 
+### 1. Large Log File Sorting and Analysis
+```
+I have a large application log file at /var/logs/app.log with millions of entries. Sort this log chronologically and analyze the error patterns.
 ```
 
-## Filter Presets
+**Tools called:**
+- `parallel_sort_large_file` - Sort the large log file using parallel processing
+- `analyze_log_statistics` - Analyze log statistics and patterns
+- `detect_log_patterns` - Detect error patterns and anomalies
 
-Available predefined filter presets:
+This prompt will:
+- Use `parallel_sort_large_file` to efficiently sort the large log file with optimal chunk processing
+- Analyze log statistics using `analyze_log_statistics` for comprehensive metrics
+- Detect patterns using `detect_log_patterns` to identify issues and trends
+- Generate sorted output with detailed analysis reports
 
-- `errors_only`: Show only ERROR, FATAL, and CRITICAL entries
-- `warnings_and_errors`: Show WARNING and error level entries
-- `exclude_debug`: Exclude DEBUG and TRACE entries
-- `connection_issues`: Find connection-related issues
-- `authentication_events`: Find authentication-related events
+### 2. Error Log Filtering and Export
+```
+Filter all ERROR and WARN level entries from /var/logs/system.log from the last 24 hours and export to CSV for analysis.
+```
 
-## Performance Features
+**Tools called:**
+- `filter_by_time_range` - Filter logs by time range
+- `filter_by_log_level` - Filter by ERROR and WARN levels
+- `export_to_csv` - Export filtered results to CSV
 
-### Parallel Processing
-- Automatic detection of large files (>100MB default)
-- Configurable chunk sizes for memory efficiency
-- Multi-core processing with worker pools
-- Intelligent merging of sorted chunks
+This prompt will:
+- Filter logs by time range using `filter_by_time_range` for the last 24 hours
+- Apply log level filtering using `filter_by_log_level` for ERROR and WARN entries
+- Export results using `export_to_csv` with structured columns
+- Provide filtered dataset ready for analysis
 
-### Memory Optimization
-- Streaming file processing for large datasets
-- Temporary file cleanup
-- Configurable memory usage limits
-- Efficient data structures for sorting
+### 3. Connection Issue Pattern Detection
+```
+Analyze /var/logs/network.log for connection timeout patterns and generate a comprehensive report with trend analysis.
+```
 
-## Use Cases
+**Tools called:**
+- `filter_by_keyword` - Filter for connection-related entries
+- `detect_log_patterns` - Detect timeout patterns and trends
+- `generate_summary_report` - Create comprehensive analysis report
 
-- **DevOps & System Administration**: Analyze application logs, monitor system health
-- **Security Analysis**: Detect authentication failures, identify anomalous patterns
-- **Performance Monitoring**: Analyze response times, identify bottlenecks
-- **Data Science & Analytics**: Process large log datasets, extract patterns for ML
+This prompt will:
+- Filter connection-related entries using `filter_by_keyword` with timeout keywords
+- Analyze patterns using `detect_log_patterns` for anomaly detection
+- Generate comprehensive report using `generate_summary_report`
+- Provide trend analysis and proactive issue identification
 
-## Documentation
+### 4. Multi-Condition Log Analysis
+```
+Find all database connection errors in /var/logs/db.log that occurred during business hours (9 AM - 5 PM) and contain "timeout" or "refused".
+```
 
-- [Project Structure](src/parallel_sort/)
-- [Test Examples](tests/)
-- [Capabilities Documentation](src/parallel_sort/implementation/)
+**Tools called:**
+- `filter_by_time_range` - Filter for business hours
+- `filter_by_keyword` - Filter for timeout and connection refused
+- `filter_logs` - Apply complex multi-condition filtering
+- `analyze_log_statistics` - Analyze filtered results
 
-## License
+This prompt will:
+- Apply time-based filtering using `filter_by_time_range` for business hours
+- Filter by keywords using `filter_by_keyword` for timeout and refused conditions
+- Combine filters using `filter_logs` with logical operators
+- Analyze results using `analyze_log_statistics` for comprehensive insights
 
-MIT License - see the main repository for details.
+### 5. Log Quality Assessment and Cleanup
+```
+Analyze the quality of /var/logs/application.log, identify malformed entries, and generate a clean sorted version with quality metrics.
+```
+
+**Tools called:**
+- `analyze_log_statistics` - Assess log quality and identify issues
+- `sort_log_by_timestamp` - Sort logs chronologically
+- `generate_summary_report` - Create quality assessment report
+
+This prompt will:
+- Assess log quality using `analyze_log_statistics` with quality metrics
+- Sort logs using `sort_log_by_timestamp` for chronological order
+- Generate quality report using `generate_summary_report`
+- Provide clean dataset with quality improvement recommendations
+
+### 6. Historical Log Trend Analysis
+```
+Analyze error trends in /var/logs/historic.log over the past month, detect anomalies, and export findings to JSON for dashboard integration.
+```
+
+**Tools called:**
+- `filter_by_time_range` - Filter for past month
+- `detect_log_patterns` - Detect trends and anomalies
+- `analyze_log_statistics` - Generate temporal analysis
+- `export_to_json` - Export results for dashboard
+
+This prompt will:
+- Filter historical data using `filter_by_time_range` for the past month
+- Detect trends using `detect_log_patterns` with anomaly detection
+- Analyze temporal patterns using `analyze_log_statistics`
+- Export findings using `export_to_json` for dashboard integration
+ 
