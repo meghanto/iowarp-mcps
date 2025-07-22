@@ -1,20 +1,25 @@
-[build-system]
-requires = ["setuptools>=64.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "adios-mcp"
-version = "0.1.0"
-description = "Add your description here"
+version = "1.0.0"
+description = "Fetch and analyze BP5 data files using ADIOS2. Access scientific data, metadata, and attributes for research and analysis purposes."
 readme = "README.md"
-requires-python = "==3.12.0"
+requires-python = ">=3.10"
+license = "MIT"
 authors = [
-  { name ="Soham Sonar", email = "ssonar2@hawk.iit.edu"}
+  { name = "IOWarp Team", email = "team@iowarp.com" }
 ]
+
+keywords = [
+  "mcp",
+  "adios2",
+  "bp5",
+  "scientific data",
+  "data access",
+  "variable inspection",
+  "attribute extraction"
+]
+
 dependencies = [
-    "mcp[cli]>=1.2.0",
-    "python-dotenv>=1.0.1",
-    "google-genai>=0.1.0",
     "fastmcp",
     "numpy",
     "adios2"
@@ -23,11 +28,11 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.0.0",
-    "pytest-cov>=4.0.0"
 ]
 
 [project.scripts]
 adios-mcp = "server:main"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
