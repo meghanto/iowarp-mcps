@@ -118,7 +118,7 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Arxiv run arxiv-mcp --help
 
 </details>
 
-## Available Actions
+## Capabilities
 
 ### `search_arxiv`
 **Description**: Search ArXiv for research papers by category or topic with comprehensive filtering and ranking capabilities.

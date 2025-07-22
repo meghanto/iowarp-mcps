@@ -118,7 +118,7 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Darshan run darshan-mcp --help
 
 </details>
 
-## Available Actions
+## Capabilities
 
 ### `load_darshan_log`
 **Description**: Load and parse a Darshan log file to extract metadata and basic I/O information.

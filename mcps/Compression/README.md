@@ -118,7 +118,7 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Compression run compression-mcp -
 
 </details>
 
-## Available Actions
+## Capabilities
 
 ### `compress_file`
 **Description**: Compress a file using gzip compression with detailed statistics and performance analytics. Supports all file types with comprehensive error handling.

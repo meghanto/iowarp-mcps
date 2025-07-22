@@ -117,7 +117,7 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\HDF5 run hdf5-mcp --help
 
 </details>
 
-## Available Actions
+## Capabilities
 
 ### `list_hdf5`
 **Description**: List all HDF5 files in a specified directory with comprehensive file discovery and metadata extraction for scientific data management.

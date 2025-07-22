@@ -117,7 +117,7 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Chronolog run chronolog-mcp --hel
 
 </details>
 
-## Available Actions
+## Capabilities
 
 ### `start_chronolog`
 **Description**: Connects to ChronoLog, creates a chronicle, and acquires a story handle for logging interactions.

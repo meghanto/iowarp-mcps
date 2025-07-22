@@ -117,7 +117,7 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\lmod run lmod-mcp --help
 
 </details>
 
-## Available Actions
+## Capabilities
 
 ### `module_list`
 **Description**: List all currently loaded environment modules with their versions and status information.

@@ -119,7 +119,7 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Adios run adios-mcp --help
 
 </details>
 
-## Available Actions
+## Capabilities
 
 ### `list_bp5`
 **Description**: List all BP5 files in a specified directory with comprehensive file information including metadata and structure details.

@@ -115,7 +115,7 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Parallel_Sort run parallel-sort-m
  
 </details>
  
-## Available Actions
+## Capabilities
 
 ### `sort_log_by_timestamp`
 **Description**: Sort log files by timestamp in chronological order with support for standard log formats.
