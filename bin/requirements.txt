@@ -1,6 +1,7 @@
 # Core dependencies
 python-dotenv
 mcp
+fastmcp
 PyYAML
 
 # LLM Provider SDKs
