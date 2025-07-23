@@ -54,7 +54,7 @@ class ClaudeLLM(BaseLLM):
             max_tokens=2048,
             system=system_prompt,
             messages=user_messages,
-            tools=tool_descs if tool_descs else None,
+            tools=tool_descs if tool_descs else [],
         )
         
         text_content = ""
