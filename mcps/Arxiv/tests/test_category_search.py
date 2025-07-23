@@ -7,7 +7,7 @@ import sys
 import os
 
 # Add src to path for testing
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src', 'arxiv_mcp'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from capabilities.category_search import search_arxiv, get_recent_papers, search_by_subject
 

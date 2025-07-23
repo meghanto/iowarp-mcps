@@ -7,7 +7,7 @@ import sys
 import os
 
 # Add src to path for testing
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src', 'arxiv_mcp'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from capabilities.paper_details import get_paper_details, find_similar_papers
 
