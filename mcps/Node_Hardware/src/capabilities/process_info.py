@@ -3,7 +3,7 @@ Process information capabilities.
 Handles process monitoring and detailed process information.
 """
 import psutil
-from .utils import format_bytes, format_percentage
+from capabilities.utils import format_bytes, format_percentage
 
 
 def get_process_info(limit: int = 10) -> dict:

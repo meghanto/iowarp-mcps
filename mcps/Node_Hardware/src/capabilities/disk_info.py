@@ -3,7 +3,7 @@ Disk information capabilities.
 Handles disk usage reporting and detailed disk information.
 """
 import psutil
-from .utils import format_bytes, format_percentage
+from capabilities.utils import format_bytes, format_percentage
 
 
 def get_disk_info() -> dict:

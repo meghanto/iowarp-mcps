@@ -4,18 +4,18 @@ These handlers wrap the hardware capabilities for MCP protocol compliance.
 """
 import json
 from typing import Optional, List
-from .utils.output_formatter import create_beautiful_response
-from .capabilities.cpu_info import get_cpu_info
-from .capabilities.memory_info import get_memory_info
-from .capabilities.disk_info import get_disk_info
-from .capabilities.network_info import get_network_info
-from .capabilities.system_info import get_system_info
-from .capabilities.process_info import get_process_info
-from .capabilities.hardware_summary import get_hardware_summary
-from .capabilities.performance_monitor import monitor_performance
-from .capabilities.gpu_info import get_gpu_info
-from .capabilities.sensor_info import get_sensor_info
-from .capabilities.remote_node_info import get_node_info, get_remote_node_info, test_ssh_connection
+from utils.output_formatter import create_beautiful_response
+from capabilities.cpu_info import get_cpu_info
+from capabilities.memory_info import get_memory_info
+from capabilities.disk_info import get_disk_info
+from capabilities.network_info import get_network_info
+from capabilities.system_info import get_system_info
+from capabilities.process_info import get_process_info
+from capabilities.hardware_summary import get_hardware_summary
+from capabilities.performance_monitor import monitor_performance
+from capabilities.gpu_info import get_gpu_info
+from capabilities.sensor_info import get_sensor_info
+from capabilities.remote_node_info import get_node_info, get_remote_node_info, test_ssh_connection
 
 
 def cpu_info_handler() -> dict:

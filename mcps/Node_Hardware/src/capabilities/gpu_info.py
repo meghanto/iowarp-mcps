@@ -3,7 +3,7 @@ GPU information capabilities.
 Handles GPU information reporting (if available).
 """
 import subprocess
-from .utils import run_command, check_command_available
+from capabilities.utils import run_command, check_command_available
 
 
 def get_gpu_info() -> dict:

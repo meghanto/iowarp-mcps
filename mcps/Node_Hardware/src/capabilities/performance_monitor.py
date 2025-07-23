@@ -4,7 +4,7 @@ Handles real-time performance monitoring and metrics.
 """
 import psutil
 import time
-from .utils import format_bytes, format_percentage
+from capabilities.utils import format_bytes, format_percentage
 
 
 def monitor_performance(duration: int = 5) -> dict:

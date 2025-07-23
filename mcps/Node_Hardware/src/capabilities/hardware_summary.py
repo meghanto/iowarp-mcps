@@ -2,11 +2,11 @@
 Hardware summary capabilities.
 Provides comprehensive hardware summary combining all hardware information.
 """
-from .cpu_info import get_cpu_info
-from .memory_info import get_memory_info
-from .disk_info import get_disk_info
-from .network_info import get_network_info
-from .system_info import get_system_info
+from capabilities.cpu_info import get_cpu_info
+from capabilities.memory_info import get_memory_info
+from capabilities.disk_info import get_disk_info
+from capabilities.network_info import get_network_info
+from capabilities.system_info import get_system_info
 
 
 def get_hardware_summary() -> dict:
