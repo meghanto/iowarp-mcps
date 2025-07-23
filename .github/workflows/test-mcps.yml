@@ -1,0 +1,57 @@
+name: Run MCP tests
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [main, dev]
+
+jobs:
+  test-mcps:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mcp:
+          - name: "Adios"
+            path: "mcps/Adios"
+          - name: "Arxiv" 
+            path: "mcps/Arxiv"
+          - name: "Compression"
+            path: "mcps/Compression"
+          - name: "Darshan"
+            path: "mcps/Darshan"
+          - name: "HDF5"
+            path: "mcps/HDF5"
+          - name: "lmod"
+            path: "mcps/lmod"
+          - name: "Pandas"
+            path: "mcps/Pandas"
+          - name: "Parallel_Sort"
+            path: "mcps/Parallel_Sort"
+          - name: "Plot"
+            path: "mcps/Plot"
+          - name: "parquet"
+            path: "mcps/parquet"
+          - name: "Slurm"
+            path: "mcps/Slurm"
+
+    name: Test ${{ matrix.mcp.name }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      
+    - name: Run tests for ${{ matrix.mcp.name }}
+      working-directory: ${{ matrix.mcp.path }}
+      run: |
+        uv run pytest --tb=short -v
+
