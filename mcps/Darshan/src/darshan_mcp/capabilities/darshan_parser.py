@@ -1,6 +1,7 @@
 """
 Darshan log file parser and analyzer for I/O performance analysis.
 """
+import asyncio
 import subprocess
 import json
 import os
@@ -44,7 +45,6 @@ async def _run_darshan_command(args: List[str], log_file: str) -> Tuple[str, str
 
 async def _parse_darshan_json(log_file: str) -> Dict[str, Any]:
     """Parse Darshan log to JSON format."""
-    import asyncio
     
     stdout, stderr, returncode = await _run_darshan_command(['--json'], log_file)
     
@@ -59,7 +59,6 @@ async def _parse_darshan_json(log_file: str) -> Dict[str, Any]:
 
 async def _parse_darshan_text(log_file: str) -> Dict[str, Any]:
     """Parse Darshan log using text output format."""
-    import asyncio
     
     stdout, stderr, returncode = await _run_darshan_command(['-l'], log_file)
     
@@ -444,7 +443,6 @@ async def analyze_posix_operations(log_file_path: str) -> Dict[str, Any]:
     """Analyze POSIX I/O operations."""
     try:
         # Use darshan-parser to get POSIX module data
-        import asyncio
         stdout, stderr, returncode = await _run_darshan_command(['--module', 'POSIX'], log_file_path)
         
         if returncode != 0:
@@ -495,7 +493,6 @@ async def analyze_mpiio_operations(log_file_path: str) -> Dict[str, Any]:
     """Analyze MPI-IO operations."""
     try:
         # Use darshan-parser to get MPI-IO module data
-        import asyncio
         stdout, stderr, returncode = await _run_darshan_command(['--module', 'MPIIO'], log_file_path)
         
         if returncode != 0:
