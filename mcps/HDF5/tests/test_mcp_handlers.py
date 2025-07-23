@@ -8,9 +8,15 @@ Covers:
  - Unknown‑tool error handling
 """
 
+import os
+import sys
 import json
 import pytest
-from mcp_server import mcp_handlers
+
+# Add the src directory to the path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
+import mcp_handlers
 
 
 def test_list_resources():
