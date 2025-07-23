@@ -4,6 +4,10 @@ version = "1.0.0"
 description = "HDF5 MCP - Scientific Data Access for LLMs with comprehensive HDF5 file operations"
 readme = "README.md"
 requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    { name = "IoWarp Scientific MCPs", email = "contact@iowarp.org" }
+]
 
 dependencies = [
   "fastmcp",
