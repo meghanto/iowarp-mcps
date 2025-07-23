@@ -5,7 +5,7 @@ Provides tools to search, load, unload, and inspect modules using the Lmod syste
 """
 import os
 import sys
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 from dotenv import load_dotenv
 import logging
 
@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # Load environment variables
 load_dotenv()
 
-from lmod_mcp.capabilities import lmod_handler
+from capabilities import lmod_handler
 
 # Initialize MCP server
 mcp = FastMCP("LmodMCP")

@@ -8,10 +8,21 @@ Covers:
  - Unknown‑tool endpoint error
 """
 
+import os
+import sys
 import json
 import pytest
-from fastapi.testclient import TestClient
-from mcp_server.server import app
+
+# Add the src directory to the path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
+try:
+    from fastapi.testclient import TestClient
+except ImportError:
+    # Skip FastAPI tests if not installed
+    pytest.skip("FastAPI not available", allow_module_level=True)
+
+from server import app
 
 @pytest.fixture(scope="module")
 def client():

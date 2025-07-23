@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import Jarvis-CD pipeline capabilities
-from jarvis_mcp.capabilities.jarvis_handler import (
+from capabilities.jarvis_handler import (
     create_pipeline,
     load_pipeline,
     append_pkg,
