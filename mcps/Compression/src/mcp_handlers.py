@@ -4,7 +4,7 @@ These handlers wrap the compression capabilities for MCP protocol compliance.
 """
 import json
 from typing import Dict, Any
-from .capabilities.compression_base import compress_file
+from capabilities.compression_base import compress_file
 
 
 async def compress_file_handler(file_path: str) -> Dict[str, Any]:

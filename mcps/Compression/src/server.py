@@ -9,6 +9,7 @@ import json
 from fastmcp import FastMCP
 from dotenv import load_dotenv
 import logging
+import mcp_handlers
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -20,7 +21,6 @@ sys.path.insert(0, os.path.dirname(__file__))
 # Load environment variables
 load_dotenv()
 
-from . import mcp_handlers
 
 # Initialize MCP server
 mcp = FastMCP("CompressionMCP")
