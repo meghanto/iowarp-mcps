@@ -7,7 +7,7 @@ import os
 # Add the src directory to the path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from lmod_mcp.server import (
+from server import (
     module_list_tool,
     module_avail_tool,
     module_show_tool,
@@ -30,7 +30,7 @@ async def test_module_list_tool():
         'count': 2
     }
     
-    with patch('lmod_mcp.server.lmod_handler.list_loaded_modules', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.list_loaded_modules', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_list_tool()
@@ -49,7 +49,7 @@ async def test_module_avail_tool():
         'pattern': 'python'
     }
     
-    with patch('lmod_mcp.server.lmod_handler.search_available_modules', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.search_available_modules', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_avail_tool(pattern='python')
@@ -72,7 +72,7 @@ async def test_module_show_tool():
         'environment': ['prepend_path("PATH", "/apps/python/3.9.0/bin")']
     }
     
-    with patch('lmod_mcp.server.lmod_handler.show_module_details', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.show_module_details', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_show_tool('python/3.9.0')
@@ -92,7 +92,7 @@ async def test_module_load_tool():
         ]
     }
     
-    with patch('lmod_mcp.server.lmod_handler.load_modules', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.load_modules', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_load_tool(['gcc/11.2.0', 'python/3.9.0'])
@@ -111,7 +111,7 @@ async def test_module_unload_tool():
         ]
     }
     
-    with patch('lmod_mcp.server.lmod_handler.unload_modules', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.unload_modules', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_unload_tool(['python/3.9.0'])
@@ -130,7 +130,7 @@ async def test_module_swap_tool():
         'new_module': 'gcc/11.2.0'
     }
     
-    with patch('lmod_mcp.server.lmod_handler.swap_modules', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.swap_modules', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_swap_tool('gcc/10.2.0', 'gcc/11.2.0')
@@ -151,7 +151,7 @@ async def test_module_spider_tool():
         'pattern': None
     }
     
-    with patch('lmod_mcp.server.lmod_handler.spider_search', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.spider_search', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_spider_tool()
@@ -169,7 +169,7 @@ async def test_module_save_tool():
         'collection': 'my_env'
     }
     
-    with patch('lmod_mcp.server.lmod_handler.save_module_collection', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.save_module_collection', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_save_tool('my_env')
@@ -188,7 +188,7 @@ async def test_module_restore_tool():
         'loaded_modules': ['gcc/11.2.0', 'python/3.9.0']
     }
     
-    with patch('lmod_mcp.server.lmod_handler.restore_module_collection', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.restore_module_collection', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_restore_tool('my_env')
@@ -206,7 +206,7 @@ async def test_module_savelist_tool():
         'count': 3
     }
     
-    with patch('lmod_mcp.server.lmod_handler.list_saved_collections', new_callable=AsyncMock) as mock_handler:
+    with patch('server.lmod_handler.list_saved_collections', new_callable=AsyncMock) as mock_handler:
         mock_handler.return_value = mock_result
         
         result = await module_savelist_tool()
