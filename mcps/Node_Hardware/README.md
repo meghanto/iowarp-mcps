@@ -45,77 +45,71 @@ A comprehensive Model Context Protocol (MCP) server for hardware monitoring and 
 
 ## Capabilities
 
-### Primary Tools
+### `get_cpu_info`
+**Description**: Get comprehensive CPU information including specifications, core configuration, frequency analysis, and performance metrics.
 
-#### **1. `get_node_info` - Local Hardware Information**
+**Returns**: dict: Structured CPU information with performance insights and optimization recommendations.
 
-**Comprehensive local node hardware and system information with advanced filtering and intelligent analysis.**
+### `get_memory_info`
+**Description**: Get comprehensive memory information including capacity, usage patterns, and performance characteristics.
 
-This powerful tool provides complete local system analysis by collecting information from all hardware and system components with sophisticated filtering capabilities.
+**Returns**: dict: Structured memory information with usage insights and optimization recommendations.
 
-**Key Features:**
-- **Local Hardware Discovery**: Automatically detects and analyzes all available local hardware components
-- **Intelligent Filtering**: Apply sophisticated filtering to focus on specific components or exclude unwanted data
-- **Cross-Component Analysis**: Integrated analysis across all system subsystems for holistic insights
-- **Performance Optimization**: Organized hardware information with metadata and collection statistics
-- **Predictive Intelligence**: Comprehensive insights and optimization recommendations based on collected data
+### `get_system_info`
+**Description**: Get comprehensive system information including operating system details, platform configuration, and system status.
 
-#### **2. `get_remote_node_info` - Remote Hardware Information via SSH**
+**Returns**: dict: Structured system information with configuration insights and security recommendations.
 
-**Comprehensive remote node hardware and system information via SSH with advanced filtering and intelligent analysis.**
+### `get_disk_info`
+**Description**: Get comprehensive disk information including storage devices, partitions, and I/O performance metrics.
 
-This powerful tool provides complete remote system analysis by securely connecting to remote nodes via SSH and collecting information from all hardware and system components.
+**Returns**: dict: Structured disk information with performance insights and maintenance recommendations.
 
-**Key Features:**
-- **Secure SSH Connection**: Establishes secure SSH connection with comprehensive authentication support
-- **Remote Discovery**: Automatically detects and analyzes all available remote hardware components
-- **SSH Authentication**: Support for SSH key-based and password authentication with security best practices
-- **Network Optimization**: Optimized data collection to minimize network bandwidth usage and connection overhead
-- **Multi-Platform Support**: Compatible with various remote system configurations and platform variations
+### `get_network_info`
+**Description**: Get comprehensive network information including interfaces, connections, and bandwidth analysis.
 
-#### **Available Hardware Components** (Both Tools):
-- **cpu**: CPU specifications, core configuration, frequency analysis, cache hierarchy, performance metrics, thermal status
-- **memory**: Memory capacity, usage patterns, swap configuration, performance characteristics, health indicators, efficiency analysis
-- **disk**: Storage devices, usage analysis, I/O performance, health monitoring, file systems, predictive maintenance
-- **network**: Network interfaces, bandwidth analysis, connection details, protocol statistics, security monitoring, performance optimization
-- **system**: Operating system details, uptime analysis, user management, configuration, platform information, security status
-- **processes**: Running processes, resource consumption, process hierarchy, performance metrics, system load analysis
-- **gpu**: GPU specifications, memory analysis, thermal monitoring, performance metrics, driver information, compute capabilities
-- **sensors**: Temperature sensors, fan control, voltage monitoring, hardware health, thermal management, predictive maintenance
-- **performance**: Real-time performance monitoring, bottleneck analysis, optimization recommendations, trend analysis
-- **summary**: Integrated hardware overview with cross-subsystem analysis and comprehensive health assessment
+**Returns**: dict: Structured network information with performance insights and security recommendations.
 
-### Secondary Tool: `health_check`
+### `get_gpu_info`
+**Description**: Get comprehensive GPU information including specifications, memory, and compute capabilities.
 
-**System health verification and diagnostic tool.**
+**Returns**: dict: Structured GPU information with performance insights and optimization recommendations.
 
-- Verifies all hardware monitoring capabilities and system compatibility
-- Performs comprehensive system diagnostics and performance assessment
-- Provides detailed capability status and functionality verification
-- Delivers system health metrics and optimization recommendations
-- Generates comprehensive diagnostic report with actionable insights
+### `get_sensor_info`
+**Description**: Get sensor information including temperature, fan speeds, and thermal data.
 
-### Beautiful Output Formatting
+**Returns**: dict: Structured sensor information with thermal insights and health recommendations.
 
-All tools provide **beautifully formatted output** with:
+### `get_process_info`
+**Description**: Get process information including running processes and resource usage.
 
-- **Structured Layout**: Clear organization with emojis and visual indicators
-- **Comprehensive Summaries**: Key metrics and statistics at a glance
-- **Detailed Insights**: Actionable recommendations and observations
-- **Metadata Information**: Collection details and system context
-- **Error Handling**: Helpful error messages with troubleshooting suggestions
-- **Filter Information**: Clear indication of applied filters and their effects
-- **Intelligence Integration**: Smart analysis with optimization recommendations
+**Returns**: dict: Structured process information with resource insights and optimization recommendations.
 
-### Intelligent Analysis Features
+### `get_performance_info`
+**Description**: Get real-time performance metrics including CPU, memory, and disk usage.
 
-- **Performance Optimization**: Automated performance analysis with optimization recommendations
-- **Predictive Maintenance**: Sensor-based predictive maintenance and failure prediction
-- **Resource Efficiency**: Resource utilization analysis with efficiency improvements
-- **System Health Assessment**: Comprehensive health monitoring with trend analysis
-- **Bottleneck Identification**: Automated bottleneck detection with resolution strategies
-- **Capacity Planning**: Growth trend analysis with capacity recommendations
+**Returns**: dict: Structured performance information with bottleneck analysis and optimization recommendations.
 
+### `get_remote_node_info`
+**Description**: Get comprehensive remote node hardware and system information via SSH with advanced filtering and intelligent analysis.
+
+**Parameters**:
+- `hostname` (str): Target hostname or IP address for remote collection.
+- `username` (Optional[str]): SSH username for remote authentication.
+- `port` (int): SSH port number for remote connection.
+- `ssh_key` (Optional[str]): Path to SSH private key file for authentication.
+- `timeout` (int): SSH connection timeout in seconds.
+- `components` (Optional[List[str]]): List of specific components to include in collection.
+- `exclude_components` (Optional[List[str]]): List of specific components to exclude from collection.
+- `include_performance` (bool): Whether to include real-time performance analysis.
+- `include_health` (bool): Whether to include health assessment and predictive maintenance insights.
+
+**Returns**: dict: Comprehensive remote hardware and system analysis, including hardware_data, collection_metadata, performance_analysis, health_assessment, ssh_connection_info, error_information, intelligent_insights, optimization_recommendations, and beautiful_formatting.
+
+### `health_check`
+**Description**: Perform comprehensive health check and system diagnostics with advanced capability verification.
+
+**Returns**: dict: Comprehensive health assessment, including server_status, capability_status, system_compatibility, performance_metrics, diagnostic_insights, optimization_recommendations, troubleshooting_guide, predictive_maintenance, security_assessment, and health_summary.
 ## Prerequisites
 
 - Python 3.10 or higher
