@@ -276,7 +276,7 @@ async def analyze_file_access_patterns(log_file_path: str, file_pattern: Optiona
             is_sequential = False
             if total_reads + total_writes > 0:
                 seq_ratio = (seq_reads + seq_writes) / (total_reads + total_writes)
-                is_sequential = seq_ratio > 0.8
+                is_sequential = seq_ratio >= 0.75
             
             if is_sequential:
                 access_patterns['sequential_access'] += 1
