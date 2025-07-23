@@ -3,7 +3,7 @@ Network information capabilities.
 Handles network interface reporting and detailed network information.
 """
 import psutil
-from .utils import format_bytes
+from capabilities.utils import format_bytes
 
 
 def get_network_info() -> dict:

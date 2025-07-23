@@ -12,7 +12,7 @@ Sensor information capabili                        temp_info = {
                             temp_info["critical_formatted"] = f"{sensor.critical:.1f}C"es temperature and other sensor information.
 """
 import psutil
-from .utils import run_command, check_command_available
+from capabilities.utils import run_command, check_command_available
 
 
 def get_sensor_info() -> dict:

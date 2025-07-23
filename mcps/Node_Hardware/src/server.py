@@ -34,7 +34,7 @@ except ImportError:
 sys.path.insert(0, os.path.dirname(__file__))
 
 # Import handlers
-from . import mcp_handlers
+import mcp_handlers
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

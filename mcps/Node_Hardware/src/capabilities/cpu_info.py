@@ -5,7 +5,7 @@ Handles CPU core reporting and detailed CPU information.
 import os
 import psutil
 import platform
-from .utils import run_command, check_command_available
+from capabilities.utils import run_command, check_command_available
 
 
 def get_cpu_info() -> dict:

@@ -5,7 +5,7 @@ Handles general system information reporting.
 import psutil
 import platform
 import datetime
-from .utils import get_os_info, format_bytes
+from capabilities.utils import get_os_info, format_bytes
 
 
 def get_system_info() -> dict:

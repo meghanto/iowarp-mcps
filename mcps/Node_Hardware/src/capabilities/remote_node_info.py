@@ -6,15 +6,15 @@ import subprocess
 import json
 import os
 from typing import Dict, Optional, List
-from .system_info import get_system_info
-from .cpu_info import get_cpu_info
-from .memory_info import get_memory_info
-from .disk_info import get_disk_info
-from .network_info import get_network_info
-from .process_info import get_process_info
-from .hardware_summary import get_hardware_summary
-from .gpu_info import get_gpu_info
-from .sensor_info import get_sensor_info
+from capabilities.system_info import get_system_info
+from capabilities.cpu_info import get_cpu_info
+from capabilities.memory_info import get_memory_info
+from capabilities.disk_info import get_disk_info
+from capabilities.network_info import get_network_info
+from capabilities.process_info import get_process_info
+from capabilities.hardware_summary import get_hardware_summary
+from capabilities.gpu_info import get_gpu_info
+from capabilities.sensor_info import get_sensor_info
 
 
 def get_node_info(
