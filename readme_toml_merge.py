@@ -297,7 +297,7 @@ last_update:
             with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(markdown_content)
             
-            print(f"Created docs/docs/{filename}")
+            print(f"Created docs/mcps/{filename}")
             
         except Exception as e:
             print(f"Error creating Docusaurus markdown file for {mcp_info['name']}: {e}")
