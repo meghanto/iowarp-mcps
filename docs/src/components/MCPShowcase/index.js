@@ -122,7 +122,7 @@ const MCPShowcase = () => {
     <div className={styles.showcase}>
       <div className={styles.showcaseHeader}>
         <h1 className={styles.showcaseTitle}>
-          🔬 IoWarp MCPs
+          🔬 IOWarp MCPs
         </h1>
         <p className={styles.showcaseSubtitle}>
           AI Tools for Scientific Computing - Discover powerful Model Context Protocol servers
@@ -139,19 +139,6 @@ const MCPShowcase = () => {
         />
       </div>
 
-      {/* Featured/Popular section */}
-      {activeCategory === 'All' && !searchTerm && (
-        <section className={styles.featuredSection}>
-          <h2 className={styles.sectionTitle}>
-            ⭐ Popular MCPs
-          </h2>
-          <div className={styles.mcpGrid}>
-            {featuredMcps.map(([mcpId, mcp]) => (
-              <MCPCard key={mcpId} mcpId={mcpId} mcp={mcp} />
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* All MCPs section */}
       <section className={styles.allMcpsSection}>

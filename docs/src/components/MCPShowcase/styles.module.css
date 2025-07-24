@@ -1,7 +1,7 @@
 /* Main showcase container */
 .showcase {
   padding: 2rem 0;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -142,9 +142,26 @@
 /* MCP Grid */
 .mcpGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
   padding: 0 1rem;
+}
+
+/* Enhanced responsive grid for large screens */
+@media (min-width: 1200px) {
+  .mcpGrid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .mcpGrid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem;
+  }
 }
 
 /* MCP Cards */

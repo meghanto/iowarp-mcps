@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import Link from '@docusaurus/Link';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 import styles from './styles.module.css';
 
@@ -17,7 +15,9 @@ const MCPDetail = ({
   license,
   children 
 }) => {
+  const [activeTab, setActiveTab] = useState('installation');
   const [activeInstallTab, setActiveInstallTab] = useState('cursor');
+  const [expandedAction, setExpandedAction] = useState(null);
 
   const installationConfigs = {
     cursor: {
@@ -91,6 +91,16 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
     return icons[platform] || '🔧';
   };
 
+  // For now, we'll render all children content in the examples tab
+  // The markdown is now structured to only contain examples
+  const renderContent = (children) => {
+    return children;
+  };
+
+  const toggleAction = (actionName) => {
+    setExpandedAction(expandedAction === actionName ? null : actionName);
+  };
+
   return (
     <div className={styles.mcpDetail}>
       {/* Header */}
@@ -137,46 +147,84 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
         </div>
       </div>
 
-      {/* Quick Installation */}
-      <div className={styles.quickInstall}>
-        <h2 className={styles.sectionTitle}>🚀 Quick Installation</h2>
-        
-        <div className={styles.installTabs}>
-          {Object.entries(installationConfigs).map(([key, config]) => (
-            <button
-              key={key}
-              className={`${styles.installTab} ${activeInstallTab === key ? styles.active : ''}`}
-              onClick={() => setActiveInstallTab(key)}
-            >
-              {config.title}
-            </button>
-          ))}
-        </div>
-
-        <div className={styles.installContent}>
-          <CodeBlock language={installationConfigs[activeInstallTab].language}>
-            {installationConfigs[activeInstallTab].code}
-          </CodeBlock>
-        </div>
+      {/* Tab Navigation */}
+      <div className={styles.tabNavigation}>
+        <button 
+          className={`${styles.mainTab} ${activeTab === 'installation' ? styles.active : ''}`}
+          onClick={() => setActiveTab('installation')}
+        >
+          📥 Installation
+        </button>
+        <button 
+          className={`${styles.mainTab} ${activeTab === 'actions' ? styles.active : ''}`}
+          onClick={() => setActiveTab('actions')}
+        >
+          🔧 Actions ({actions?.length || 0})
+        </button>
+        <button 
+          className={`${styles.mainTab} ${activeTab === 'examples' ? styles.active : ''}`}
+          onClick={() => setActiveTab('examples')}
+        >
+          📝 Examples
+        </button>
       </div>
 
-      {/* Actions Overview */}
-      {actions && actions.length > 0 && (
-        <div className={styles.actionsSection}>
-          <h2 className={styles.sectionTitle}>🔧 Available Actions</h2>
-          <div className={styles.actionsGrid}>
-            {actions.map((action, index) => (
-              <div key={index} className={styles.actionCard}>
-                <code className={styles.actionName}>{action}</code>
+      {/* Tab Content */}
+      <div className={styles.tabContent}>
+        {activeTab === 'installation' && (
+          <div className={styles.installationTab}>
+            <div className={styles.quickInstall}>
+              <div className={styles.installTabs}>
+                {Object.entries(installationConfigs).map(([key, config]) => (
+                  <button
+                    key={key}
+                    className={`${styles.installTab} ${activeInstallTab === key ? styles.active : ''}`}
+                    onClick={() => setActiveInstallTab(key)}
+                  >
+                    {config.title}
+                  </button>
+                ))}
               </div>
-            ))}
+              <div className={styles.installContent}>
+                <CodeBlock language={installationConfigs[activeInstallTab].language}>
+                  {installationConfigs[activeInstallTab].code}
+                </CodeBlock>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Additional content from markdown */}
-      <div className={styles.detailContent}>
-        {children}
+        {activeTab === 'actions' && (
+          <div className={styles.actionsTab}>
+            {actions && actions.length > 0 && (
+              <div className={styles.actionsGrid}>
+                {actions.map((action, index) => (
+                  <div key={index} className={styles.actionCard} onClick={() => toggleAction(action)}>
+                    <div className={styles.actionHeader}>
+                      <code className={styles.actionName}>{action}</code>
+                      <span className={styles.actionToggle}>
+                        {expandedAction === action ? '▼' : '▶'}
+                      </span>
+                    </div>
+                    {expandedAction === action && (
+                      <div className={styles.actionDescription}>
+                        <p>Click to expand action details...</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'examples' && (
+          <div className={styles.examplesTab}>
+            <div className={styles.markdownContent}>
+              {renderContent(children)}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Footer */}
@@ -190,7 +238,7 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
           </Link>
         </div>
         <p className={styles.footerText}>
-          Part of the IoWarp MCPs collection - bringing AI practically to science!
+          Part of the IOWarp MCPs collection - bringing AI practically to science!
         </p>
       </div>
     </div>

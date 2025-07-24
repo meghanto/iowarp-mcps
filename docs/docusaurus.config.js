@@ -10,7 +10,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'IoWarp MCPs',
+  title: 'IOWarp MCPs',
   tagline: 'AI Tools for Scientific Computing',
   favicon: 'img/favicon.ico',
 
@@ -67,9 +67,9 @@ const config = {
       // Replace with your project's social card
       image: 'img/logo.svg',
       navbar: {
-        title: 'IoWarp MCPs',
+        title: 'IOWarp MCPs',
         logo: {
-          alt: 'IoWarp MCPs Logo',
+          alt: 'IOWarp MCPs Logo',
           src: 'img/logo.svg',
         },
         items: [
@@ -129,11 +129,16 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} IoWarp. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} IOWarp. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+      },
+      colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: false,
+        respectPrefersColorScheme: false,
       },
     }),
 };

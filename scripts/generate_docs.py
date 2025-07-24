@@ -301,16 +301,6 @@ import MCPDetail from '@site/src/components/MCPDetail';
   license="{mcp_data.get('license', 'MIT')}"
 >
 
-## Installation
-
-{self._extract_installation_from_readme(mcp_data)}
-
-## Available Tools
-
-{self._generate_tools_section(mcp_data)}
-
-## Examples
-
 {self._extract_examples_from_readme(mcp_data)}
 
 </MCPDetail>

@@ -1,6 +1,6 @@
 /* Main container */
 .mcpDetail {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   min-height: 100vh;
@@ -214,22 +214,113 @@
   font-size: 0.9rem;
 }
 
-/* Detail content */
-.detailContent {
+/* Tab Navigation */
+.tabNavigation {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  border-bottom: 2px solid var(--ifm-color-emphasis-200);
   background: var(--ifm-background-color);
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 2rem;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
 }
 
-.detailContent h2 {
+.mainTab {
+  flex: 1;
+  padding: 1.2rem 1.5rem;
+  border: none;
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  position: relative;
+}
+
+.mainTab:hover {
+  background: var(--ifm-color-primary-lightest);
+  color: var(--ifm-color-primary);
+}
+
+.mainTab.active {
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+/* Tab Content */
+.tabContent {
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  min-height: 500px;
+}
+
+.installationTab,
+.actionsTab,
+.examplesTab {
+  width: 100%;
+}
+
+/* Enhanced Actions */
+.actionCard {
+  background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.actionCard:hover {
+  background: var(--ifm-color-primary-lightest);
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-2px);
+}
+
+.actionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actionName {
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  font-size: 0.9rem;
+}
+
+.actionToggle {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.8rem;
+  transition: transform 0.2s ease;
+}
+
+.actionDescription {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.9rem;
+}
+
+/* Markdown Content */
+.markdownContent {
+  margin-top: 2rem;
+}
+
+.markdownContent h2 {
   border-bottom: 2px solid var(--ifm-color-emphasis-200);
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
 }
 
-.detailContent h3 {
+.markdownContent h3 {
   color: var(--ifm-color-primary);
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -291,6 +382,15 @@
   
   .mcpMeta {
     justify-content: center;
+  }
+  
+  .mainTab {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .tabContent {
+    padding: 1rem;
   }
   
   .installTabs {
