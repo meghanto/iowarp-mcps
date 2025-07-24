@@ -24,16 +24,8 @@ I need a comprehensive overview of my local system's hardware including CPU, mem
 ```
 
 **Tools called:**
-- `get_cpu_info` - Get detailed CPU specifications and performance metrics
-- `get_memory_info` - Get memory capacity and usage analysis
-- `get_disk_info` - Get storage device information and health status
-- `get_network_info` - Get network interface and connection details
-- `get_system_info` - Get operating system and platform information
-
-This prompt will:
-- Use multiple hardware-specific tools to gather comprehensive system information
-- Provide detailed specifications for each hardware component
-- Generate performance insights and optimization recommendations
+- `get_node_info` - Get complete local hardware information with all components
+- Components collected: cpu, memory, disk, network, system, summary
 
 ### 2. Remote Server Monitoring
 ```
@@ -41,12 +33,8 @@ Monitor the hardware status of a remote server via SSH, focusing on CPU and memo
 ```
 
 **Tools called:**
-- `get_remote_node_info` - Connect to remote host with SSH authentication and collect CPU/memory data
-
-This prompt will:
-- Use `get_remote_node_info` with components filter for CPU and memory analysis
-- Establish secure SSH connection to remote server
-- Provide performance metrics and utilization analysis for targeted monitoring
+- `get_remote_node_info` - Connect to remote host with SSH authentication
+- Components collected: cpu, memory, performance, system
 
 ### 3. GPU and Thermal Monitoring
 ```
@@ -54,14 +42,9 @@ Check GPU specifications and thermal sensors on both local and remote systems fo
 ```
 
 **Tools called:**
-- `get_gpu_info` - Local GPU specifications and performance metrics
-- `get_sensor_info` - Local thermal monitoring and hardware health
-- `get_remote_node_info` - Remote GPU and thermal analysis via SSH
-
-This prompt will:
-- Use `get_gpu_info` and `get_sensor_info` for local GPU and thermal monitoring
-- Use `get_remote_node_info` with GPU and sensor components for remote analysis
-- Provide thermal management insights and performance optimization for ML workloads
+- `get_node_info` - Local GPU and sensor monitoring  
+- `get_remote_node_info` - Remote GPU and thermal analysis
+- Components collected: gpu, sensors, performance
 
 ### 4. System Health Assessment
 ```
@@ -70,26 +53,16 @@ Perform a comprehensive health check of system capabilities and verify all monit
 
 **Tools called:**
 - `health_check` - System health verification and diagnostic assessment
-- `get_performance_info` - Performance monitoring and bottleneck analysis
+- `get_node_info` - Comprehensive local system analysis with health metrics
 
-This prompt will:
-- Use `health_check` to verify all system monitoring capabilities
-- Use `get_performance_info` to assess current system performance
-- Provide diagnostic insights and capability verification results
-
-### 5. Performance Bottleneck Analysis
+### 5. Performance Bottleneck Analysis  
 ```
 Identify performance bottlenecks on a production server by analyzing CPU, memory, disk I/O, and running processes.
 ```
 
 **Tools called:**
-- `get_remote_node_info` - Remote performance analysis via SSH with comprehensive component collection
-- `get_performance_info` - Real-time performance monitoring and bottleneck identification
-
-This prompt will:
-- Use `get_remote_node_info` with performance-focused component selection (CPU, memory, disk, processes)
-- Use `get_performance_info` for detailed bottleneck analysis
-- Provide optimization recommendations and performance improvement strategies
+- `get_remote_node_info` - Remote performance analysis via SSH
+- Components collected: cpu, memory, disk, performance, processes
 
 ### 6. Storage and Network Analysis
 ```
@@ -97,13 +70,9 @@ Analyze storage health and network interface performance on multiple systems for
 ```
 
 **Tools called:**
-- `get_disk_info` - Local storage analysis and health monitoring
-- `get_network_info` - Local network interface performance analysis
-- `get_remote_node_info` - Remote storage and network monitoring via SSH
-
-This prompt will:
-- Use `get_disk_info` and `get_network_info` for local infrastructure analysis
-- Use `get_remote_node_info` with disk and network components for remote monitoring
-- Provide infrastructure health insights and performance optimization recommendations
+- `get_node_info` - Local storage and network analysis
+- `get_remote_node_info` - Remote storage and network monitoring  
+- Components collected: disk, network, system, summary
 
 </MCPDetail>
+

@@ -97,3 +97,4 @@ This prompt will:
 - Create compressed log files that maintain data accessibility while reducing storage footprint
 
 </MCPDetail>
+

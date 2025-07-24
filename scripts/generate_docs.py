@@ -306,6 +306,7 @@ import MCPDetail from '@site/src/components/MCPDetail';
 {self._extract_examples_from_readme(mcp_data)}
 
 </MCPDetail>
+
 """
         
         output_file = self.mcps_output_dir / f"{mcp_data['slug']}.md"
@@ -415,9 +416,47 @@ Refer to your MCP client documentation for specific setup instructions.
                 section_lines.append(line)
         
         if section_lines:
-            return '\n'.join(section_lines).strip()
+            content = '\n'.join(section_lines).strip()
+            # Clean up the content - remove trailing problematic content
+            content = self._clean_extracted_content(content)
+            return content
         
         return ""
+    
+    def _clean_extracted_content(self, content: str) -> str:
+        """Clean extracted content to avoid MDX issues."""
+        lines = content.split('\n')
+        cleaned_lines = []
+        in_code_block = False
+        code_block_count = 0
+        
+        for line in lines:
+            # Track code blocks
+            if line.strip().startswith('```'):
+                if in_code_block:
+                    cleaned_lines.append(line)
+                    in_code_block = False
+                    code_block_count += 1
+                else:
+                    cleaned_lines.append(line)
+                    in_code_block = True
+                continue
+            
+            # Skip lines that might cause MDX issues
+            if line.strip() == '---' and len(cleaned_lines) > 10:
+                break
+            if 'Screenshot' in line or 'alt text' in line:
+                continue
+            if line.strip().startswith('![') and line.strip().endswith('>)'):
+                continue
+            
+            cleaned_lines.append(line)
+        
+        # Ensure any open code blocks are closed
+        if in_code_block:
+            cleaned_lines.append('```')
+        
+        return '\n'.join(cleaned_lines).strip()
     
     def _extract_examples_from_readme(self, mcp_data: Dict) -> str:
         """Extract examples section from README or generate basic examples."""

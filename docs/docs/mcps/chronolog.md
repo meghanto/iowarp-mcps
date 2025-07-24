@@ -66,3 +66,4 @@ This prompt will:
 - Provide clean session termination using `stop_chronolog`
 
 </MCPDetail>
+
