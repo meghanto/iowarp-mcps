@@ -228,7 +228,7 @@
   display: flex;
   gap: 0;
   margin-bottom: 0;
-  border-bottom: 2px solid var(--ifm-color-emphasis-200);
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
   background: var(--ifm-background-color);
   border-radius: 12px 12px 0 0;
   overflow: hidden;
@@ -262,7 +262,7 @@
 /* Tab Content */
 .tabContent {
   background: var(--ifm-background-color);
-  border: 1px solid var(--ifm-color-emphasis-200);
+  border: 1px solid var(--ifm-color-emphasis-300);
   border-top: none;
   border-radius: 0 0 12px 12px;
   padding: 2rem;
@@ -335,6 +335,70 @@
   margin: 0;
 }
 
+/* Examples Grid */
+.examplesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.exampleCard {
+  background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.exampleCard:hover {
+  background: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-2px);
+}
+
+.exampleCard.expanded {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-primary);
+}
+
+.exampleTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  margin: 0;
+}
+
+.exampleExpansion {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.exampleCode {
+  margin-bottom: 1rem;
+}
+
+.exampleCode h5 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  margin: 0 0 0.5rem 0;
+}
+
+.exampleDescription h5 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  margin: 0 0 0.5rem 0;
+}
+
+.exampleDescription {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 /* Markdown Content */
 .markdownContent {
   margin-top: 2rem;
@@ -369,12 +433,13 @@
 }
 
 .footerLink {
-  color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-darkest);
   text-decoration: none;
   font-weight: 500;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  background: var(--ifm-color-primary-lightest);
+  background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200);
   transition: all 0.2s ease;
 }
 

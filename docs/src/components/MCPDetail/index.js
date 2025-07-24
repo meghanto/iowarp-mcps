@@ -93,6 +93,94 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
     return icons[platform] || '🔧';
   };
 
+  // Parse examples from children content and structure them like actions
+  const parseExamples = (children) => {
+    if (!children || typeof children !== 'object') return [];
+    
+    // Convert React elements to text for parsing
+    let content = '';
+    if (React.isValidElement(children)) {
+      // Try to extract text content from React elements
+      const extractText = (element) => {
+        if (typeof element === 'string') return element;
+        if (typeof element === 'number') return String(element);
+        if (React.isValidElement(element) && element.props.children) {
+          if (Array.isArray(element.props.children)) {
+            return element.props.children.map(extractText).join('');
+          }
+          return extractText(element.props.children);
+        }
+        return '';
+      };
+      content = extractText(children);
+    } else if (Array.isArray(children)) {
+      content = children.map(child => {
+        if (typeof child === 'string') return child;
+        if (React.isValidElement(child)) {
+          const extractText = (element) => {
+            if (typeof element === 'string') return element;
+            if (typeof element === 'number') return String(element);
+            if (React.isValidElement(element) && element.props.children) {
+              if (Array.isArray(element.props.children)) {
+                return element.props.children.map(extractText).join('');
+              }
+              return extractText(element.props.children);
+            }
+            return '';
+          };
+          return extractText(child);
+        }
+        return String(child);
+      }).join('');
+    } else if (typeof children === 'string') {
+      content = children;
+    }
+    
+    // Parse examples from the content
+    const examples = [];
+    const sections = content.split(/###\s+\d+\.\s+/);
+    
+    sections.forEach((section, index) => {
+      if (index === 0 || !section.trim()) return; // Skip empty first section
+      
+      const lines = section.trim().split('\n');
+      const title = lines[0] || `Example ${index}`;
+      
+      // Extract code block
+      let codeBlock = '';
+      let description = '';
+      let inCodeBlock = false;
+      let afterCodeBlock = false;
+      
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.startsWith('```') && !inCodeBlock) {
+          inCodeBlock = true;
+          continue;
+        }
+        if (line.startsWith('```') && inCodeBlock) {
+          inCodeBlock = false;
+          afterCodeBlock = true;
+          continue;
+        }
+        if (inCodeBlock) {
+          codeBlock += line + '\n';
+        } else if (afterCodeBlock && line.trim()) {
+          description += line + '\n';
+        }
+      }
+      
+      examples.push({
+        id: `example-${index}`,
+        title: title.trim(),
+        code: codeBlock.trim(),
+        description: description.trim()
+      });
+    });
+    
+    return examples;
+  };
+
   // For now, we'll render all children content in the examples tab
   // The markdown is now structured to only contain examples
   const renderContent = (children) => {
@@ -292,9 +380,45 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
 
         {activeTab === 'examples' && (
           <div className={styles.examplesTab}>
-            <div className={styles.markdownContent}>
-              {renderContent(children)}
-            </div>
+            {(() => {
+              const examples = parseExamples(children);
+              return examples.length > 0 ? (
+                <div className={styles.examplesGrid}>
+                  {examples.map((example, index) => (
+                    <div key={index} className={`${styles.exampleCard} ${expandedAction === example.id ? styles.expanded : ''}`} onClick={() => toggleAction(example.id)}>
+                      <div className={styles.actionHeader}>
+                        <h4 className={styles.exampleTitle}>{example.title}</h4>
+                        <span className={styles.actionToggle}>
+                          {expandedAction === example.id ? '▼' : '▶'}
+                        </span>
+                      </div>
+                      {expandedAction === example.id && (
+                        <div className={styles.exampleExpansion}>
+                          {example.code && (
+                            <div className={styles.exampleCode}>
+                              <h5>Prompt:</h5>
+                              <CodeBlock language="text">
+                                {example.code}
+                              </CodeBlock>
+                            </div>
+                          )}
+                          {example.description && (
+                            <div className={styles.exampleDescription}>
+                              <h5>Description:</h5>
+                              {renderMarkdownDescription(example.description)}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.markdownContent}>
+                  {renderContent(children)}
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>
