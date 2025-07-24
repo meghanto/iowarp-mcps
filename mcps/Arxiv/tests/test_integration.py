@@ -8,7 +8,7 @@ import os
 import json
 
 # Add src to path for testing
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src', 'arxiv_mcp'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 import mcp_handlers
 

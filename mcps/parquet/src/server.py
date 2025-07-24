@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from .mcp_handlers import handle_mcp_request
+from mcp_handlers import handle_mcp_request
 
 app = FastAPI()
 

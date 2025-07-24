@@ -1,6 +1,7 @@
 """
-Pandas MCP Server Package
+Implementation package for pandas MCP server.
+Contains all the core functionality modules.
 """
 
-__version__ = "0.1.0"
-__author__ = "IoWarp Scientific MCPs"
+# This package contains implementation modules
+# mcp_handlers is now at the src level 

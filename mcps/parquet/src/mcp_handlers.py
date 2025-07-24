@@ -1,9 +1,9 @@
 from fastapi import HTTPException
 import os
-from src.capabilities.parquet_handler import read_column
-from src.capabilities.sort_handler import sort_log_by_timestamp
-from src.capabilities.compression_handler import compress_file
-from src.capabilities.pandas_handler import analyze_csv
+from capabilities.parquet_handler import read_column
+from capabilities.sort_handler import sort_log_by_timestamp
+from capabilities.compression_handler import compress_file
+from capabilities.pandas_handler import analyze_csv
 
 # available resources
 resources = [

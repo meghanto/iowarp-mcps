@@ -19,9 +19,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/JaimeCernuda/iowarp-mcps"
-Repository = "https://github.com/JaimeCernuda/iowarp-mcps"
-Issues = "https://github.com/JaimeCernuda/iowarp-mcps/issues"
+Homepage = "https://github.com/iowarp/iowarp-mcps"
+Repository = "https://github.com/iowarp/iowarp-mcps"
+Issues = "https://github.com/iowarp/iowarp-mcps/issues"
 
 [project.scripts]
 # Only the unified launcher entry point

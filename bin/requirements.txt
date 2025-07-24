@@ -1,7 +1,11 @@
 # Core dependencies
 python-dotenv
 mcp
+fastmcp
 PyYAML
+pandas
+pytest-asyncio
+asyncio
 
 # LLM Provider SDKs
 google-generativeai

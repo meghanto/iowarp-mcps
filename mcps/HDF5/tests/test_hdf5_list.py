@@ -6,8 +6,13 @@ Covers:
  - Directory‑not‑found error
 """
 import os
+import sys
 import pytest
-from mcp_server.capabilities import hdf5_list
+
+# Add the src directory to the path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
+from capabilities import hdf5_list
 
 
 def test_list_hdf5_basic(tmp_path):

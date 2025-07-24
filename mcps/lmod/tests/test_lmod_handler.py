@@ -1,7 +1,10 @@
 """Tests for lmod handler capabilities."""
 import pytest
 from unittest.mock import patch, AsyncMock
-from lmod_mcp.capabilities import lmod_handler
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+from capabilities import lmod_handler
 
 
 @pytest.mark.asyncio
@@ -9,7 +12,7 @@ async def test_list_loaded_modules_success():
     """Test successful listing of loaded modules."""
     mock_output = "gcc/11.2.0\npython/3.9.0\n"
     
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         mock_cmd.return_value = (mock_output, '', 0)
         
         result = await lmod_handler.list_loaded_modules()
@@ -23,7 +26,7 @@ async def test_list_loaded_modules_success():
 @pytest.mark.asyncio
 async def test_list_loaded_modules_failure():
     """Test failed listing of loaded modules."""
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         mock_cmd.return_value = ('', 'Error: Module command failed', 1)
         
         result = await lmod_handler.list_loaded_modules()
@@ -44,7 +47,7 @@ python/3.8.0
 python/3.9.0
 """
     
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         mock_cmd.return_value = ('', mock_output, 0)  # module avail outputs to stderr
         
         result = await lmod_handler.search_available_modules('python')
@@ -71,7 +74,7 @@ prepend_path("LD_LIBRARY_PATH", "/apps/python/3.9.0/lib")
 conflict("python")
 """
     
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         mock_cmd.return_value = (mock_output, '', 0)
         
         result = await lmod_handler.show_module_details('python/3.9.0')
@@ -86,7 +89,7 @@ conflict("python")
 @pytest.mark.asyncio
 async def test_load_modules():
     """Test loading modules."""
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         mock_cmd.return_value = ('', '', 0)
         
         result = await lmod_handler.load_modules(['gcc/11.2.0', 'python/3.9.0'])
@@ -100,7 +103,7 @@ async def test_load_modules():
 @pytest.mark.asyncio
 async def test_load_modules_partial_failure():
     """Test loading modules with partial failure."""
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         # First module succeeds, second fails
         mock_cmd.side_effect = [
             ('', '', 0),
@@ -117,7 +120,7 @@ async def test_load_modules_partial_failure():
 @pytest.mark.asyncio
 async def test_swap_modules():
     """Test swapping modules."""
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         mock_cmd.return_value = ('', '', 0)
         
         result = await lmod_handler.swap_modules('gcc/10.2.0', 'gcc/11.2.0')
@@ -139,7 +142,7 @@ python: 3.8.0, 3.9.0, 3.10.0, 3.11.0
 openmpi: 4.1.0, 4.1.1
 """
     
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         mock_cmd.return_value = ('', mock_output, 0)
         
         result = await lmod_handler.spider_search()
@@ -153,7 +156,7 @@ openmpi: 4.1.0, 4.1.1
 @pytest.mark.asyncio
 async def test_save_module_collection():
     """Test saving module collection."""
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         mock_cmd.return_value = ('', '', 0)
         
         result = await lmod_handler.save_module_collection('my_environment')
@@ -166,7 +169,7 @@ async def test_save_module_collection():
 @pytest.mark.asyncio
 async def test_restore_module_collection():
     """Test restoring module collection."""
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         # First call restores, second call lists modules
         mock_cmd.side_effect = [
             ('', '', 0),  # restore
@@ -189,7 +192,7 @@ Named collection list:
   1) default   2) dev_env   3) prod_env
 """
     
-    with patch('lmod_mcp.capabilities.lmod_handler._run_module_command') as mock_cmd:
+    with patch('capabilities.lmod_handler._run_module_command') as mock_cmd:
         mock_cmd.return_value = (mock_output, '', 0)
         
         result = await lmod_handler.list_saved_collections()
