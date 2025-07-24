@@ -110,128 +110,121 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Slurm run slurm-mcp --help
 ## Capabilities
 
 ### `submit_slurm_job`
-**Description**: Submit Slurm jobs with comprehensive resource specification and intelligent job optimization, including automatic validation, queue selection, and performance analysis.
+**Description**: Submit a job script to Slurm scheduler with advanced resource specification and intelligent optimization.
 
 **Parameters**:
-- `script_path` (str): Path to the job script file (required)
-- `cores` (int): Number of CPU cores to request (default: 1)
-- `memory` (str): Memory requirement (e.g., "4G", "2048M", default: "1GB")
-- `time_limit` (str): Time limit in HH:MM:SS format (default: "01:00:00")
-- `job_name` (str, optional): Custom job name for identification
-- `partition` (str, optional): Slurm partition selection
+- `script_path` (str): Parameter for script_path
+- `cores` (int, optional): Parameter for cores (default: 1)
+- `memory` (str, optional): Parameter for memory (default: 1GB)
+- `time_limit` (str, optional): Parameter for time_limit (default: 01:00:00)
+- `job_name` (str, optional): Parameter for job_name
+- `partition` (str, optional): Parameter for partition
 
-**Returns**: Comprehensive job submission results with scheduling insights and job ID.
+**Returns**: Dictionary containing comprehensive job submission results with scheduling insights
 
 ### `check_job_status`
-**Description**: Check comprehensive Slurm job status with advanced monitoring, performance insights, and intelligent analysis including resource utilization and completion prediction.
+**Description**: Check comprehensive status of a Slurm job with advanced monitoring and intelligent analysis.
 
 **Parameters**:
-- `job_id` (str): The Slurm job ID to check (required)
+- `job_id` (str): Parameter for job_id
 
-**Returns**: Detailed job status with performance metrics, resource utilization, and optimization recommendations.
+**Returns**: Dictionary containing comprehensive job status with performance insights and optimization recommendations
 
 ### `cancel_slurm_job`
-**Description**: Cancel Slurm jobs with intelligent cleanup and impact analysis, including resource recovery and optimization insights.
+**Description**: Cancel a Slurm job.
 
 **Parameters**:
-- `job_id` (str): The Slurm job ID to cancel (required)
+- `job_id` (str): Parameter for job_id
 
-**Returns**: Job cancellation status with cleanup results and resource recovery information.
+**Returns**: Dictionary with cancellation results
 
 ### `list_slurm_jobs`
-**Description**: List and analyze Slurm jobs with comprehensive filtering, intelligent analysis, and optimization insights for cluster workload management.
+**Description**: List Slurm jobs with optional filtering.
 
 **Parameters**:
-- `user` (str, optional): Username to filter by (default: current user)
-- `state` (str, optional): Job state to filter by (PENDING, RUNNING, COMPLETED, etc.)
+- `user` (str, optional): Parameter for user
+- `state` (str, optional): Parameter for state
 
-**Returns**: List of jobs with performance analysis, resource utilization insights, and optimization recommendations.
+**Returns**: Dictionary with list of jobs
 
 ### `get_slurm_info`
-**Description**: Get comprehensive Slurm cluster information with intelligent analysis and optimization insights, including node configuration and resource availability.
+**Description**: Get information about the Slurm cluster.
 
-**Parameters**:
-- None
-
-**Returns**: Complete cluster information with performance metrics, capacity analysis, and optimization recommendations.
+**Returns**: Dictionary with cluster information
 
 ### `get_job_details`
-**Description**: Get comprehensive Slurm job details with intelligent analysis and performance insights, including resource utilization and efficiency scoring.
+**Description**: Get detailed information about a Slurm job.
 
 **Parameters**:
-- `job_id` (str): The Slurm job ID to analyze (required)
+- `job_id` (str): Parameter for job_id
 
-**Returns**: Detailed job information with performance metrics, resource analysis, and optimization insights.
+**Returns**: Dictionary with detailed job information
 
 ### `get_job_output`
-**Description**: Retrieve Slurm job output and error logs with intelligent analysis and troubleshooting insights.
+**Description**: Get job output content.
 
 **Parameters**:
-- `job_id` (str): The Slurm job ID to get output from (required)
-- `output_type` (str, optional): Type of output ("stdout" or "stderr", default: "stdout")
+- `job_id` (str): Parameter for job_id
+- `output_type` (str, optional): Parameter for output_type (default: stdout)
 
-**Returns**: Job output content with analysis insights and troubleshooting recommendations.
+**Returns**: Dictionary with job output content
 
 ### `get_queue_info`
-**Description**: Get comprehensive Slurm queue information with intelligent analysis and optimization insights for scheduling optimization.
+**Description**: Get job queue information.
 
 **Parameters**:
-- `partition` (str, optional): Specific partition to analyze (default: all partitions)
+- `partition` (str, optional): Parameter for partition
 
-**Returns**: Queue status with load analysis, scheduling insights, and optimization recommendations.
+**Returns**: Dictionary with queue information
 
 ### `submit_array_job`
-**Description**: Submit Slurm array jobs with intelligent parallel optimization and comprehensive workflow management for high-throughput computing.
+**Description**: Submit an array job to Slurm scheduler.
 
 **Parameters**:
-- `script_path` (str): Path to the job script file (required)
-- `array_range` (str): Array range specification (e.g., "1-10", "1-100:2") (required)
-- `cores` (int): Number of cores per array task (default: 1)
-- `memory` (str): Memory per array task (default: "1GB")
-- `time_limit` (str): Time limit per array task in HH:MM:SS format (default: "01:00:00")
-- `job_name` (str, optional): Base name for the array job
-- `partition` (str, optional): Slurm partition selection
+- `script_path` (str): Parameter for script_path
+- `array_range` (str): Parameter for array_range
+- `cores` (int, optional): Parameter for cores (default: 1)
+- `memory` (str, optional): Parameter for memory (default: 1GB)
+- `time_limit` (str, optional): Parameter for time_limit (default: 01:00:00)
+- `job_name` (str, optional): Parameter for job_name
+- `partition` (str, optional): Parameter for partition
 
-**Returns**: Array job submission results with parallel optimization insights and task distribution analysis.
+**Returns**: Dictionary with array job submission results
 
 ### `get_node_info`
-**Description**: Get comprehensive Slurm node information with intelligent analysis and resource optimization insights for cluster monitoring.
+**Description**: Get cluster node information.
 
-**Parameters**:
-- None
-
-**Returns**: Detailed node information with resource status, utilization patterns, and optimization recommendations.
+**Returns**: Dictionary with node information
 
 ### `allocate_slurm_nodes`
-**Description**: Allocate Slurm nodes for interactive sessions with intelligent resource optimization and efficiency analysis.
+**Description**: Allocate Slurm nodes using salloc command.
 
 **Parameters**:
-- `nodes` (int): Number of nodes to allocate (required)
-- `cores` (int): Number of cores per node (default: 1)
-- `memory` (str): Memory per node (default: "1GB")
-- `time_limit` (str): Allocation time limit (default: "01:00:00")
-- `partition` (str, optional): Slurm partition selection
-- `job_name` (str, optional): Allocation job name
-- `immediate` (bool): Request immediate allocation (default: false)
+- `nodes` (int, optional): Parameter for nodes (default: 1)
+- `cores` (int, optional): Parameter for cores (default: 1)
+- `memory` (str, optional): Parameter for memory
+- `time_limit` (str, optional): Parameter for time_limit (default: 01:00:00)
+- `partition` (str, optional): Parameter for partition
+- `job_name` (str, optional): Parameter for job_name
+- `immediate` (bool, optional): Parameter for immediate (default: False)
 
-**Returns**: Node allocation results with resource assignment and optimization insights.
+**Returns**: Dictionary with allocation information
 
 ### `deallocate_slurm_nodes`
-**Description**: Deallocate Slurm nodes with intelligent resource cleanup and optimization analysis for efficient resource management.
+**Description**: Deallocate Slurm nodes by canceling the allocation.
 
 **Parameters**:
-- `allocation_id` (str): The allocation ID to cancel (required)
+- `allocation_id` (str): Parameter for allocation_id
 
-**Returns**: Deallocation status with resource cleanup results and optimization recommendations.
+**Returns**: Dictionary with deallocation status
 
 ### `get_allocation_status`
-**Description**: Get comprehensive Slurm allocation status with intelligent monitoring and performance insights for interactive session management.
+**Description**: Get status of a node allocation.
 
 **Parameters**:
-- `allocation_id` (str): The allocation ID to check (required)
+- `allocation_id` (str): Parameter for allocation_id
 
-**Returns**: Allocation status with resource utilization metrics, performance analysis, and efficiency recommendations.
-
+**Returns**: Dictionary with allocation status information
 ## Examples
 
 ### 1. Job Submission and Monitoring

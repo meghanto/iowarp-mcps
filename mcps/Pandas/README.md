@@ -111,175 +111,169 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Pandas run pandas-mcp --help
 ## Capabilities
 
 ### `load_data`
-**Description**: Load and parse data from multiple file formats with advanced options for data ingestion, supporting CSV, Excel, JSON, Parquet, and HDF5 formats with intelligent parsing capabilities.
+**Description**: Load data from various file formats with comprehensive parsing options.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `file_format` (str, optional): File format (csv, excel, json, parquet, hdf5) - auto-detected if None
-- `sheet_name` (str, optional): Excel sheet name or index (for Excel files)
-- `encoding` (str, optional): Character encoding (utf-8, latin-1, etc.) - auto-detected if None
-- `columns` (List[str], optional): List of specific columns to load (None loads all columns)
-- `nrows` (int, optional): Maximum number of rows to load (None loads all rows)
+- `file_path` (str): Parameter for file_path
+- `file_format` (Any, optional): Parameter for file_format
+- `sheet_name` (Any, optional): Parameter for sheet_name
+- `encoding` (Any, optional): Parameter for encoding
+- `columns` (Any, optional): Parameter for columns
+- `nrows` (Any, optional): Parameter for nrows
 
-**Returns**: Dictionary containing loaded dataset, metadata, data information, and loading statistics with parsing performance metrics.
+**Returns**: Dictionary containing: - data: Loaded dataset in structured format - metadata: File information, data types, and loading statistics - data_info: Shape, columns, and data quality metrics - loading_stats: Performance metrics and parsing information
 
 ### `save_data`
-**Description**: Save processed data to multiple file formats with optimization options for storage efficiency, supporting format-specific optimizations and compression options.
+**Description**: Save data to various file formats with comprehensive export options.
 
 **Parameters**:
-- `file_path` (str): Absolute path where the data will be saved (required)
-- `file_format` (str, optional): Output format (csv, excel, json, parquet, hdf5) - auto-detected from extension if None
-- `compression` (str, optional): Compression method (gzip, bz2, xz) for supported formats
-- `index` (bool): Whether to include row indices in output (default: True)
+- `data` (dict): Parameter for data
+- `file_path` (str): Parameter for file_path
+- `file_format` (Any, optional): Parameter for file_format
+- `index` (bool, optional): Parameter for index (default: True)
 
-**Returns**: Dictionary containing save status, file information, export statistics, and optimization recommendations.
+**Returns**: Dictionary containing: - save_info: File save details including size and format - compression_stats: Space savings and compression metrics - export_stats: Performance metrics and data integrity checks - file_details: Output file specifications and validation
 
 ### `statistical_summary`
-**Description**: Generate comprehensive statistical summary with advanced analytics including descriptive statistics, distribution analysis, and outlier detection.
+**Description**: Generate comprehensive statistical summary with advanced analytics.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `columns` (List[str], optional): List of specific columns to analyze (None analyzes all numerical columns)
-- `include_distributions` (bool): Whether to include distribution analysis and normality tests (default: False)
+- `file_path` (str): Parameter for file_path
+- `columns` (Any, optional): Parameter for columns
+- `include_distributions` (bool, optional): Parameter for include_distributions (default: False)
 
-**Returns**: Dictionary containing descriptive statistics, distribution analysis, data profiling, and outlier detection results.
+**Returns**: Dictionary containing: - descriptive_stats: Mean, median, mode, standard deviation, and percentiles - distribution_analysis: Skewness, kurtosis, and normality test results - data_profiling: Data types, missing values, and unique value counts - outlier_detection: Outlier identification and statistical anomalies
 
 ### `correlation_analysis`
-**Description**: Perform comprehensive correlation analysis with multiple correlation methods and significance testing, providing insights into variable relationships and dependency patterns.
+**Description**: Perform comprehensive correlation analysis with statistical significance testing.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `method` (str): Correlation method (pearson, spearman, kendall, default: "pearson")
-- `columns` (List[str], optional): List of specific columns to analyze (None analyzes all numerical columns)
-- `significance_level` (float): Significance level for correlation testing (default: 0.05)
+- `file_path` (str): Parameter for file_path
+- `method` (str, optional): Parameter for method (default: pearson)
+- `columns` (Any, optional): Parameter for columns
 
-**Returns**: Dictionary containing correlation matrices, significance testing results, and relationship insights with multicollinearity analysis.
+**Returns**: Dictionary containing: - correlation_matrix: Full correlation matrix with coefficient values - significance_tests: P-values and statistical significance indicators - correlation_insights: Strong correlations and dependency patterns - visualization_data: Data formatted for correlation heatmaps and plots
 
 ### `hypothesis_testing`
-**Description**: Perform statistical hypothesis testing with multiple test types including t-tests, ANOVA, and normality tests for comprehensive statistical validation.
+**Description**: Perform comprehensive statistical hypothesis testing with multiple test types and advanced analysis.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `test_type` (str): Type of statistical test (t_test, anova, normality, chi_square) (required)
-- `columns` (List[str], optional): List of columns for analysis (test-specific requirements)
-- `grouping_column` (str, optional): Column for grouping data (required for ANOVA and group comparisons)
-- `significance_level` (float): Significance level for hypothesis testing (default: 0.05)
+- `file_path` (str): Parameter for file_path
+- `test_type` (str): Parameter for test_type
+- `column1` (str): Parameter for column1
+- `column2` (Any, optional): Parameter for column2
+- `alpha` (float, optional): Parameter for alpha (default: 0.05)
 
-**Returns**: Dictionary containing test statistics, p-values, confidence intervals, and statistical conclusions with interpretation.
+**Returns**: Dictionary containing: - test_results: Statistical test results including test statistic and p-value - effect_size: Effect size measures and practical significance assessment - confidence_intervals: Confidence intervals for parameters and differences - interpretation: Statistical interpretation and practical conclusions
 
 ### `handle_missing_data`
-**Description**: Handle missing data with comprehensive strategies and statistical methods including detection, imputation, and removal with pattern analysis.
+**Description**: Handle missing data with comprehensive strategies and statistical methods.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `strategy` (str): Missing data strategy (detect, impute, remove, analyze, default: "detect")
-- `method` (str, optional): Imputation method (mean, median, mode, forward_fill, backward_fill, interpolate)
-- `columns` (List[str], optional): List of specific columns to process (None processes all columns)
+- `file_path` (str): Parameter for file_path
+- `strategy` (str, optional): Parameter for strategy (default: detect)
+- `method` (Any, optional): Parameter for method
+- `columns` (Any, optional): Parameter for columns
 
-**Returns**: Dictionary containing missing data patterns, imputation results, and data quality improvements with strategy recommendations.
+**Returns**: Dictionary containing: - missing_data_report: Detailed analysis of missing data patterns - imputation_results: Results of imputation with quality metrics - data_completeness: Before/after comparison of data completeness - strategy_recommendations: Suggested approaches for optimal data handling
 
 ### `clean_data`
-**Description**: Perform comprehensive data cleaning including outlier removal, duplicate detection, data type optimization, and data validation with quality assessment.
+**Description**: Perform comprehensive data cleaning with advanced quality improvement techniques.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `remove_duplicates` (bool): Whether to remove duplicate rows (default: True)
-- `handle_outliers` (str): Outlier handling method (remove, cap, none, default: "none")
-- `standardize_columns` (bool): Whether to standardize column names (default: False)
-- `optimize_dtypes` (bool): Whether to optimize data types for memory efficiency (default: True)
+- `file_path` (str): Parameter for file_path
+- `remove_duplicates` (bool, optional): Parameter for remove_duplicates (default: False)
+- `detect_outliers` (bool, optional): Parameter for detect_outliers (default: False)
+- `convert_types` (bool, optional): Parameter for convert_types (default: False)
 
-**Returns**: Dictionary containing cleaned dataset, cleaning summary, data quality improvements, and optimization results.
+**Returns**: Dictionary containing: - cleaning_report: Detailed summary of cleaning operations performed - data_quality_metrics: Before/after data quality comparison - outlier_analysis: Outlier detection results and recommendations - type_conversion_log: Data type changes and optimization results
 
 ### `groupby_operations`
-**Description**: Perform comprehensive group-by operations with multiple aggregation functions and statistical analysis for data summarization and insights.
+**Description**: Perform sophisticated groupby operations with comprehensive aggregation options.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `group_columns` (List[str]): List of columns to group by (required)
-- `agg_functions` (dict): Dictionary mapping columns to aggregation functions (mean, sum, count, std, etc.)
-- `include_stats` (bool): Whether to include additional statistical metrics (default: False)
+- `file_path` (str): Parameter for file_path
+- `group_by` (Any): Parameter for group_by
+- `operations` (Any): Parameter for operations
+- `filter_condition` (Any, optional): Parameter for filter_condition
 
-**Returns**: Dictionary containing grouped data, aggregation results, group statistics, and insights with pattern analysis.
+**Returns**: Dictionary containing: - grouped_results: Results of groupby operations with aggregated data - group_statistics: Statistics about group sizes and distributions - aggregation_summary: Summary of all aggregation operations performed - performance_metrics: Groupby operation performance and optimization insights
 
 ### `merge_datasets`
-**Description**: Merge multiple datasets using different join strategies with comprehensive data integration and validation for complex data combinations.
+**Description**: Merge and join datasets with comprehensive integration capabilities.
 
 **Parameters**:
-- `left_file_path` (str): Absolute path to the left dataset (required)
-- `right_file_path` (str): Absolute path to the right dataset (required)
-- `join_keys` (List[str]): List of columns to join on (required)
-- `how` (str): Type of merge (inner, outer, left, right, default: "inner")
-- `validate` (str, optional): Validation level (one_to_one, one_to_many, many_to_one, many_to_many)
+- `left_file` (str): Parameter for left_file
+- `right_file` (str): Parameter for right_file
+- `join_type` (str, optional): Parameter for join_type (default: inner)
+- `left_on` (Any, optional): Parameter for left_on
+- `right_on` (Any, optional): Parameter for right_on
+- `on` (Any, optional): Parameter for on
 
-**Returns**: Dictionary containing merged dataset, merge statistics, data integration summary, and validation results.
+**Returns**: Dictionary containing: - merged_data: Results of the merge operation - merge_statistics: Statistics about the merge operation and data overlap - data_quality_report: Quality assessment of the merged dataset - relationship_analysis: Analysis of data relationships and join effectiveness
 
 ### `pivot_table`
-**Description**: Create comprehensive pivot tables with multi-level indexing and aggregation for advanced data summarization and cross-tabulation analysis.
+**Description**: Create sophisticated pivot tables with comprehensive aggregation options.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `index_columns` (List[str]): List of columns to use as row indices (required)
-- `value_columns` (List[str]): List of columns to aggregate (required)
-- `agg_function` (str): Aggregation function (mean, sum, count, std, default: "mean")
-- `columns` (List[str], optional): List of columns to use as column indices
+- `file_path` (str): Parameter for file_path
+- `index` (Any): Parameter for index
+- `columns` (Any, optional): Parameter for columns
+- `values` (Any, optional): Parameter for values
+- `aggfunc` (str, optional): Parameter for aggfunc (default: mean)
 
-**Returns**: Dictionary containing pivot table results, aggregation summary, and cross-tabulation insights with statistical analysis.
+**Returns**: Dictionary containing: - pivot_results: The pivot table with aggregated data - summary_statistics: Statistical summary of the pivot operation - data_insights: Key insights and patterns from the pivot analysis - visualization_data: Data formatted for pivot table visualization
 
 ### `time_series_operations`
-**Description**: Perform comprehensive time series analysis including resampling, rolling windows, lag features, and trend analysis for temporal data insights.
+**Description**: Perform comprehensive time series operations with advanced temporal analysis.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `date_column` (str): Name of the date/time column (required)
-- `operation` (str): Time series operation (resample, rolling, lag, trend, default: "resample")
-- `frequency` (str, optional): Resampling frequency (D, W, M, Q, Y) for resample operations
-- `window_size` (int, optional): Window size for rolling operations (default: 7)
+- `file_path` (str): Parameter for file_path
+- `date_column` (str): Parameter for date_column
+- `operation` (str): Parameter for operation
+- `window_size` (Any, optional): Parameter for window_size
+- `frequency` (Any, optional): Parameter for frequency
 
-**Returns**: Dictionary containing time series results, temporal patterns, trend analysis, and seasonal insights.
+**Returns**: Dictionary containing: - time_series_results: Results of the time series operation - temporal_analysis: Trend and seasonality analysis - statistical_summary: Time series statistical properties - forecasting_insights: Patterns and insights for forecasting applications
 
 ### `validate_data`
-**Description**: Perform comprehensive data validation with business rules, data quality checks, and constraint validation for data integrity assessment.
+**Description**: Perform comprehensive data validation with advanced constraint checking and quality assessment.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `validation_rules` (dict): Dictionary of validation rules and constraints (required)
-- `strict_mode` (bool): Whether to use strict validation (default: False)
-- `generate_report` (bool): Whether to generate detailed validation report (default: True)
+- `file_path` (str): Parameter for file_path
+- `validation_rules` (Any): Parameter for validation_rules
 
-**Returns**: Dictionary containing validation results, rule compliance, data quality scores, and improvement recommendations.
+**Returns**: Dictionary containing: - validation_results: Detailed validation results for each column and rule - data_quality_score: Overall data quality score and assessment - violation_summary: Summary of validation violations and error patterns - recommendations: Suggested actions for data quality improvement
 
 ### `filter_data`
-**Description**: Apply complex filtering operations with multiple conditions and logical operators for advanced data subsetting and selection.
+**Description**: Perform advanced data filtering with sophisticated boolean indexing and conditional expressions.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `conditions` (dict): Dictionary of filtering conditions and criteria (required)
-- `logical_operator` (str): Logical operator for multiple conditions (and, or, default: "and")
-- `save_filtered` (bool): Whether to save filtered results to file (default: False)
+- `file_path` (str): Parameter for file_path
+- `filter_conditions` (Any): Parameter for filter_conditions
+- `output_file` (Any, optional): Parameter for output_file
 
-**Returns**: Dictionary containing filtered dataset, filtering summary, condition results, and data subset statistics.
+**Returns**: Dictionary containing: - filtered_data: Results of filtering operation with matching records - filter_statistics: Summary of filtering results including row counts - data_quality_report: Quality assessment of filtered dataset - performance_metrics: Filtering operation performance and efficiency
 
 ### `optimize_memory`
-**Description**: Optimize memory usage of datasets with dtype optimization, memory profiling, and efficiency recommendations for large data processing.
+**Description**: Perform advanced memory optimization for large datasets with intelligent strategies.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `aggressive` (bool): Whether to use aggressive optimization (default: False)
-- `preserve_precision` (bool): Whether to preserve numerical precision (default: True)
-- `generate_report` (bool): Whether to generate optimization report (default: True)
+- `file_path` (str): Parameter for file_path
+- `optimize_dtypes` (bool, optional): Parameter for optimize_dtypes (default: True)
+- `chunk_size` (Any, optional): Parameter for chunk_size
 
-**Returns**: Dictionary containing optimized dataset, memory usage statistics, optimization results, and efficiency improvements.
+**Returns**: Dictionary containing: - memory_optimization_results: Before/after memory usage comparison - dtype_optimization_log: Details of data type changes and memory savings - chunking_strategy: Optimal chunking recommendations for large datasets - performance_metrics: Speed and efficiency improvements achieved
 
 ### `profile_data`
-**Description**: Generate comprehensive data profile with detailed schema analysis, data quality assessment, and statistical profiling for thorough data exploration.
+**Description**: Perform comprehensive data profiling with detailed statistical analysis and quality assessment.
 
 **Parameters**:
-- `file_path` (str): Absolute path to the data file (required)
-- `detailed` (bool): Whether to include detailed profiling analysis (default: False)
-- `sample_size` (int, optional): Number of rows to sample for large datasets (None uses all data)
+- `file_path` (str): Parameter for file_path
+- `include_correlations` (bool, optional): Parameter for include_correlations (default: False)
+- `sample_size` (Any, optional): Parameter for sample_size
 
-**Returns**: Dictionary containing data schema, quality metrics, statistical profile, and visualization recommendations with insights.
-
+**Returns**: Dictionary containing: - data_profile: Comprehensive dataset overview including shape, types, and statistics - column_analysis: Detailed analysis of each column including distributions - data_quality_metrics: Missing values, duplicates, and data quality indicators - correlation_matrix: Variable correlations (if include_correlations is True)
 ## Examples
 
 ### 1. Data Loading and Profiling

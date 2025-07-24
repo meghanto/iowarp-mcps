@@ -109,127 +109,228 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Jarvis run jarvis-mcp --help
 
 ## Capabilities
 
-The Jarvis MCP provides comprehensive pipeline management capabilities for data-centric workflows in high-performance computing environments. It offers 28 specialized tools organized into three main categories:
+### `update_pipeline`
+**Description**: Re-apply environment and configuration to every package in a Jarvis pipeline.
 
-### Pipeline Management Tools
+**Parameters**:
+- `pipeline_id` (str): ID of the pipeline to update
 
-- **`create_pipeline`**: Create a new Jarvis-CD pipeline environment
-  - Parameters: `pipeline_id` (str) - Name/ID for the new pipeline
-  - Returns: Status and details of the created pipeline
+**Returns**: dict: Status and results of the update operation.
 
-- **`load_pipeline`**: Load an existing Jarvis-CD pipeline environment
-  - Parameters: `pipeline_id` (str, optional) - ID of the pipeline to load
-  - Returns: Status and details of the loaded pipeline
+### `build_pipeline_env`
+**Description**: Build the pipeline execution environment for a given pipeline.
 
-- **`update_pipeline`**: Re-apply environment & configuration to every package in a Jarvis-CD pipeline
-  - Parameters: `pipeline_id` (str) - ID of the pipeline to update
-  - Returns: Status and results of the update operation
+**Parameters**:
+- `pipeline_id` (str): ID of the pipeline to build
 
-- **`build_pipeline_env`**: Rebuild a Jarvis-CD pipeline's env.yaml, capturing CMAKE_PREFIX_PATH and PATH
-  - Parameters: `pipeline_id` (str) - ID of the pipeline to build
-  - Returns: Status and results of the environment build operation
+**Returns**: dict: Status and results of the environment build operation.
 
-- **`run_pipeline`**: Execute a Jarvis-CD pipeline end-to-end
-  - Parameters: `pipeline_id` (str) - ID of the pipeline to run
-  - Returns: Status and results of the pipeline execution
+### `create_pipeline`
+**Description**: Create a new pipeline environment for data-centric workflows.
 
-- **`destroy_pipeline`**: Destroy a Jarvis-CD pipeline environment and clean up files
-  - Parameters: `pipeline_id` (str) - ID of the pipeline to destroy
-  - Returns: Status and details of the destruction operation
+**Parameters**:
+- `pipeline_id` (str): Name/ID for the new pipeline
 
-### Package Management Tools
+**Returns**: dict: Status and details of the created pipeline.
 
-- **`append_pkg`**: Append a package to a Jarvis-CD pipeline
-  - Parameters: `pipeline_id` (str), `pkg_type` (str), `pkg_id` (str, optional), `do_configure` (bool, optional), `extra_args` (dict, optional)
-  - Returns: Status and details of the package addition
+### `load_pipeline`
+**Description**: Load an existing pipeline environment by ID, or the current one if not specified.
 
-- **`get_pkg_config`**: Retrieve the configuration of a specific package in a Jarvis-CD pipeline
-  - Parameters: `pipeline_id` (str), `pkg_id` (str)
-  - Returns: Current configuration of the package
+**Parameters**:
+- `pipeline_id` (str, optional): ID of the pipeline to load
 
-- **`configure_pkg`**: Configure a package in a Jarvis-CD pipeline
-  - Parameters: `pipeline_id` (str), `pkg_id` (str), `extra_args` (dict, optional)
-  - Returns: Status and details of the configuration operation
+**Returns**: dict: Status and details of the loaded pipeline.
 
-- **`unlink_pkg`**: Unlink a package from a Jarvis-CD pipeline (preserve files)
-  - Parameters: `pipeline_id` (str), `pkg_id` (str)
-  - Returns: Status and details of the unlink operation
+### `get_pkg_config`
+**Description**: Retrieve the configuration of a specific package in a pipeline.
 
-- **`remove_pkg`**: Remove a package entirely from a Jarvis-CD pipeline
-  - Parameters: `pipeline_id` (str), `pkg_id` (str)
-  - Returns: Status and details of the removal operation
+**Parameters**:
+- `pipeline_id` (str): ID of the pipeline
+- `pkg_id` (str): ID of the package
 
-### JarvisManager Configuration Tools
+**Returns**: dict: Current configuration of the package.
 
-- **`jm_create_config`**: Initialize JarvisManager config directories
-  - Parameters: `config_dir` (str), `private_dir` (str), `shared_dir` (str, optional)
-  - Returns: Status of configuration initialization
+### `append_pkg`
+**Description**: Add a package to a pipeline for execution or analysis.
 
-- **`jm_load_config`**: Load existing JarvisManager configuration
-  - Returns: Status of configuration loading
+**Parameters**:
+- `pipeline_id` (str): ID of the pipeline
+- `pkg_type` (str): Type of package to add
+- `pkg_id` (str, optional): ID for the new package
+- `do_configure` (bool, optional): Whether to configure after adding
+- `extra_args` (dict, optional): Additional configuration arguments
 
-- **`jm_save_config`**: Save current JarvisManager configuration
-  - Returns: Status of configuration saving
+**Returns**: dict: Status and details of the package addition.
 
-- **`jm_set_hostfile`**: Set hostfile path for JarvisManager
-  - Parameters: `path` (str) - Path to the hostfile
-  - Returns: Status of hostfile configuration
+### `configure_pkg`
+**Description**: Configure a package in a pipeline with new settings.
 
-- **`jm_bootstrap_from`**: Bootstrap Jarvis config from a machine template
-  - Parameters: `machine` (str) - Machine template name
-  - Returns: Status of bootstrap operation
+**Parameters**:
+- `pipeline_id` (str): ID of the pipeline
+- `pkg_id` (str): ID of the package
+- `extra_args` (dict, optional): Configuration arguments
 
-- **`jm_bootstrap_list`**: List available bootstrap machine templates
-  - Returns: List of available bootstrap templates
+**Returns**: dict: Status and details of the configuration operation.
 
-- **`jm_reset`**: Reset JarvisManager (destroy all pipelines and data)
-  - Returns: Status of reset operation
+### `unlink_pkg`
+**Description**: Unlink a package from a pipeline without deleting its files.
 
-- **`jm_list_pipelines`**: List all existing Jarvis pipelines
-  - Returns: List of all current pipelines
+**Parameters**:
+- `pipeline_id` (str): ID of the pipeline
+- `pkg_id` (str): ID of the package to unlink
 
-- **`jm_cd`**: Change current Jarvis pipeline context
-  - Parameters: `pipeline_id` (str) - Pipeline to set as current
-  - Returns: Status of context change
+**Returns**: dict: Status and details of the unlink operation.
 
-### Repository Management Tools
+### `remove_pkg`
+**Description**: Remove a package and its files from a pipeline.
 
-- **`jm_list_repos`**: List all Jarvis repositories
-  - Returns: List of all registered repositories
+**Parameters**:
+- `pipeline_id` (str): ID of the pipeline
+- `pkg_id` (str): ID of the package to remove
 
-- **`jm_add_repo`**: Add a repository to JarvisManager
-  - Parameters: `path` (str), `force` (bool, optional)
-  - Returns: Status of repository addition
+**Returns**: dict: Status and details of the removal operation.
 
-- **`jm_remove_repo`**: Remove a repository from JarvisManager
-  - Parameters: `repo_name` (str) - Name of repository to remove
-  - Returns: Status of repository removal
+### `run_pipeline`
+**Description**: Execute the pipeline, running all configured steps.
 
-- **`jm_promote_repo`**: Promote a repository in JarvisManager
-  - Parameters: `repo_name` (str) - Name of repository to promote
-  - Returns: Status of repository promotion
+**Parameters**:
+- `pipeline_id` (str): ID of the pipeline to run
 
-- **`jm_get_repo`**: Get repository info from JarvisManager
-  - Parameters: `repo_name` (str) - Name of repository
-  - Returns: Detailed repository information
+**Returns**: dict: Status and results of the pipeline execution.
 
-- **`jm_construct_pkg`**: Construct a package skeleton in JarvisManager
-  - Parameters: `pkg_type` (str) - Type of package to construct
-  - Returns: Status of package construction
+### `destroy_pipeline`
+**Description**: Destroy a pipeline and clean up all associated files and resources.
 
-### Resource Monitoring Tools
+**Parameters**:
+- `pipeline_id` (str): ID of the pipeline to destroy
 
-- **`jm_graph_show`**: Print the current resource graph frames
-  - Returns: Status of graph display operation
+**Returns**: dict: Status and details of the destruction operation.
 
-- **`jm_graph_build`**: Build or rebuild the resource graph with a net sleep interval
-  - Parameters: `net_sleep` (float) - Sleep interval for graph construction
-  - Returns: Status of graph build operation
+### `jm_create_config`
+**Description**: Initialize manager directories and persist configuration.
 
-- **`jm_graph_modify`**: Modify the resource graph using a net sleep interval
-  - Parameters: `net_sleep` (float) - Sleep interval for graph modification
-  - Returns: Status of graph modification operation
+**Parameters**:
+- `config_dir` (str): Parameter for config_dir
+- `private_dir` (str): Parameter for private_dir
+- `shared_dir` (str, optional): Parameter for shared_dir
 
+**Returns**: Returns list
+
+### `jm_load_config`
+**Description**: Load manager configuration from saved state.
+
+**Returns**: Returns list
+
+### `jm_save_config`
+**Description**: Save current configuration state to disk.
+
+**Returns**: Returns list
+
+### `jm_set_hostfile`
+**Description**: Set and save the path to the hostfile for deployments.
+
+**Parameters**:
+- `path` (str): Parameter for path
+
+**Returns**: Returns list
+
+### `jm_bootstrap_from`
+**Description**: Bootstrap configuration based on a predefined machine template.
+
+**Parameters**:
+- `machine` (str): Parameter for machine
+
+**Returns**: Returns list
+
+### `jm_bootstrap_list`
+**Description**: List all bootstrap templates available.
+
+**Returns**: Returns list
+
+### `jm_reset`
+**Description**: Reset manager to a clean state by destroying all pipelines and config.
+
+**Returns**: Returns list
+
+### `jm_list_pipelines`
+**Description**: List all current pipelines under management.
+
+**Returns**: Returns list
+
+### `jm_cd`
+**Description**: Set the working pipeline context.
+
+**Parameters**:
+- `pipeline_id` (str): Parameter for pipeline_id
+
+**Returns**: Returns list
+
+### `jm_list_repos`
+**Description**: List all registered repositories.
+
+**Returns**: Returns list
+
+### `jm_add_repo`
+**Description**: Add a repository path to the manager.
+
+**Parameters**:
+- `path` (str): Parameter for path
+- `force` (bool, optional): Parameter for force (default: False)
+
+**Returns**: Returns list
+
+### `jm_remove_repo`
+**Description**: Remove a repository from configuration.
+
+**Parameters**:
+- `repo_name` (str): Parameter for repo_name
+
+**Returns**: Returns list
+
+### `jm_promote_repo`
+**Description**: Promote a repository to higher priority.
+
+**Parameters**:
+- `repo_name` (str): Parameter for repo_name
+
+**Returns**: Returns list
+
+### `jm_get_repo`
+**Description**: Get detailed information about a repository.
+
+**Parameters**:
+- `repo_name` (str): Parameter for repo_name
+
+**Returns**: Returns list
+
+### `jm_construct_pkg`
+**Description**: Generate a new package skeleton by type.
+
+**Parameters**:
+- `pkg_type` (str): Parameter for pkg_type
+
+**Returns**: Returns list
+
+### `jm_graph_show`
+**Description**: Print the resource graph to the console.
+
+**Returns**: Returns list
+
+### `jm_graph_build`
+**Description**: Construct or rebuild the graph with a given sleep delay.
+
+**Parameters**:
+- `net_sleep` (float): Parameter for net_sleep
+
+**Returns**: Returns list
+
+### `jm_graph_modify`
+**Description**: Modify the current resource graph with a delay between operations.
+
+**Parameters**:
+- `net_sleep` (float): Parameter for net_sleep
+
+**Returns**: Returns list
 ## Examples
 
 ### 1. Pipeline Creation and Basic Management
