@@ -133,6 +133,50 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
     setExpandedAction(expandedAction === actionName ? null : actionName);
   };
 
+  // Generate TOC based on active tab
+  const generateTOC = () => {
+    const tocItems = [];
+    
+    if (activeTab === 'installation') {
+      tocItems.push(
+        { id: 'installation', title: 'Installation', level: 2 },
+        ...Object.keys(installationConfigs).map(key => ({
+          id: `install-${key}`,
+          title: installationConfigs[key].title,
+          level: 3
+        }))
+      );
+    } else if (activeTab === 'actions' && tools && tools.length > 0) {
+      tocItems.push(
+        { id: 'actions', title: 'Actions', level: 2 },
+        ...tools.map(tool => ({
+          id: `action-${tool.name}`,
+          title: tool.name,
+          level: 3
+        }))
+      );
+    } else if (activeTab === 'examples') {
+      tocItems.push({ id: 'examples', title: 'Examples', level: 2 });
+      // Extract headings from children content if they exist
+      if (children && typeof children === 'string') {
+        const headingMatches = children.match(/^###?\s+(.+)$/gm);
+        if (headingMatches) {
+          headingMatches.forEach((heading, index) => {
+            const level = heading.startsWith('###') ? 3 : 2;
+            const title = heading.replace(/^###?\s+/, '');
+            tocItems.push({
+              id: `example-${index}`,
+              title: title,
+              level: level
+            });
+          });
+        }
+      }
+    }
+    
+    return tocItems;
+  };
+
   return (
     <div className={styles.mcpDetail}>
       {/* Header */}
@@ -201,8 +245,10 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
         </button>
       </div>
 
-      {/* Tab Content */}
-      <div className={styles.tabContent}>
+      {/* Main Layout with TOC */}
+      <div className={styles.mainLayout}>
+        {/* Tab Content */}
+        <div className={styles.tabContent}>
         {activeTab === 'installation' && (
           <div className={styles.installationTab}>
             <div className={styles.quickInstall}>
@@ -275,6 +321,23 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
             </div>
           </div>
         )}
+        </div>
+
+        {/* Table of Contents */}
+        <div className={styles.tocSidebar}>
+          <div className={styles.tocContent}>
+            <h3 className={styles.tocTitle}>Contents</h3>
+            <ul className={styles.tocList}>
+              {generateTOC().map((item, index) => (
+                <li key={index} className={`${styles.tocItem} ${styles[`tocLevel${item.level}`]}`}>
+                  <a href={`#${item.id}`} className={styles.tocLink}>
+                    {item.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
 
       {/* Footer */}
