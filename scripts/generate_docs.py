@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Script to automatically generate Docusaurus markdown files for MCP documentation website.
-Reads from pyproject.toml, README.md, and server.py files to extract metadata and capabilities.
+Creates 4 simple sections: General Info, Installation, Available Tools, Examples
 """
 
 import os
@@ -27,20 +27,6 @@ class MCPDataExtractor:
     """Extract MCP data from project files."""
     
     def __init__(self):
-        self.category_mapping = {
-            "data": "Data Processing",
-            "analysis": "Analysis & Visualization", 
-            "visualization": "Analysis & Visualization",
-            "plot": "Analysis & Visualization",
-            "system": "System Management",
-            "slurm": "System Management",
-            "hpc": "System Management",
-            "hardware": "System Management",
-            "management": "System Management",
-            "utility": "Utilities",
-            "utilities": "Utilities"
-        }
-        
         self.icon_mapping = {
             "adios": "📊",
             "arxiv": "📄", 
@@ -94,37 +80,29 @@ class MCPDataExtractor:
         name = project_info.get('name', mcp_dir.name).replace('-mcp', '').replace('_', ' ').title()
         description = project_info.get('description', f'{name} MCP server')
         version = project_info.get('version', '1.0.0')
+        keywords = project_info.get('keywords', [])
+        license_info = project_info.get('license', 'MIT')
         
         # Determine slug and category
         slug = mcp_dir.name.lower().replace('_', '_').replace('-', '_')
-        category = self._determine_category(name, description, mcp_dir.name)
+        category = self._determine_category(name, description, keywords)
         icon = self.icon_mapping.get(slug, "🔧")
         
         # Read README.md for enhanced description
         readme_file = mcp_dir / "README.md"
         enhanced_description = description
-        capabilities = []
         
         if readme_file.exists():
             try:
                 with open(readme_file, 'r', encoding='utf-8') as f:
                     readme_content = f.read()
-                
-                # Extract better description from README
                 enhanced_description = self._extract_description_from_readme(readme_content) or description
-                
-                # Extract capabilities from README
-                capabilities = self._extract_capabilities_from_readme(readme_content)
-                
             except Exception as e:
                 print(f"Error reading README.md in {mcp_dir.name}: {e}")
         
         # Extract tools from server.py
         tools = self._extract_tools_from_server(mcp_dir)
-        
-        # If no capabilities in README, use tools as actions
-        if not capabilities and tools:
-            capabilities = [tool['name'] for tool in tools]
+        actions = [tool['name'] for tool in tools] if tools else []
         
         return {
             'name': name,
@@ -133,24 +111,27 @@ class MCPDataExtractor:
             'description': enhanced_description,
             'icon': icon,
             'version': version,
-            'actions': capabilities,
+            'actions': actions,
             'tools': tools,
             'platforms': ["claude", "cursor", "vscode"],
             'updated': datetime.now().strftime("%Y-%m-%d"),
-            'path': str(mcp_dir)
+            'path': str(mcp_dir),
+            'keywords': keywords,
+            'license': license_info
         }
     
-    def _determine_category(self, name: str, description: str, dir_name: str) -> str:
-        """Determine MCP category based on name and description."""
-        text = f"{name} {description} {dir_name}".lower()
+    def _determine_category(self, name: str, description: str, keywords: List[str]) -> str:
+        """Determine MCP category based on name, description, and keywords."""
+        text = f"{name} {description} {' '.join(keywords)}".lower()
         
-        # Check for specific category keywords
-        for keyword, category in self.category_mapping.items():
-            if keyword in text:
-                return category
-        
-        # Default category
-        return "Utilities"
+        if any(word in text for word in ['data', 'processing', 'pandas', 'hdf5', 'parquet', 'adios']):
+            return "Data Processing"
+        elif any(word in text for word in ['analysis', 'visualization', 'plot', 'chart', 'graph']):
+            return "Analysis & Visualization"
+        elif any(word in text for word in ['system', 'management', 'slurm', 'hardware', 'node', 'jarvis']):
+            return "System Management"
+        else:
+            return "Utilities"
     
     def _extract_description_from_readme(self, readme_content: str) -> Optional[str]:
         """Extract a better description from README content."""
@@ -188,30 +169,6 @@ class MCPDataExtractor:
             return description.strip()
         
         return None
-    
-    def _extract_capabilities_from_readme(self, readme_content: str) -> List[str]:
-        """Extract capabilities/actions from README."""
-        capabilities = []
-        
-        # Look for capabilities section
-        in_capabilities = False
-        for line in readme_content.split('\n'):
-            line = line.strip()
-            
-            if '## Capabilities' in line or '### Capabilities' in line:
-                in_capabilities = True
-                continue
-            elif in_capabilities and line.startswith('##') and 'Capabilities' not in line:
-                break
-            
-            if in_capabilities:
-                # Look for function names in backticks
-                func_matches = re.findall(r'`([a-zA-Z_][a-zA-Z0-9_]*)`', line)
-                for func in func_matches:
-                    if func not in capabilities and not func.startswith('_'):
-                        capabilities.append(func)
-        
-        return capabilities
     
     def _extract_tools_from_server(self, mcp_dir: Path) -> List[Dict]:
         """Extract tool information from server.py files."""
@@ -311,19 +268,19 @@ class DocusaurusGenerator:
         print(f"Generated {len(mcps_data)} MCP documentation files")
     
     def _generate_mcp_markdown(self, mcp_data: Dict):
-        """Generate markdown file for a single MCP."""
+        """Generate markdown file for a single MCP with 4 sections."""
         # Escape YAML special characters in description
         description = mcp_data['description'].replace('"', '\\"').replace('\n', ' ')
-        # Truncate very long descriptions for YAML front matter
         if len(description) > 300:
             description = description[:297] + "..."
         
         # Escape quotes in the full description for JSX
         jsx_description = mcp_data['description'].replace('"', '&quot;').replace('\n', ' ')
         
-        # Format actions and platforms as proper JSX arrays  
+        # Format JSX props
         actions_jsx = json.dumps(mcp_data['actions'])
         platforms_jsx = json.dumps(mcp_data['platforms'])
+        keywords_jsx = json.dumps(mcp_data.get('keywords', []))
         
         content = f"""---
 title: {mcp_data['name']} MCP
@@ -340,19 +297,21 @@ import MCPDetail from '@site/src/components/MCPDetail';
   version="{mcp_data['version']}"
   actions={{{actions_jsx}}}
   platforms={{{platforms_jsx}}}
+  keywords={{{keywords_jsx}}}
+  license="{mcp_data.get('license', 'MIT')}"
 >
 
-## Advanced Features
+## Installation
 
-{self._generate_features_section(mcp_data)}
+{self._extract_installation_from_readme(mcp_data)}
 
-## Available Actions
+## Available Tools
 
-{self._generate_actions_section(mcp_data)}
+{self._generate_tools_section(mcp_data)}
 
-## Integration Examples
+## Examples
 
-{self._generate_examples_section(mcp_data)}
+{self._extract_examples_from_readme(mcp_data)}
 
 </MCPDetail>
 """
@@ -363,89 +322,30 @@ import MCPDetail from '@site/src/components/MCPDetail';
         
         print(f"Generated {output_file}")
     
-    def _generate_features_section(self, mcp_data: Dict) -> str:
-        """Generate features section based on MCP category."""
-        category_features = {
-            "Data Processing": """
-### High-Performance Data Processing
-This MCP provides optimized data processing capabilities:
-- **Fast I/O Operations**: Efficient reading and writing of data
-- **Format Support**: Multiple data format compatibility
-- **Memory Optimization**: Smart memory usage for large datasets
-
-### Integration Ready
-- **Pipeline Compatible**: Works seamlessly in data processing pipelines
-- **Cross-format**: Convert between different data formats
-- **Scalable**: Handles datasets of various sizes
-""",
-            "Analysis & Visualization": """
-### Advanced Analytics
-Comprehensive analysis and visualization capabilities:
-- **Statistical Analysis**: Built-in statistical functions
-- **Visualization**: Create charts, plots, and visual representations
-- **Interactive**: Generate interactive visualizations
-
-### Customizable Output
-- **Multiple Formats**: Support for various output formats
-- **Styling Options**: Customizable appearance and themes
-- **Export Ready**: Easy export for reports and presentations
-""",
-            "System Management": """
-### System Monitoring
-Comprehensive system management and monitoring:
-- **Real-time Monitoring**: Live system status updates
-- **Resource Tracking**: CPU, memory, and disk usage monitoring
-- **Performance Analytics**: Detailed performance metrics
-
-### Remote Capabilities
-- **SSH Support**: Connect to remote systems securely
-- **Distributed Monitoring**: Monitor multiple nodes
-- **Health Checks**: Automated system health assessments
-""",
-            "Utilities": """
-### Utility Functions
-Essential utility functions for scientific computing:
-- **Data Transformation**: Convert and process data efficiently
-- **Automation**: Automate repetitive tasks
-- **Integration**: Easy integration with other tools
-
-### Performance Optimized
-- **Fast Processing**: Optimized algorithms for speed
-- **Memory Efficient**: Smart memory management
-- **Scalable**: Handles large workloads efficiently
-"""
-        }
-        
-        return category_features.get(mcp_data['category'], """
-### Core Functionality
-This MCP provides essential functionality for scientific computing workflows:
-- **Reliable**: Tested and validated implementations
-- **Documented**: Comprehensive documentation and examples
-- **Extensible**: Easy to extend and customize
-""")
-    
-    def _generate_actions_section(self, mcp_data: Dict) -> str:
-        """Generate actions section from tools data."""
+    def _generate_tools_section(self, mcp_data: Dict) -> str:
+        """Generate tools section from extracted data."""
         if not mcp_data['tools']:
-            actions_list = '\n'.join([f"- **`{action}`**: {action.replace('_', ' ').title()} functionality" 
-                                    for action in mcp_data['actions']])
+            # Fallback to action list if no detailed tools found
+            tools_list = '\n'.join([f"- **`{action}`**: {action.replace('_', ' ').title()} functionality" 
+                                  for action in mcp_data['actions']])
             return f"""
-The following actions are available:
+The following tools are available:
 
-{actions_list}
+{tools_list}
 
-Refer to the MCP server documentation for detailed parameter information and usage examples.
+Refer to the MCP server documentation for detailed parameter information.
 """
         
-        actions_content = []
-        for tool in mcp_data['tools'][:5]:  # Limit to first 5 tools to avoid MDX parsing issues
-            # Truncate very long descriptions
+        tools_content = []
+        for tool in mcp_data['tools']:
+            # Clean up description
             description = tool['description']
-            if len(description) > 200:
-                description = description[:197] + "..."
+            if len(description) > 150:
+                description = description[:147] + "..."
             
-            actions_content.append(f"""
-#### `{tool['name']}`
+            tools_content.append(f"""
+### `{tool['name']}`
+
 {description}
 
 **Usage Example:**
@@ -456,121 +356,154 @@ print(result)
 ```
 """)
         
-        if len(mcp_data['tools']) > 5:
-            actions_content.append(f"""
-#### Additional Actions
-This MCP provides {len(mcp_data['tools']) - 5} additional actions. Refer to the MCP server documentation for complete details.
-""")
-        
-        return '\n'.join(actions_content)
+        return '\n'.join(tools_content)
     
-    def _generate_examples_section(self, mcp_data: Dict) -> str:
-        """Generate integration examples section."""
-        examples = {
-            "Data Processing": f"""
-### Data Processing Workflow
-```python
-# Load and process data with {mcp_data['name']} MCP
-data = load_data("input_file")
-processed = process_data(data)
-
-# Integrate with other MCPs
-visualization = create_plot(processed, "chart_type")
-save_results(processed, "output_file")
-```
-
-### Batch Processing
-```python
-# Process multiple files
-files = list_files("data_directory")
-for file in files:
-    data = load_data(file)
-    result = process_data(data)
-    save_processed(result, f"processed_{{file}}")
-```
-""",
-            "Analysis & Visualization": f"""
-### Data Analysis Pipeline
-```python
-# Analyze data with {mcp_data['name']} MCP
-data = load_csv("experiment_data.csv")
-analysis = analyze_data(data)
-
-# Create visualizations
-plot = create_visualization(analysis, "plot_type")
-save_plot(plot, "analysis_results.png")
-```
-
-### Interactive Analysis
-```python
-# Interactive data exploration
-summary = get_data_summary(data)
-correlations = calculate_correlations(data)
-create_dashboard(summary, correlations)
-```
-""",
-            "System Management": f"""
-### System Monitoring
-```python
-# Monitor system with {mcp_data['name']} MCP
-status = get_system_status()
-performance = get_performance_metrics()
-
-# Set up alerts
-if status.cpu_usage > 80:
-    send_alert("High CPU usage detected")
-
-# Resource optimization
-optimize_resources(performance)
-```
-
-### Remote Management
-```python
-# Manage remote systems
-remote_status = get_remote_status("server1.example.com")
-deploy_configuration(remote_status, "config.yaml")
-monitor_deployment_status()
-```
-""",
-            "Utilities": f"""
-### Utility Operations
-```python
-# Use {mcp_data['name']} utilities
-result = perform_operation("input_data")
-optimized = optimize_result(result)
-
-# Chain operations
-processed = process_data(input_data)
-final_result = finalize_processing(processed)
-```
-
-### Automation Workflow
-```python
-# Automate repetitive tasks
-for item in input_list:
-    processed = process_item(item)
-    validate_result(processed)
-    store_result(processed)
-```
-"""
-        }
+    def _extract_installation_from_readme(self, mcp_data: Dict) -> str:
+        """Extract installation section from README."""
+        readme_file = Path(mcp_data['path']) / "README.md"
         
-        return examples.get(mcp_data['category'], f"""
+        if readme_file.exists():
+            try:
+                with open(readme_file, 'r', encoding='utf-8') as f:
+                    readme_content = f.read()
+                
+                # Extract installation section from README
+                installation = self._extract_section_from_readme(readme_content, "installation")
+                if installation:
+                    return installation
+            except Exception as e:
+                print(f"Error reading installation from README: {e}")
+        
+        # Return default installation message if not found
+        return f"""
+### Requirements
+
+- Python 3.10 or higher
+- [uv](https://docs.astral.sh/uv/) package manager (recommended)
+
+### Quick Install
+
+Add this to your MCP client configuration:
+
+```json
+{{
+  "mcpServers": {{
+    "{mcp_data['name'].lower()}-mcp": {{
+      "command": "uvx",
+      "args": ["iowarp-mcps", "{mcp_data['slug'].replace('_', '-')}"]
+    }}
+  }}
+}}
+```
+
+Refer to your MCP client documentation for specific setup instructions.
+"""
+    
+    def _extract_section_from_readme(self, readme_content: str, section_name: str) -> str:
+        """Extract a specific section from README content."""
+        lines = readme_content.split('\n')
+        in_section = False
+        section_lines = []
+        section_level = 0
+        
+        for line in lines:
+            # Look for section header (with various markdown styles, including emojis)
+            header_match = re.match(r'^(#+)\s*', line)
+            if header_match and section_name.lower() in line.lower():
+                in_section = True
+                section_level = len(header_match.group(1))  # Count number of # characters
+                continue
+            elif in_section and header_match:
+                # Stop at next section header of same level or higher (fewer #'s)
+                current_level = len(header_match.group(1))
+                if current_level <= section_level:
+                    break
+            
+            if in_section:
+                section_lines.append(line)
+        
+        if section_lines:
+            return '\n'.join(section_lines).strip()
+        
+        return ""
+    
+    def _extract_examples_from_readme(self, mcp_data: Dict) -> str:
+        """Extract examples section from README or generate basic examples."""
+        readme_file = Path(mcp_data['path']) / "README.md"
+        
+        if readme_file.exists():
+            try:
+                with open(readme_file, 'r', encoding='utf-8') as f:
+                    readme_content = f.read()
+                
+                # Extract examples section from README
+                examples = self._extract_section_from_readme(readme_content, "examples")
+                if examples:
+                    return examples
+            except Exception as e:
+                print(f"Error reading examples from README: {e}")
+        
+        # Fallback to generated examples
+        return self._generate_basic_examples(mcp_data)
+    
+    def _generate_basic_examples(self, mcp_data: Dict) -> str:
+        """Generate basic examples based on category."""
+        name = mcp_data['name']
+        category = mcp_data['category']
+        
+        if "Data Processing" in category:
+            return f"""
 ### Basic Usage
 ```python
-# Use {mcp_data['name']} MCP
-result = perform_action("input")
-print(result)
+# Load and process data with {name}
+data = load_data("input_file")
+processed_data = process_data(data)
+save_data(processed_data, "output_file")
 ```
 
 ### Integration Example
 ```python
-# Integrate with other MCPs
-data = load_data("input")
-processed = process_with_{mcp_data['slug']}(data)
-save_output(processed)
+# Use {name} in a data pipeline
+for file in data_files:
+    data = load_data(file)
+    result = analyze_data(data)
+    export_results(result, f"analysis_{{file}}")
 ```
-""")
+"""
+        elif "System Management" in category:
+            return f"""
+### System Monitoring
+```python
+# Monitor system status with {name}
+status = get_system_status()
+if status.needs_attention:
+    send_alert("System requires attention")
+```
+
+### Resource Management
+```python
+# Manage system resources
+resources = get_available_resources()
+allocate_resources(resources, job_requirements)
+```
+"""
+        else:
+            return f"""
+### Basic Usage
+```python
+# Use {name} MCP
+result = perform_operation("input_data")
+print(f"Result: {{result}}")
+```
+
+### Advanced Usage
+```python
+# Chain multiple operations
+data = load_input("source")
+processed = process_data(data)
+final_result = finalize_output(processed)
+```
+"""
     
     def _generate_mcp_data_js(self, mcps_data: Dict):
         """Generate the mcpData.js file for the frontend."""

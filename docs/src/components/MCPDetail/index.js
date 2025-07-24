@@ -13,6 +13,8 @@ const MCPDetail = ({
   version, 
   actions, 
   platforms,
+  keywords,
+  license,
   children 
 }) => {
   const [activeInstallTab, setActiveInstallTab] = useState('cursor');
@@ -116,6 +118,22 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
             </div>
           </div>
           <p className={styles.mcpDescription}>{description}</p>
+          
+          {/* Project Information */}
+          {(keywords || license) && (
+            <div className={styles.projectInfo}>
+              {keywords && keywords.length > 0 && (
+                <div className={styles.projectInfoItem}>
+                  <strong>Keywords:</strong> {keywords.slice(0, 8).join(', ')}
+                </div>
+              )}
+              {license && (
+                <div className={styles.projectInfoItem}>
+                  <strong>License:</strong> {license}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

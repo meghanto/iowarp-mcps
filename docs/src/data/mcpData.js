@@ -48,7 +48,7 @@ export const mcpData = {
   },
   "arxiv": {
     "name": "Arxiv",
-    "category": "Utilities",
+    "category": "Data Processing",
     "description": "ArXiv MCP is a comprehensive Model Context Protocol (MCP) server that enables Language Learning Models (LLMs) to search, analyze, and access research papers from the ArXiv preprint repository. This server provides advanced search capabilities, paper analysis tools, and citation management with seamless integration with AI coding assistants.",
     "icon": "\ud83d\udcc4",
     "actions": [
@@ -134,7 +134,7 @@ export const mcpData = {
   },
   "parallel_sort": {
     "name": "Parallel-Sort",
-    "category": "Analysis & Visualization",
+    "category": "Data Processing",
     "description": "Parallel Sort MCP is a comprehensive Model Context Protocol (MCP) server that enables Language Learning Models (LLMs) to perform high-performance log file processing and analysis operations. This server provides advanced log sorting, filtering, analysis tools, and scalable data processing capabilities with seamless integration with AI coding assistants. Key Features: - Log File Sorting: Timestamp-based sorting with parallel processing for large log files - Advanced Filtering: Multi-condition filtering by time range, log level, keywords, and custom patterns - Pattern Detection: Anomaly detection, error clustering, and trend analysis - Statistical Analysis: Comprehensive log statistics, temporal patterns, and quality metrics - Multiple Export Formats: Support for JSON, CSV, and text output with metadata - Scalable Processing: Handle large log files with memory-efficient chunked processing - MCP Integration: Full Model Context Protocol compliance for seamless LLM integration",
     "icon": "\ud83d\udd04",
     "actions": [
@@ -245,7 +245,7 @@ export const mcpData = {
   },
   "chronolog": {
     "name": "Chronolog",
-    "category": "Utilities",
+    "category": "Data Processing",
     "description": "ChronoLog MCP is a comprehensive Model Context Protocol (MCP) server that integrates with ChronoLog, a scalable, high-performance distributed shared log store. This server enables Language Learning Models (LLMs) to capture, manage, and retrieve conversational interactions in a structured format with enterprise-grade logging capabilities and real-time event processing.",
     "icon": "\u23f0",
     "actions": [
@@ -350,7 +350,7 @@ export const mcpData = {
   },
   "jarvis": {
     "name": "Jarvis",
-    "category": "System Management",
+    "category": "Data Processing",
     "description": "Jarvis MCP is a Model Context Protocol server that enables LLMs to manage the full lifecycle of data-centric pipelines using the Jarvis framework, featuring pipeline creation, package management, configuration updates, environment building, and execution capabilities for high-performance computing and data science workflows.",
     "icon": "\ud83e\udd16",
     "actions": [
@@ -405,24 +405,24 @@ export const categories = {
     "icon": "\ud83d\udd0d"
   },
   "Data Processing": {
-    "count": 5,
+    "count": 9,
     "color": "#3b82f6",
     "icon": "\ud83d\udcca"
   },
   "Analysis & Visualization": {
-    "count": 2,
+    "count": 1,
     "color": "#10b981",
     "icon": "\ud83d\udcc8"
   },
-  "Utilities": {
-    "count": 4,
-    "color": "#ef4444",
-    "icon": "\ud83d\udd27"
-  },
   "System Management": {
-    "count": 3,
+    "count": 2,
     "color": "#f59e0b",
     "icon": "\ud83d\udda5\ufe0f"
+  },
+  "Utilities": {
+    "count": 2,
+    "color": "#ef4444",
+    "icon": "\ud83d\udd27"
   }
 };
 
