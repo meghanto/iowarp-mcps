@@ -1,4 +1,4 @@
-name: Python Code Quality
+name: Quality Control
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       run: |
         # Find all directories in mcps/ that have a pyproject.toml file
         mcps_list=$(find mcps -maxdepth 1 -type d -exec test -f {}/pyproject.toml \; -print | sed 's|mcps/||' | sort)
-        mcps=$(echo "$mcps_list" | jq -R . | jq -s .)
+        mcps=$(echo "$mcps_list" | jq -R -s -c 'split("\n")[:-1]')
         echo "mcps=$mcps" >> $GITHUB_OUTPUT
         echo "Found MCPs: $mcps"
 
