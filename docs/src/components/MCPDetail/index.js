@@ -96,6 +96,28 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
   // For now, we'll render all children content in the examples tab
   // The markdown is now structured to only contain examples
   const renderContent = (children) => {
+    // Check if children is a React element/component already processed by MDX
+    if (React.isValidElement(children)) {
+      return children;
+    }
+    
+    // If it's an array of elements, render each one
+    if (Array.isArray(children)) {
+      return children.map((child, index) => (
+        React.isValidElement(child) ? (
+          <div key={index}>{child}</div>
+        ) : (
+          <div key={index}>{String(child)}</div>
+        )
+      ));
+    }
+    
+    // If it's a string, wrap it in a div
+    if (typeof children === 'string') {
+      return <div>{children}</div>;
+    }
+    
+    // Default case
     return children;
   };
 
@@ -131,50 +153,6 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
 
   const toggleAction = (actionName) => {
     setExpandedAction(expandedAction === actionName ? null : actionName);
-  };
-
-  // Generate TOC based on active tab
-  const generateTOC = () => {
-    const tocItems = [];
-    
-    if (activeTab === 'installation') {
-      tocItems.push(
-        { id: 'installation', title: 'Installation', level: 2 },
-        ...Object.keys(installationConfigs).map(key => ({
-          id: `install-${key}`,
-          title: installationConfigs[key].title,
-          level: 3
-        }))
-      );
-    } else if (activeTab === 'actions' && tools && tools.length > 0) {
-      tocItems.push(
-        { id: 'actions', title: 'Actions', level: 2 },
-        ...tools.map(tool => ({
-          id: `action-${tool.name}`,
-          title: tool.name,
-          level: 3
-        }))
-      );
-    } else if (activeTab === 'examples') {
-      tocItems.push({ id: 'examples', title: 'Examples', level: 2 });
-      // Extract headings from children content if they exist
-      if (children && typeof children === 'string') {
-        const headingMatches = children.match(/^###?\s+(.+)$/gm);
-        if (headingMatches) {
-          headingMatches.forEach((heading, index) => {
-            const level = heading.startsWith('###') ? 3 : 2;
-            const title = heading.replace(/^###?\s+/, '');
-            tocItems.push({
-              id: `example-${index}`,
-              title: title,
-              level: level
-            });
-          });
-        }
-      }
-    }
-    
-    return tocItems;
   };
 
   return (
@@ -245,10 +223,8 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
         </button>
       </div>
 
-      {/* Main Layout with TOC */}
-      <div className={styles.mainLayout}>
-        {/* Tab Content */}
-        <div className={styles.tabContent}>
+      {/* Tab Content */}
+      <div className={styles.tabContent}>
         {activeTab === 'installation' && (
           <div className={styles.installationTab}>
             <div className={styles.quickInstall}>
@@ -321,23 +297,6 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
             </div>
           </div>
         )}
-        </div>
-
-        {/* Table of Contents */}
-        <div className={styles.tocSidebar}>
-          <div className={styles.tocContent}>
-            <h3 className={styles.tocTitle}>Contents</h3>
-            <ul className={styles.tocList}>
-              {generateTOC().map((item, index) => (
-                <li key={index} className={`${styles.tocItem} ${styles[`tocLevel${item.level}`]}`}>
-                  <a href={`#${item.id}`} className={styles.tocLink}>
-                    {item.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
       </div>
 
       {/* Footer */}

@@ -259,14 +259,6 @@
   border-bottom-color: var(--ifm-color-primary);
 }
 
-/* Main Layout with TOC */
-.mainLayout {
-  display: grid;
-  grid-template-columns: 1fr 250px;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
 /* Tab Content */
 .tabContent {
   background: var(--ifm-background-color);
@@ -274,6 +266,7 @@
   border-top: none;
   border-radius: 0 0 12px 12px;
   padding: 2rem;
+  margin-bottom: 2rem;
   min-height: 500px;
 }
 
@@ -342,77 +335,6 @@
   margin: 0;
 }
 
-/* Table of Contents */
-.tocSidebar {
-  position: sticky;
-  top: 2rem;
-  height: fit-content;
-  max-height: calc(100vh - 4rem);
-  overflow-y: auto;
-}
-
-.tocContent {
-  background: var(--ifm-background-color);
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 12px;
-  padding: 1.5rem;
-}
-
-.tocTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 1rem 0;
-  color: var(--ifm-font-color-base);
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  padding-bottom: 0.5rem;
-}
-
-.tocList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.tocItem {
-  margin: 0;
-  padding: 0;
-}
-
-.tocLevel2 {
-  margin-left: 0;
-}
-
-.tocLevel3 {
-  margin-left: 1rem;
-}
-
-.tocLink {
-  display: block;
-  padding: 0.5rem 0;
-  color: var(--ifm-color-emphasis-700);
-  text-decoration: none;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.tocLink:hover {
-  color: var(--ifm-color-primary);
-  background: var(--ifm-color-primary-lightest);
-  text-decoration: none;
-  padding-left: 0.5rem;
-}
-
-.tocLevel2 .tocLink {
-  font-weight: 600;
-}
-
-.tocLevel3 .tocLink {
-  font-weight: 400;
-  font-size: 0.85rem;
-}
-
 /* Markdown Content */
 .markdownContent {
   margin-top: 2rem;
@@ -469,23 +391,6 @@
 }
 
 /* Responsive design */
-@media (max-width: 968px) {
-  .mainLayout {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .tocSidebar {
-    order: -1;
-    position: static;
-    max-height: none;
-  }
-  
-  .tocContent {
-    padding: 1rem;
-  }
-}
-
 @media (max-width: 768px) {
   .mcpDetail {
     padding: 1rem;
@@ -530,9 +435,5 @@
   .footerLinks {
     flex-direction: column;
     gap: 1rem;
-  }
-  
-  .tocSidebar {
-    display: none;
   }
 }
