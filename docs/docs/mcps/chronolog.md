@@ -15,6 +15,7 @@ import MCPDetail from '@site/src/components/MCPDetail';
   platforms={["claude", "cursor", "vscode"]}
   keywords={["distributed logging", "chronolog", "event logging", "session management", "context sharing", "real-time", "model context protocol", "scientific data", "conversational ai", "high-performance", "shared log", "multi-client", "historical retrieval", "enterprise logging"]}
   license="MIT"
+  tools={[{"name": "start_chronolog", "description": "Connects to ChronoLog, creates a chronicle, and acquires a story handle for logging interactions.", "function_name": "start_chronolog"}, {"name": "record_interaction", "description": "Logs user messages and LLM responses to the active story with structured event formatting.", "function_name": "record_interaction"}, {"name": "stop_chronolog", "description": "Releases the story handle and cleanly disconnects from ChronoLog system.", "function_name": "stop_chronolog"}, {"name": "retrieve_interaction", "description": "Extracts logged records from specified chronicle and story, generates timestamped output files with filtering options.", "function_name": "retrieve_interaction"}]}
 >
 
 ### 1. Session Logging and Analysis

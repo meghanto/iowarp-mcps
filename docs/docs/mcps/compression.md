@@ -15,6 +15,7 @@ import MCPDetail from '@site/src/components/MCPDetail';
   platforms={["claude", "cursor", "vscode"]}
   keywords={["compression", "gzip", "storage", "archival", "backup", "analytics", "statistics"]}
   license="MIT"
+  tools={[{"name": "compress_file", "description": "Compress a file using gzip compression.", "function_name": "compress_file_tool"}]}
 >
 
 ### 1. Log File Compression and Storage Optimization

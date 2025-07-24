@@ -228,8 +228,8 @@
 
 .mcpCategory {
   font-size: 0.85rem;
-  color: var(--ifm-color-primary);
-  background: var(--ifm-color-primary-lightest);
+  color: white;
+  background: var(--ifm-color-primary);
   padding: 0.2rem 0.6rem;
   border-radius: 12px;
   font-weight: 500;

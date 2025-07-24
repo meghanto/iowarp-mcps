@@ -15,6 +15,7 @@ import MCPDetail from '@site/src/components/MCPDetail';
   platforms={["claude", "cursor", "vscode"]}
   keywords={["hdf5", "scientific-data", "hierarchical-data", "data-analysis", "scientific-computing", "mcp", "llm-integration", "data-structures"]}
   license="MIT"
+  tools={[{"name": "list_hdf5", "description": "List HDF5 files in a directory.", "function_name": "list_hdf5_tool"}, {"name": "inspect_hdf5", "description": "Inspect HDF5 file structure: lists groups, datasets, and attributes.", "function_name": "inspect_hdf5_tool"}, {"name": "preview_hdf5", "description": "Preview first N elements of each dataset in an HDF5 file.", "function_name": "preview_hdf5_tool"}, {"name": "read_all_hdf5", "description": "Read every element of every dataset in an HDF5 file.", "function_name": "read_all_hdf5_tool"}]}
 >
 
 ### 1. Scientific Data Structure Analysis

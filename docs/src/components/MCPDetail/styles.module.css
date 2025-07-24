@@ -143,37 +143,44 @@
 }
 
 .installTabs {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .installTab {
-  padding: 0.6rem 1.2rem;
+  padding: 1rem;
   border: 2px solid var(--ifm-color-emphasis-200);
-  border-radius: 8px;
+  border-radius: 12px;
   background: var(--ifm-background-color);
   color: var(--ifm-font-color-base);
   cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
   font-size: 0.9rem;
+  text-align: center;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .installTab:hover {
   border-color: var(--ifm-color-primary);
   background: var(--ifm-color-primary-lightest);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .installTab.active {
   border-color: var(--ifm-color-primary);
   background: var(--ifm-color-primary);
   color: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .installContent {
-  background: var(--ifm-color-emphasis-100);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -273,8 +280,11 @@
   border: 1px solid var(--ifm-color-emphasis-200);
   border-radius: 8px;
   padding: 1rem;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
 }
 
 .actionCard:hover {
@@ -283,10 +293,16 @@
   transform: translateY(-2px);
 }
 
+.actionCard.expanded {
+  grid-column: 1 / -1;
+  min-height: auto;
+}
+
 .actionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .actionName {
@@ -299,6 +315,7 @@
   color: var(--ifm-color-emphasis-600);
   font-size: 0.8rem;
   transition: transform 0.2s ease;
+  flex-shrink: 0;
 }
 
 .actionDescription {
@@ -307,6 +324,13 @@
   border-top: 1px solid var(--ifm-color-emphasis-200);
   color: var(--ifm-color-emphasis-700);
   font-size: 0.9rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.actionDescription p {
+  margin: 0;
 }
 
 /* Markdown Content */

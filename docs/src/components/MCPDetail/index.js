@@ -13,6 +13,7 @@ const MCPDetail = ({
   platforms,
   keywords,
   license,
+  tools = [],
   children 
 }) => {
   const [activeTab, setActiveTab] = useState('installation');
@@ -196,10 +197,28 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
 
         {activeTab === 'actions' && (
           <div className={styles.actionsTab}>
-            {actions && actions.length > 0 && (
+            {tools && tools.length > 0 ? (
+              <div className={styles.actionsGrid}>
+                {tools.map((tool, index) => (
+                  <div key={index} className={`${styles.actionCard} ${expandedAction === tool.name ? styles.expanded : ''}`} onClick={() => toggleAction(tool.name)}>
+                    <div className={styles.actionHeader}>
+                      <code className={styles.actionName}>{tool.name}</code>
+                      <span className={styles.actionToggle}>
+                        {expandedAction === tool.name ? '▼' : '▶'}
+                      </span>
+                    </div>
+                    {expandedAction === tool.name && (
+                      <div className={styles.actionDescription}>
+                        <p>{tool.description || 'No description available.'}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : actions && actions.length > 0 && (
               <div className={styles.actionsGrid}>
                 {actions.map((action, index) => (
-                  <div key={index} className={styles.actionCard} onClick={() => toggleAction(action)}>
+                  <div key={index} className={`${styles.actionCard} ${expandedAction === action ? styles.expanded : ''}`} onClick={() => toggleAction(action)}>
                     <div className={styles.actionHeader}>
                       <code className={styles.actionName}>{action}</code>
                       <span className={styles.actionToggle}>
@@ -208,7 +227,7 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
                     </div>
                     {expandedAction === action && (
                       <div className={styles.actionDescription}>
-                        <p>Click to expand action details...</p>
+                        <p>Tool functionality: {action.replace('_', ' ').toLowerCase()}</p>
                       </div>
                     )}
                   </div>

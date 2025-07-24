@@ -15,6 +15,7 @@ import MCPDetail from '@site/src/components/MCPDetail';
   platforms={["claude", "cursor", "vscode"]}
   keywords={["Parquet", "columnar", "data", "analytics", "pandas"]}
   license="MIT"
+  tools={[]}
 >
 
 ### 1. Data Discovery and Schema Analysis
