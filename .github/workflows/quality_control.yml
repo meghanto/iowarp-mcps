@@ -51,6 +51,7 @@ jobs:
         if [ -f pyproject.toml ]; then
           uv sync --all-extras --dev || echo "Failed to sync dependencies, continuing..."
         fi
+        uv add --dev ruff || echo "Failed to add ruff, continuing..."
     
     - name: Run Ruff linter on ${{ matrix.mcp }}
       run: |
@@ -89,6 +90,7 @@ jobs:
         if [ -f pyproject.toml ]; then
           uv sync --all-extras --dev || echo "Failed to sync dependencies, continuing..."
         fi
+        uv add --dev mypy || echo "Failed to add mypy, continuing..."
     
     - name: Run MyPy on ${{ matrix.mcp }}
       run: |
@@ -125,6 +127,7 @@ jobs:
         if [ -f pyproject.toml ]; then
           uv sync --all-extras --dev || echo "Failed to sync dependencies, continuing..."
         fi
+        uv add --dev pytest pytest-cov || echo "Failed to add pytest, continuing..."
     
     - name: Run tests with coverage for ${{ matrix.mcp }}
       run: |
@@ -179,6 +182,7 @@ jobs:
         if [ -f pyproject.toml ]; then
           uv sync --all-extras --dev || echo "Failed to sync dependencies, continuing..."
         fi
+        uv add --dev pytest ruff || echo "Failed to add pytest/ruff, continuing..."
     
     - name: Run basic tests for ${{ matrix.mcp }}
       run: |
