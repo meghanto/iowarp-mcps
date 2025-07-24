@@ -111,101 +111,70 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Node_Hardware run node-hardware-m
 ## Capabilities
 
 ### `get_cpu_info`
-**Description**: Get comprehensive CPU information including specifications, core configuration, frequency analysis, and performance metrics with thermal status and load analysis.
+**Description**: Get comprehensive CPU information including specifications, core configuration, frequency analysis, and performance metrics.
 
-**Parameters**:
-- None
-
-**Returns**: Structured CPU information with performance insights including CPU model, core configuration, frequency analysis, cache information, thermal status, and optimization recommendations.
+**Returns**: dict: Structured CPU information with performance insights and optimization recommendations.
 
 ### `get_memory_info`
-**Description**: Get comprehensive memory information including capacity, usage patterns, and performance characteristics with swap analysis and optimization recommendations.
+**Description**: Get comprehensive memory information including capacity, usage patterns, and performance characteristics.
 
-**Parameters**:
-- None
-
-**Returns**: Detailed memory analysis including capacity metrics, usage patterns, swap configuration, performance characteristics, health indicators, and efficiency recommendations.
+**Returns**: dict: Structured memory information with usage insights and optimization recommendations.
 
 ### `get_system_info`
-**Description**: Get comprehensive system information including operating system details, uptime analysis, user management, configuration, and platform information with security status.
+**Description**: Get comprehensive system information including operating system details, platform configuration, and system status.
 
-**Parameters**:
-- None
-
-**Returns**: Complete system overview including OS details, uptime metrics, user information, platform configuration, security status, and system optimization insights.
+**Returns**: dict: Structured system information with configuration insights and security recommendations.
 
 ### `get_disk_info`
-**Description**: Get comprehensive disk information including storage devices, usage analysis, I/O performance, health monitoring, file systems, and predictive maintenance recommendations.
+**Description**: Get comprehensive disk information including storage devices, partitions, and I/O performance metrics.
 
-**Parameters**:
-- None
-
-**Returns**: Detailed storage analysis including device specifications, usage metrics, I/O performance, health indicators, file system information, and maintenance recommendations.
+**Returns**: dict: Structured disk information with performance insights and maintenance recommendations.
 
 ### `get_network_info`
-**Description**: Get comprehensive network information including interfaces, connections, and bandwidth analysis with protocol statistics and security monitoring.
+**Description**: Get comprehensive network information including interfaces, connections, and bandwidth analysis.
 
-**Parameters**:
-- None
-
-**Returns**: Complete network analysis including interface details, IP configuration, connection statistics, bandwidth metrics, protocol analysis, and security recommendations.
+**Returns**: dict: Structured network information with performance insights and security recommendations.
 
 ### `get_gpu_info`
-**Description**: Get comprehensive GPU information including specifications, memory analysis, thermal monitoring, performance metrics, driver information, and compute capabilities.
+**Description**: Get comprehensive GPU information including specifications, memory, and compute capabilities.
 
-**Parameters**:
-- None
-
-**Returns**: Detailed GPU analysis including specifications, memory usage, thermal status, performance metrics, driver information, compute capabilities, and optimization recommendations.
+**Returns**: dict: Structured GPU information with performance insights and optimization recommendations.
 
 ### `get_sensor_info`
-**Description**: Get comprehensive sensor information including temperature monitoring, fan control, voltage analysis, hardware health indicators, and thermal management with predictive maintenance.
+**Description**: Get sensor information including temperature, fan speeds, and thermal data.
 
-**Parameters**:
-- None
-
-**Returns**: Complete sensor analysis including temperature readings, fan speeds, voltage levels, hardware health metrics, thermal management status, and predictive maintenance insights.
+**Returns**: dict: Structured sensor information with thermal insights and health recommendations.
 
 ### `get_process_info`
-**Description**: Get comprehensive process information including running processes, resource consumption, process hierarchy, performance metrics, and system load analysis.
+**Description**: Get process information including running processes and resource usage.
 
-**Parameters**:
-- None
-
-**Returns**: Detailed process analysis including active processes, resource utilization, process relationships, performance metrics, system load indicators, and optimization recommendations.
+**Returns**: dict: Structured process information with resource insights and optimization recommendations.
 
 ### `get_performance_info`
-**Description**: Get comprehensive performance information including real-time monitoring, bottleneck analysis, optimization recommendations, and trend analysis for system performance assessment.
+**Description**: Get real-time performance metrics including CPU, memory, and disk usage.
 
-**Parameters**:
-- None
-
-**Returns**: Complete performance analysis including real-time metrics, bottleneck identification, performance trends, optimization suggestions, and system efficiency recommendations.
+**Returns**: dict: Structured performance information with bottleneck analysis and optimization recommendations.
 
 ### `get_remote_node_info`
-**Description**: Get comprehensive remote node hardware and system information via SSH with advanced filtering and intelligent analysis for distributed system monitoring.
+**Description**: Get comprehensive remote node hardware and system information via SSH with advanced filtering and intelligent analysis.
 
 **Parameters**:
-- `hostname` (str): Target hostname or IP address for remote collection (required)
-- `username` (str, optional): SSH username for remote authentication
-- `port` (int): SSH port number for remote connection (default: 22)
-- `ssh_key` (str, optional): Path to SSH private key file for authentication
-- `timeout` (int): SSH connection timeout in seconds (default: 30)
-- `components` (List[str], optional): List of specific components to include in collection
-- `exclude_components` (List[str], optional): List of specific components to exclude from collection
-- `include_performance` (bool): Whether to include real-time performance analysis (default: True)
-- `include_health` (bool): Whether to include health assessment and predictive maintenance insights (default: True)
+- `hostname` (str): Target hostname or IP address for remote collection.
+- `username` (Optional[str]): SSH username for remote authentication.
+- `port` (int): SSH port number for remote connection.
+- `ssh_key` (Optional[str]): Path to SSH private key file for authentication.
+- `timeout` (int): SSH connection timeout in seconds.
+- `components` (Optional[List[str]]): List of specific components to include in collection.
+- `exclude_components` (Optional[List[str]]): List of specific components to exclude from collection.
+- `include_performance` (bool): Whether to include real-time performance analysis.
+- `include_health` (bool): Whether to include health assessment and predictive maintenance insights.
 
-**Returns**: Comprehensive remote hardware analysis including hardware data, collection metadata, performance analysis, health assessment, SSH connection info, and optimization recommendations.
+**Returns**: dict: Comprehensive remote hardware and system analysis, including hardware_data, collection_metadata, performance_analysis, health_assessment, ssh_connection_info, error_information, intelligent_insights, optimization_recommendations, and beautiful_formatting.
 
 ### `health_check`
-**Description**: Perform comprehensive health check and system diagnostics with advanced capability verification, system compatibility testing, and performance assessment.
+**Description**: Perform comprehensive health check and system diagnostics with advanced capability verification.
 
-**Parameters**:
-- None
-
-**Returns**: Complete health assessment including server status, capability verification, system compatibility, performance metrics, diagnostic insights, and optimization recommendations with predictive maintenance guidance.
-
+**Returns**: dict: Comprehensive health assessment, including server_status, capability_status, system_compatibility, performance_metrics, diagnostic_insights, optimization_recommendations, troubleshooting_guide, predictive_maintenance, security_assessment, and health_summary.
 ## Examples
 
 ### 1. Local Hardware Overview

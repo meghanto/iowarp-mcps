@@ -110,71 +110,70 @@ uv --directory=$env:CLONE_DIR\iowarp-mcps\mcps\Plot run plot-mcp --help
 ## Capabilities
 
 ### `line_plot`
-**Description**: Create line plots from CSV or Excel data with customizable styling and formatting, supporting multiple data series, trend analysis, and time-series visualization with advanced customization options.
+**Description**: Create a line plot from data file with comprehensive visualization options.
 
 **Parameters**:
-- `file_path` (str): Absolute path to CSV or Excel file containing the data (required)
-- `x_column` (str): Column name for x-axis data (must exist in the dataset) (required)
-- `y_column` (str): Column name for y-axis data (must exist in the dataset) (required)
-- `title` (str): Custom title for the plot (supports LaTeX formatting, default: "Line Plot")
-- `output_path` (str): Absolute path where the plot image will be saved (supports PNG, PDF, SVG, default: "line_plot.png")
+- `file_path` (str): Parameter for file_path
+- `x_column` (str): Parameter for x_column
+- `y_column` (str): Parameter for y_column
+- `title` (str, optional): Parameter for title (default: Line Plot)
+- `output_path` (str, optional): Parameter for output_path (default: line_plot.png)
 
-**Returns**: Dictionary containing plot information, data summary, file details, and visualization statistics with trend analysis.
+**Returns**: Dictionary containing: - plot_info: Details about the generated plot including dimensions and format - data_summary: Statistical summary of the plotted data - file_details: Information about the output file size and location - visualization_stats: Metrics about data points and trends
 
 ### `bar_plot`
-**Description**: Create bar charts from CSV or Excel data with advanced styling and categorical data visualization, supporting grouped bars, stacked bars, and horizontal orientation with customizable colors and annotations.
+**Description**: Create a bar plot from data file with comprehensive customization options.
 
 **Parameters**:
-- `file_path` (str): Absolute path to CSV or Excel file containing the data (required)
-- `x_column` (str): Column name for x-axis categories (categorical data) (required)
-- `y_column` (str): Column name for y-axis values (numerical data) (required)
-- `title` (str): Custom title for the plot (supports LaTeX formatting, default: "Bar Plot")
-- `output_path` (str): Absolute path where the plot image will be saved (supports PNG, PDF, SVG, default: "bar_plot.png")
+- `file_path` (str): Parameter for file_path
+- `x_column` (str): Parameter for x_column
+- `y_column` (str): Parameter for y_column
+- `title` (str, optional): Parameter for title (default: Bar Plot)
+- `output_path` (str, optional): Parameter for output_path (default: bar_plot.png)
 
-**Returns**: Dictionary containing plot information, statistical summary of categorical and numerical data, file details, and visualization metrics.
+**Returns**: Dictionary containing: - plot_info: Details about the generated bar chart including bar count and styling - data_summary: Statistical summary of the categorical and numerical data - file_details: Information about the output file size and location - visualization_stats: Metrics about data distribution and categories
 
 ### `scatter_plot`
-**Description**: Create scatter plots from CSV or Excel data with correlation analysis and trend visualization, supporting multi-dimensional data exploration, regression lines, and statistical annotations for data relationships.
+**Description**: Create a scatter plot from data file with advanced correlation analysis.
 
 **Parameters**:
-- `file_path` (str): Absolute path to CSV or Excel file containing the data (required)
-- `x_column` (str): Column name for x-axis data (numerical data) (required)
-- `y_column` (str): Column name for y-axis data (numerical data) (required)
-- `title` (str): Custom title for the plot (supports LaTeX formatting, default: "Scatter Plot")
-- `output_path` (str): Absolute path where the plot image will be saved (supports PNG, PDF, SVG, default: "scatter_plot.png")
+- `file_path` (str): Parameter for file_path
+- `x_column` (str): Parameter for x_column
+- `y_column` (str): Parameter for y_column
+- `title` (str, optional): Parameter for title (default: Scatter Plot)
+- `output_path` (str, optional): Parameter for output_path (default: scatter_plot.png)
 
-**Returns**: Dictionary containing plot information, correlation analysis, statistical summary of both variables, and file details.
+**Returns**: Dictionary containing: - plot_info: Details about the generated scatter plot including point count and styling - correlation_stats: Statistical correlation metrics and trend analysis - data_summary: Statistical summary of both x and y variables - file_details: Information about the output file size and location
 
 ### `histogram_plot`
-**Description**: Create histograms from CSV or Excel data with statistical distribution analysis, supporting density plots, normal distribution overlays, and comprehensive statistical metrics for data distribution visualization.
+**Description**: Create a histogram from data file with advanced statistical analysis.
 
 **Parameters**:
-- `file_path` (str): Absolute path to CSV or Excel file containing the data (required)
-- `column` (str): Column name for histogram generation (numerical data) (required)
-- `bins` (int): Number of bins for histogram (affects granularity of distribution, default: 30)
-- `title` (str): Custom title for the plot (supports LaTeX formatting, default: "Histogram")
-- `output_path` (str): Absolute path where the plot image will be saved (supports PNG, PDF, SVG, default: "histogram.png")
+- `file_path` (str): Parameter for file_path
+- `column` (str): Parameter for column
+- `bins` (int, optional): Parameter for bins (default: 30)
+- `title` (str, optional): Parameter for title (default: Histogram)
+- `output_path` (str, optional): Parameter for output_path (default: histogram.png)
 
-**Returns**: Dictionary containing plot information, distribution statistics (mean, median, mode, standard deviation), data summary, and file details.
+**Returns**: Dictionary containing: - plot_info: Details about the generated histogram including bin information - distribution_stats: Statistical metrics including mean, median, mode, and standard deviation - data_summary: Comprehensive summary of the data distribution - file_details: Information about the output file size and location
 
 ### `heatmap_plot`
-**Description**: Create heatmaps from CSV or Excel data with correlation matrix analysis and color-coded data visualization, supporting hierarchical clustering, dendrograms, and advanced color mapping for multi-dimensional data exploration.
+**Description**: Create a heatmap from data file with advanced correlation visualization.
 
 **Parameters**:
-- `file_path` (str): Absolute path to CSV or Excel file containing numerical data (required)
-- `title` (str): Custom title for the plot (supports LaTeX formatting, default: "Heatmap")
-- `output_path` (str): Absolute path where the plot image will be saved (supports PNG, PDF, SVG, default: "heatmap.png")
+- `file_path` (str): Parameter for file_path
+- `title` (str, optional): Parameter for title (default: Heatmap)
+- `output_path` (str, optional): Parameter for output_path (default: heatmap.png)
 
-**Returns**: Dictionary containing plot information, correlation matrix with statistical significance, statistical summary of all numerical variables, and file details.
+**Returns**: Dictionary containing: - plot_info: Details about the generated heatmap including matrix dimensions - correlation_matrix: Full correlation matrix with statistical significance - data_summary: Statistical summary of all numerical variables - file_details: Information about the output file size and location
 
 ### `data_info`
-**Description**: Get comprehensive data file information including detailed schema analysis, data quality assessment, and statistical profiling with thorough data exploration, column types, distributions, and data health metrics.
+**Description**: Get comprehensive data file information with detailed analysis.
 
 **Parameters**:
-- `file_path` (str): Absolute path to CSV or Excel file (required)
+- `file_path` (str): Parameter for file_path
 
-**Returns**: Dictionary containing data schema, data quality metrics, statistical summary, and visualization recommendations based on data characteristics.
-
+**Returns**: Dictionary containing: - data_schema: Column names, data types, and null value analysis - data_quality: Missing values, duplicates, and data consistency metrics - statistical_summary: Basic statistics for numerical and categorical columns - visualization_recommendations: Suggested plot types based on data characteristics
 ## Examples
 
 ### 1. Data Exploration and Analysis
