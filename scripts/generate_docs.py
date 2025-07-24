@@ -281,6 +281,7 @@ class DocusaurusGenerator:
         actions_jsx = json.dumps(mcp_data['actions'])
         platforms_jsx = json.dumps(mcp_data['platforms'])
         keywords_jsx = json.dumps(mcp_data.get('keywords', []))
+        tools_jsx = json.dumps(mcp_data.get('tools', []))
         
         content = f"""---
 title: {mcp_data['name']} MCP
@@ -299,6 +300,7 @@ import MCPDetail from '@site/src/components/MCPDetail';
   platforms={{{platforms_jsx}}}
   keywords={{{keywords_jsx}}}
   license="{mcp_data.get('license', 'MIT')}"
+  tools={{{tools_jsx}}}
 >
 
 {self._extract_examples_from_readme(mcp_data)}

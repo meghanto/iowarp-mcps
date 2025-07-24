@@ -32,7 +32,7 @@
 }
 
 .mcpInfo {
-  background: linear-gradient(135deg, var(--ifm-color-primary-lightest) 0%, var(--ifm-color-secondary-lightest) 100%);
+  background: var(--ifm-background-surface-color);
   border-radius: 16px;
   padding: 2rem;
   border: 1px solid var(--ifm-color-emphasis-200);
@@ -151,9 +151,9 @@
 
 .installTab {
   padding: 1rem;
-  border: 2px solid var(--ifm-color-emphasis-200);
+  border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 12px;
-  background: var(--ifm-background-color);
+  background: var(--ifm-color-emphasis-100);
   color: var(--ifm-font-color-base);
   cursor: pointer;
   font-weight: 600;
@@ -177,12 +177,14 @@
   border-color: var(--ifm-color-primary);
   background: var(--ifm-color-primary);
   color: white;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: none;
 }
 
 .installContent {
   border-radius: 8px;
   overflow: hidden;
+  border: none;
+  background: transparent;
 }
 
 /* Actions section */
@@ -210,7 +212,7 @@
 }
 
 .actionCard:hover {
-  background: var(--ifm-color-primary-lightest);
+  background: var(--ifm-color-emphasis-200);
   border-color: var(--ifm-color-primary);
   transform: translateY(-2px);
 }
@@ -288,7 +290,7 @@
 }
 
 .actionCard:hover {
-  background: var(--ifm-color-primary-lightest);
+  background: var(--ifm-color-emphasis-200);
   border-color: var(--ifm-color-primary);
   transform: translateY(-2px);
 }

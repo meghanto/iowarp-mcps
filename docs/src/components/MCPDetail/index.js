@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Link from '@docusaurus/Link';
 import CodeBlock from '@theme/CodeBlock';
+import MDXContent from '@theme/MDXContent';
 import styles from './styles.module.css';
 
 const MCPDetail = ({ 
@@ -96,6 +97,36 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
   // The markdown is now structured to only contain examples
   const renderContent = (children) => {
     return children;
+  };
+
+  // Simple markdown-like renderer for tool descriptions
+  const renderMarkdownDescription = (text) => {
+    if (!text) return <p>No description available.</p>;
+    
+    // Split by bullet points and render as list
+    const lines = text.split('\n').filter(line => line.trim());
+    const hasBullets = lines.some(line => line.trim().startsWith('-') || line.trim().startsWith('*'));
+    
+    if (hasBullets) {
+      const listItems = lines
+        .filter(line => line.trim().startsWith('-') || line.trim().startsWith('*'))
+        .map((line, index) => (
+          <li key={index}>{line.replace(/^[\s\-\*]+/, '').trim()}</li>
+        ));
+      
+      const nonListContent = lines
+        .filter(line => !(line.trim().startsWith('-') || line.trim().startsWith('*')))
+        .join(' ');
+      
+      return (
+        <div>
+          {nonListContent && <p>{nonListContent}</p>}
+          {listItems.length > 0 && <ul>{listItems}</ul>}
+        </div>
+      );
+    }
+    
+    return <p>{text}</p>;
   };
 
   const toggleAction = (actionName) => {
@@ -209,7 +240,7 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
                     </div>
                     {expandedAction === tool.name && (
                       <div className={styles.actionDescription}>
-                        <p>{tool.description || 'No description available.'}</p>
+                        {renderMarkdownDescription(tool.description)}
                       </div>
                     )}
                   </div>

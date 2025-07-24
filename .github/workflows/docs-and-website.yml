@@ -44,7 +44,7 @@ jobs:
     # Step 1: Update README files (for PRs to dev branch)
     - name: Update MCP README files
       if: github.event_name == 'pull_request' && github.base_ref == 'dev'
-      run: python3 readme_filler.py mcps
+      run: python3 scripts/readme_filler.py mcps
 
     - name: Commit README updates
       if: github.event_name == 'pull_request' && github.base_ref == 'dev'
