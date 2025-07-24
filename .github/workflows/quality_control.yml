@@ -19,7 +19,8 @@ jobs:
       id: discover
       run: |
         # Find all directories in mcps/ that have a pyproject.toml file
-        mcps=$(find mcps -maxdepth 1 -type d -exec test -f {}/pyproject.toml \; -print | sed 's|mcps/||' | jq -R . | jq -s .)
+        mcps_list=$(find mcps -maxdepth 1 -type d -exec test -f {}/pyproject.toml \; -print | sed 's|mcps/||' | sort)
+        mcps=$(echo "$mcps_list" | jq -R . | jq -s .)
         echo "mcps=$mcps" >> $GITHUB_OUTPUT
         echo "Found MCPs: $mcps"
 
