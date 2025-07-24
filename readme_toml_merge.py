@@ -19,7 +19,7 @@ class MCPDocusaurusGenerator:
     def __init__(self, base_dir: str):
         self.base_dir = Path(base_dir)
         self.mcps_dir = self.base_dir / "mcps"
-        self.docs_dir = self.base_dir / "docs" / "docs"  # Docusaurus docs folder
+        self.docs_dir = self.base_dir / "docs" / "mcps"  # Docusaurus docs folder
         
     def get_last_commit_date(self, mcp_path: str) -> str:
         """Get the last commit date for a specific MCP directory."""
@@ -413,7 +413,8 @@ last_update:
 
 def main():
     """Entry point for the script."""
-    base_dir = "/home/isa-grc/iowarp-mcps"
+    # Use current working directory or script directory as base
+    base_dir = os.getcwd()
     generator = MCPDocusaurusGenerator(base_dir)
     generator.run()
 

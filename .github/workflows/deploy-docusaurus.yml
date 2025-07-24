@@ -2,7 +2,7 @@ name: Deploy Docusaurus to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [workflow/docusaurus-for-webpage, main]
 
 permissions:
   contents: read
