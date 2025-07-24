@@ -315,6 +315,7 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
       <div className={styles.tabContent}>
         {activeTab === 'installation' && (
           <div className={styles.installationTab}>
+            <h2 id="installation">Installation</h2>
             <div className={styles.quickInstall}>
               <div className={styles.installTabs}>
                 {Object.entries(installationConfigs).map(([key, config]) => (
@@ -338,6 +339,7 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
 
         {activeTab === 'actions' && (
           <div className={styles.actionsTab}>
+            <h2 id="actions">Actions</h2>
             {tools && tools.length > 0 ? (
               <div className={styles.actionsGrid}>
                 {tools.map((tool, index) => (
@@ -380,6 +382,7 @@ uv --directory=$env:CLONE_DIR\\iowarp-mcps\\mcps\\${name} run ${name.toLowerCase
 
         {activeTab === 'examples' && (
           <div className={styles.examplesTab}>
+            <h2 id="examples">Examples</h2>
             {(() => {
               const examples = parseExamples(children);
               return examples.length > 0 ? (
