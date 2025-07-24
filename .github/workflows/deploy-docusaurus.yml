@@ -16,9 +16,6 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
     - name: Checkout
@@ -44,10 +41,6 @@ jobs:
         cd docs
         npm ci
     
-    - name: Setup Pages
-      id: pages
-      uses: actions/configure-pages@v4
-    
     - name: Build Docusaurus site
       run: |
         cd docs
@@ -55,8 +48,14 @@ jobs:
       env:
         NODE_ENV: production
     
+    - name: Setup Pages
+      id: pages
+      uses: actions/configure-pages@v4
+      if: github.ref == 'refs/heads/main'
+    
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
+      if: github.ref == 'refs/heads/main'
       with:
         path: ./docs/build
 
@@ -64,3 +63,6 @@ jobs:
       id: deployment
       uses: actions/deploy-pages@v4
       if: github.ref == 'refs/heads/main'
+      environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
