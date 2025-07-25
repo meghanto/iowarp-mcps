@@ -148,3 +148,4 @@ This prompt will:
 <!-- ![Data Completeness Report](images/example6_completeness_report.png) -->
 
 </MCPDetail>
+

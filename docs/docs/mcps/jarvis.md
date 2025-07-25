@@ -186,5 +186,12 @@ This prompt will:
 - Create a new pipeline ready for comprehensive workflow management
 - Provide complete system configuration and lifecycle management
 
+##### 1. **Initialize Jarvis**
+
+The first step is to initialize Jarvis. This prepares the system for interaction.
+
+```bash
+```
+
 </MCPDetail>
 

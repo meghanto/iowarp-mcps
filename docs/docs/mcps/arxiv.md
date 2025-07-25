@@ -117,3 +117,4 @@ This prompt will:
 - Generate professional bibliography using `export_to_bibtex`
 
 </MCPDetail>
+

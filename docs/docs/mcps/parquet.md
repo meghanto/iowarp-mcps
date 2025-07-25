@@ -111,3 +111,4 @@ This prompt will:
 - Support business intelligence and analytics workflows
 
 </MCPDetail>
+

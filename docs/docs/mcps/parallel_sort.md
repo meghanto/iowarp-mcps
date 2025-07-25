@@ -117,3 +117,4 @@ This prompt will:
 - Export findings using `export_to_json` for dashboard integration
 
 </MCPDetail>
+
